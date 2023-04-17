@@ -61,7 +61,7 @@ namespace Unity.FPS.Game
         [Tooltip("Amount of bullets per shot")]
         public int BulletsPerShot = 1;
 
-        [Tooltip("Force that will push back the weapon after each shot")] [Range(0f, 2f)]
+        [Tooltip("Force that will push back the weapon after each shot")] [Range(0f, 5f)]
         public float RecoilForce = 1;
 
         [Tooltip("Ratio of the default FOV that this weapon applies while aiming")] [Range(0f, 1f)]
