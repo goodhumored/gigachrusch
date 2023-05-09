@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using Unity.FPS.Game;
+﻿using System.Collections.Generic;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
+using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     public class OverheatBehavior : MonoBehaviour
     {

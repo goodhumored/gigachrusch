@@ -1,13 +1,18 @@
-using System;
 using UnityEngine;
-using UnityEngine.ProBuilder.Shapes;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Construct
 {
     public class Wall : MonoBehaviour
     {
-        public static GameObject door;
-        public static GameObject window;
+        public enum WallType
+        {
+            DoorWall,
+            SolidWall,
+            WindowWall
+        }
+
+        public WallType type;
+        
         [Range(0, 1f)]
         public float chanceToSpawn = .15f;
     }

@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
-using Unity.FPS.Game;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Managers;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
-namespace Unity.FPS.AI
+namespace FPS.Scripts.AI
 {
     [RequireComponent(typeof(Health), typeof(Actor), typeof(NavMeshAgent))]
     public class EnemyController : MonoBehaviour
@@ -45,16 +47,16 @@ namespace Unity.FPS.AI
         [Header("Eye color")] [Tooltip("Material for the eye color")]
         public Material EyeColorMaterial;
 
-        [Tooltip("The default color of the bot's eye")] [ColorUsageAttribute(true, true)]
+        [Tooltip("The default color of the bot's eye")] [ColorUsage(true, true)]
         public Color DefaultEyeColor;
 
-        [Tooltip("The attack color of the bot's eye")] [ColorUsageAttribute(true, true)]
+        [Tooltip("The attack color of the bot's eye")] [ColorUsage(true, true)]
         public Color AttackEyeColor;
 
         [Header("Flash on hit")] [Tooltip("The material used for the body of the hoverbot")]
         public Material BodyMaterial;
 
-        [Tooltip("The gradient representing the color of the flash on hit")] [GradientUsageAttribute(true)]
+        [Tooltip("The gradient representing the color of the flash on hit")] [GradientUsage(true)]
         public Gradient OnHitBodyGradient;
 
         [Tooltip("The duration of the flash on hit")]
@@ -222,7 +224,6 @@ namespace Unity.FPS.AI
             if (transform.position.y < SelfDestructYHeight)
             {
                 Destroy(gameObject);
-                return;
             }
         }
 

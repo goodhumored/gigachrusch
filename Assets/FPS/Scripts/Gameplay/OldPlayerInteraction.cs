@@ -1,8 +1,8 @@
-﻿using UnityEngine.SceneManagement;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     public class OldPlayerInteraction : MonoBehaviour
     {

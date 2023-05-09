@@ -1,9 +1,9 @@
-﻿using Unity.FPS.AI;
-using Unity.FPS.Game;
+﻿using FPS.Scripts.AI;
+using FPS.Scripts.Game;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class EnemyCounter : MonoBehaviour
     {

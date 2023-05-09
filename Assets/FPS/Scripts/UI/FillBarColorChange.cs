@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class FillBarColorChange : MonoBehaviour
     {

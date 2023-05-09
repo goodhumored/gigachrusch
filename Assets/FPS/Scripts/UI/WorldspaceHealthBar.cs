@@ -1,8 +1,8 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class WorldspaceHealthBar : MonoBehaviour
     {

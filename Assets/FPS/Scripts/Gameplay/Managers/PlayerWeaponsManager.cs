@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using Unity.FPS.Game;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay.Managers
 {
     [RequireComponent(typeof(PlayerInputHandler))]
     public class PlayerWeaponsManager : MonoBehaviour

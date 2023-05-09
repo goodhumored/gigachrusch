@@ -1,7 +1,7 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game.Shared;
 using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay.Objectives
 {
     [RequireComponent(typeof(Collider))]
     public class ObjectiveReachPoint : Objective

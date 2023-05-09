@@ -1,7 +1,7 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game.Managers;
 using UnityEngine;
 
-namespace Unity.FPS.AI
+namespace FPS.Scripts.AI
 {
     public class FollowPlayer : MonoBehaviour
     {

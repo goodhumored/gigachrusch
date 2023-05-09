@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class NotificationToast : MonoBehaviour
     {

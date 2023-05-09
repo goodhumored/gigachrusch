@@ -1,7 +1,10 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Managers;
+using FPS.Scripts.Game.Shared;
+using FPS.Scripts.Gameplay.Managers;
 using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     public class AmmoPickup : Pickup
     {

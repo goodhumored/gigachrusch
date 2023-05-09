@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Shared
 {
     public enum WeaponShootType
     {

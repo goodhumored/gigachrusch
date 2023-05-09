@@ -1,9 +1,10 @@
 ﻿using System.Linq;
-using Unity.FPS.Game;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Managers;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Unity.FPS.AI
+namespace FPS.Scripts.AI
 {
 		public class DetectionModule : MonoBehaviour
 		{

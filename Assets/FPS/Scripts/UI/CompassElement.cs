@@ -1,7 +1,7 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
 using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class CompassElement : MonoBehaviour
     {

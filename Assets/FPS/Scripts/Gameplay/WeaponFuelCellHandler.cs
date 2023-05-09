@@ -1,7 +1,8 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     [RequireComponent(typeof(WeaponController))]
     public class WeaponFuelCellHandler : MonoBehaviour

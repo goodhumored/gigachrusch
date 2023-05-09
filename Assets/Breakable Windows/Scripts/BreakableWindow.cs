@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.FPS.Game;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 
 [AddComponentMenu("Breakable Windows/Breakable Window")]

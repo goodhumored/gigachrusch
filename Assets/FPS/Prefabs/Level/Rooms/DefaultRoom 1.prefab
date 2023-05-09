@@ -14,12 +14,13 @@ GameObject:
   - component: {fileID: 2978366575341544081}
   - component: {fileID: 2978366575341544086}
   - component: {fileID: 2978366575341544087}
+  - component: {fileID: 5774416988034394396}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &2978366575341544084
 Transform:
@@ -300,7 +301,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 96baafce609d12c98b5f63a585a3fbbf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -344,6 +345,35 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &5774416988034394396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2978366575341544085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &2978366576180388322
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +386,7 @@ GameObject:
   - component: {fileID: 2978366576180388333}
   m_Layer: 0
   m_Name: DefaultRoom 1
-  m_TagString: Untagged
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -390,10 +420,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1438773dc0b0437bab1164f778b4fe6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passableNorth: 1
-  passableSouth: 1
-  passableWest: 1
-  passableEast: 1
+  RoomWidth: 15
+  RoomLength: 15
+  RoomHeight: 15
+  wallNorth: {fileID: 0}
+  wallSouth: {fileID: 0}
+  wallWest: {fileID: 0}
+  wallEast: {fileID: 0}
+  roomNorth: {fileID: 0}
+  roomSouth: {fileID: 0}
+  roomWest: {fileID: 0}
+  roomEast: {fileID: 0}
+  wallNorthTypes: 000000000100000002000000
+  wallSouthTypes: 000000000100000002000000
+  wallWestTypes: 000000000100000002000000
+  wallEastTypes: 000000000100000002000000
   chanceToSpawn: 0.907
 --- !u!1 &3886155421518063199
 GameObject:
@@ -421,7 +462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3886155421518063199}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.9, z: 0}
+  m_LocalPosition: {x: 0, y: 4.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -439,9 +480,9 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 0.93007356, b: 0.6556604, a: 1}
-  m_Intensity: 20
-  m_Range: 20
+  m_Color: {r: 1, g: 0.8184024, b: 0.4764151, a: 1}
+  m_Intensity: 30.38
+  m_Range: 30
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10

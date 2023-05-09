@@ -1,12 +1,12 @@
 ﻿using System.IO;
-using Unity.FPS.Game;
-#if UNITY_EDITOR
+using FPS.Scripts.Game;
 using UnityEditor;
-#endif
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+#endif
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class TakeScreenshot : MonoBehaviour
     {

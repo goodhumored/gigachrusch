@@ -5,7 +5,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Unity.FPS.EditorExt
+namespace FPS.Scripts.Editor
 {
     // Simple example of stripping of a debug build configuration
     class ShaderBuildStripping : IPreprocessShaders

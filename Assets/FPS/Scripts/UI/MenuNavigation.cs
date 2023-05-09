@@ -1,9 +1,9 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class MenuNavigation : MonoBehaviour
     {

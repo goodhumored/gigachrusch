@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
+using FPS.Scripts.Gameplay.Managers;
 using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class WeaponHUDManager : MonoBehaviour
     {

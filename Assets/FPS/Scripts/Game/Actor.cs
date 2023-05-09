@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using FPS.Scripts.Game.Managers;
+using UnityEngine;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game
 {
     // This class contains general information describing an actor (player or enemies).
     // It is mostly used for AI detection logic and determining if an actor is friend or foe

@@ -1,5 +1,5 @@
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     public enum Interaction
     {

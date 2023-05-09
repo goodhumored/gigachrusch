@@ -1,7 +1,7 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
 using UnityEngine;
 
-namespace Unity.FPS.AI
+namespace FPS.Scripts.AI
 {
     [RequireComponent(typeof(EnemyController))]
     public class EnemyMobile : MonoBehaviour

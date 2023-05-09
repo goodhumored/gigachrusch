@@ -1,7 +1,8 @@
 ﻿using System;
+using FPS.Scripts.Game.Managers;
 using UnityEngine;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Shared
 {
     public abstract class Objective : MonoBehaviour
     {

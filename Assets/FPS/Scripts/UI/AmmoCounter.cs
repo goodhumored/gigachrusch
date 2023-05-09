@@ -1,10 +1,12 @@
-﻿using TMPro;
-using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Managers;
+using FPS.Scripts.Game.Shared;
+using FPS.Scripts.Gameplay.Managers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     [RequireComponent(typeof(FillBarColorChange))]
     public class AmmoCounter : MonoBehaviour

@@ -1,4 +1,4 @@
-﻿namespace Unity.FPS.Game
+﻿namespace FPS.Scripts.Game
 {
     public class GameConstants
     {

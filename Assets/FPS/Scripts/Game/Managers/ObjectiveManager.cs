@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Managers
 {
     public class ObjectiveManager : MonoBehaviour
     {

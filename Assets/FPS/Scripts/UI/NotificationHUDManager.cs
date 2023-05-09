@@ -1,8 +1,10 @@
-﻿using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Managers;
+using FPS.Scripts.Game.Shared;
+using FPS.Scripts.Gameplay.Managers;
 using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class NotificationHUDManager : MonoBehaviour
     {
@@ -18,10 +20,6 @@ namespace Unity.FPS.UI
             DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, NotificationHUDManager>(playerWeaponsManager,
                 this);
             playerWeaponsManager.OnAddedWeapon += OnPickupWeapon;
-
-            Jetpack jetpack = FindObjectOfType<Jetpack>();
-            DebugUtility.HandleErrorIfNullFindObject<Jetpack, NotificationHUDManager>(jetpack, this);
-            jetpack.OnUnlockJetpack += OnUnlockJetpack;
 
             EventManager.AddListener<ObjectiveUpdateEvent>(OnObjectiveUpdateEvent);
         }

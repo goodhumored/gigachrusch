@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Managers
 {
     public class GameFlowManager : MonoBehaviour
     {

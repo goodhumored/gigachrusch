@@ -1,8 +1,8 @@
-﻿using Unity.FPS.AI;
+﻿using FPS.Scripts.AI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class CompassMarker : MonoBehaviour
     {

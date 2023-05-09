@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
+using FPS.Scripts.Game;
+using FPS.Scripts.Gameplay;
 using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class Compass : MonoBehaviour
     {

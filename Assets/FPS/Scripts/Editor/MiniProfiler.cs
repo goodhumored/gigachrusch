@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using Unity.FPS.AI;
-using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
+using FPS.Scripts.AI;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
+using FPS.Scripts.Gameplay;
 using UnityEditor;
 using UnityEngine;
 
-namespace Unity.FPS.EditorExt
+namespace FPS.Scripts.Editor
 {
     public class MiniProfiler : EditorWindow
     {

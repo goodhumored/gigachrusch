@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Managers
 {
     public class GameEvent
     {
