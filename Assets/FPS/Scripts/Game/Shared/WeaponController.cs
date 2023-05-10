@@ -239,6 +239,7 @@ namespace FPS.Scripts.Game.Shared
             UpdateAmmo();
             UpdateCharge();
             UpdateContinuousShootSound();
+            if (IsReloading) Reload();
 
             if (Time.deltaTime > 0)
             {

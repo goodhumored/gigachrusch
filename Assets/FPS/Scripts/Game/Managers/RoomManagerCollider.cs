@@ -12,13 +12,12 @@ namespace FPS.Scripts.Game.Managers
             _builderManager = FindObjectOfType<BuildingManager>();
         }
 
-        private void OnCollisionEnter(Collision roomCollision)
+        private void OnTriggerEnter(Collider roomCollider)
         {
-            Debug.Log("Something entered collision!");
-            if (roomCollision.gameObject.CompareTag("Room"))
+            if (roomCollider.gameObject.CompareTag("Room"))
             {
                 Debug.Log("Room entered collision!");
-                _builderManager.CheckOrGenerateNeighbourRooms(roomCollision.gameObject.GetComponent<Room>());
+                _builderManager.CheckOrGenerateNeighbourRooms(roomCollider.gameObject.GetComponent<Room>());
             }
         }
     }

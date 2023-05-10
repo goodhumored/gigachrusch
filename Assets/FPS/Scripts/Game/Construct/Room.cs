@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace FPS.Scripts.Game.Construct
@@ -125,6 +126,13 @@ namespace FPS.Scripts.Game.Construct
             }
 
             return roomWest;
+        }
+
+        private void Awake()
+        {
+            var boxCollider = GetComponent<BoxCollider>();
+            boxCollider.size = new Vector3(RoomWidth, RoomHeight, RoomLength);
+            boxCollider.center = Vector3.up * RoomHeight / 2f;
         }
     }
 }

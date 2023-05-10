@@ -24,7 +24,7 @@ namespace FPS.Scripts.Game.Managers
             var createdRoom = Instantiate(room, coordinates, new Quaternion());
             createdRoom.transform.SetParent(RoomsParent);
             var surface = createdRoom.GetComponentInChildren<NavMeshSurface>();
-            surface.BuildNavMesh();
+            // surface.BuildNavMesh();
             return createdRoom;
         }
     }

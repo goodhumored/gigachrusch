@@ -91,6 +91,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2978366575341544083, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
+      propertyPath: m_VersionIndex
+      value: 2324
+      objectReference: {fileID: 0}
     - target: {fileID: 2978366575341544086, guid: d23009475e02686bbb9390372e9a9aea,
         type: 3}
       propertyPath: m_Mesh
@@ -163,8 +168,48 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
         type: 3}
+      propertyPath: roomEast
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
+      propertyPath: roomWest
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
+      propertyPath: wallEast
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
+      propertyPath: wallWest
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
+      propertyPath: roomNorth
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
+      propertyPath: roomSouth
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
+      propertyPath: wallNorth
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
+      propertyPath: wallSouth
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978366576180388333, guid: d23009475e02686bbb9390372e9a9aea,
+        type: 3}
       propertyPath: chanceToSpawn
-      value: 0.15
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8935588026945520113, guid: d23009475e02686bbb9390372e9a9aea,
         type: 3}

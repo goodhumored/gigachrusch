@@ -4,7 +4,6 @@ namespace FPS.Scripts.Game.Managers
 {
     public class RoomRendererCollider : MonoBehaviour
     {
-        public Vector3 roomsCount;
         private BuildingManager _builderManager;
     
         void Start()
@@ -12,23 +11,23 @@ namespace FPS.Scripts.Game.Managers
             _builderManager = FindObjectOfType<BuildingManager>();
         }
 
-        private void OnCollisionEnter(Collision roomCollision)
+        private void OnTriggerEnter(Collider roomCollider)
         {
-            Debug.Log("Something entered collision!");
-            if (roomCollision.gameObject.CompareTag("Room"))
+            Debug.Log($"Something entered collision room renderer! Tag: {roomCollider.tag} {roomCollider.name} {roomCollider.gameObject.name} {roomCollider.gameObject.tag}");
+            if (roomCollider.gameObject.CompareTag("Room"))
             {
-                Debug.Log("Room entered collision!");
-                roomCollision.gameObject.SetActive(true);
+                Debug.Log("Room entered collision room renderer!");
+                roomCollider.gameObject.SetActive(true);
             }
         }
 
-        private void OnCollisionExit(Collision roomCollision)
+        private void OnTriggerExit(Collider roomCollider)
         {
-            Debug.Log("Something exited collision!");
-            if (roomCollision.gameObject.CompareTag("Room"))
+            Debug.Log($"Something exited collision room renderer! Tag: {roomCollider.tag}");
+            if (roomCollider.gameObject.CompareTag("Room"))
             {
-                Debug.Log("Room exited collision!");
-                roomCollision.gameObject.SetActive(false);
+                Debug.Log("Room exited collision room renderer!");
+                roomCollider.gameObject.SetActive(false);
             }
         }
     }

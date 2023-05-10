@@ -53,9 +53,6 @@ namespace EZDoor
 
                 UseKey();
             }
-
-            if (Input.GetKeyDown(KeyCode.R))
-                SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).buildIndex);
         }
 
         void MouseClick()

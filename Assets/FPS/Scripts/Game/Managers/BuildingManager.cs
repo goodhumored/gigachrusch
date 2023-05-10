@@ -1,4 +1,5 @@
 using FPS.Scripts.Game.Construct;
+using FPS.Scripts.Game.Managers.NavMesh;
 using UnityEngine;
 
 namespace FPS.Scripts.Game.Managers
@@ -14,8 +15,8 @@ namespace FPS.Scripts.Game.Managers
             _player = GameObject.FindWithTag("Player");
             _roomManager = GetComponent<RoomManager>();
             _wallManager = GetComponent<WallManager>();
-            var room = _roomManager.InstantiateRoom(_roomManager.GetRandomRoom(), _player.transform.position);
-            CheckOrGenerateNeighbourRooms(room);
+            _roomManager.InstantiateRoom(_roomManager.GetRandomRoom(), _player.transform.position + Vector3.down * 2f);
+            // CheckOrGenerateNeighbourRooms(room);
         }
 
         public void CheckOrGenerateNeighbourRooms(Room originRoom)
@@ -26,8 +27,11 @@ namespace FPS.Scripts.Game.Managers
                 var room = _roomManager.GetRandomRoom(); // wall.type
                 var createdWall = _wallManager.InstantiateWall(wall, originRoom.GetEastWallPosition(), false);
                 var createdRoom = _roomManager.InstantiateRoom(room, originRoom.GetEastRoomPosition());
-                room.wallEast = createdWall;
-                room.roomEast = createdRoom;
+                originRoom.wallEast = createdWall;
+                originRoom.roomEast = createdRoom;
+                createdRoom.wallWest = createdWall;
+                createdRoom.roomWest = createdRoom;
+                originRoom.GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
             }
 
             if (!originRoom.GetWestRoom())
@@ -36,8 +40,11 @@ namespace FPS.Scripts.Game.Managers
                 var room = _roomManager.GetRandomRoom(); // wall.type
                 var createdWall = _wallManager.InstantiateWall(wall, originRoom.GetWestWallPosition(), false);
                 var createdRoom = _roomManager.InstantiateRoom(room, originRoom.GetWestRoomPosition());
-                room.wallWest = createdWall;
-                room.roomWest = createdRoom;
+                originRoom.wallWest = createdWall;
+                originRoom.roomWest = createdRoom;
+                createdRoom.wallEast = createdWall;
+                createdRoom.roomEast = createdRoom;
+                originRoom.GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
             }
 
             if (!originRoom.GetSouthRoom())
@@ -46,8 +53,11 @@ namespace FPS.Scripts.Game.Managers
                 var room = _roomManager.GetRandomRoom(); // wall.type
                 var createdWall = _wallManager.InstantiateWall(wall, originRoom.GetSouthWallPosition(), true);
                 var createdRoom = _roomManager.InstantiateRoom(room, originRoom.GetSouthRoomPosition());
-                room.wallSouth = createdWall;
-                room.roomSouth = createdRoom;
+                originRoom.wallSouth = createdWall;
+                originRoom.roomSouth = createdRoom;
+                createdRoom.wallNorth = createdWall;
+                createdRoom.roomNorth = createdRoom;
+                originRoom.GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
             }
 
             if (!originRoom.GetNorthRoom())
@@ -56,8 +66,11 @@ namespace FPS.Scripts.Game.Managers
                 var room = _roomManager.GetRandomRoom(); // wall.type
                 var createdWall = _wallManager.InstantiateWall(wall, originRoom.GetNorthWallPosition(), true);
                 var createdRoom = _roomManager.InstantiateRoom(room, originRoom.GetNorthRoomPosition());
-                room.wallNorth = createdWall;
-                room.roomNorth = createdRoom;
+                originRoom.wallNorth = createdWall;
+                originRoom.roomNorth = createdRoom;
+                createdRoom.wallSouth = createdWall;
+                createdRoom.roomSouth = createdRoom;
+                originRoom.GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
             }
         }
     }
