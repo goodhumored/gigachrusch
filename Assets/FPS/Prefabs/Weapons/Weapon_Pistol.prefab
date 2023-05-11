@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponName: Glock
-  WeaponIcon: {fileID: 21300000, guid: 3c187e19c32c13542ba8a0c1a3a88ece, type: 3}
+  WeaponIcon: {fileID: 0}
   CrosshairDataDefault:
     CrosshairSprite: {fileID: 21300000, guid: e881aa18189b12f4e915fc5b14ddc421, type: 3}
     CrosshairSize: 55
@@ -151,7 +151,8 @@ MonoBehaviour:
   AmmoUsedOnStartCharge: 1
   AmmoUsageRateWhileCharging: 2
   WeaponAnimator: {fileID: 0}
-  MuzzleFlashPrefab: {fileID: 0}
+  MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 8931274bd2e4548399a3ebdebe911c15,
+    type: 3}
   UnparentMuzzleFlash: 0
   ShootSfx: {fileID: 8300000, guid: 205e43ca2e07d466da88cd2552f7d50d, type: 3}
   ChangeWeaponSfx: {fileID: 8300000, guid: 7b83d61917ac1224f942a0609b1221f2, type: 3}

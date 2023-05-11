@@ -268,7 +268,7 @@ MonoBehaviour:
   isMoving: 0
   isOpen: 0
   isClosed: 0
-  randomizePitch: 0
+  randomizePitch: 1
   debugOcclusion: 1
   OnUse:
     m_PersistentCalls:
@@ -277,9 +277,9 @@ MonoBehaviour:
   keyContainer: {fileID: 0}
   occlusionPortal: {fileID: 0}
   audioSource: {fileID: 0}
-  open: {fileID: 0}
+  open: {fileID: 8300000, guid: 4d8abe3cd01e255a7a9c1c81337ecbd9, type: 3}
   move: {fileID: 0}
-  close: {fileID: 0}
+  close: {fileID: 8300000, guid: 8515f830da287e1378ffb7724a1048d5, type: 3}
   locked: {fileID: 0}
   unlocked: {fileID: 0}
   faceDirection: 2

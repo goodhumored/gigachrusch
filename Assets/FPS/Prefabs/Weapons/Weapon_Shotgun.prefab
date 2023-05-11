@@ -943,7 +943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponName: Shotgun
-  WeaponIcon: {fileID: 21300000, guid: 8cbb10368086f014a8b7fc8932e7f436, type: 3}
+  WeaponIcon: {fileID: 0}
   CrosshairDataDefault:
     CrosshairSprite: {fileID: 21300000, guid: 2962952d6e5ae7342a298d45a3945069, type: 3}
     CrosshairSize: 40
@@ -979,7 +979,7 @@ MonoBehaviour:
   AmmoUsedOnStartCharge: 0
   AmmoUsageRateWhileCharging: 1
   WeaponAnimator: {fileID: 0}
-  MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 4f5d4e5eaa0e5104791549cea3dc3f23,
+  MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 8931274bd2e4548399a3ebdebe911c15,
     type: 3}
   UnparentMuzzleFlash: 0
   ShootSfx: {fileID: 8300000, guid: c51ad72a0105335a3a718cd71619b0b1, type: 3}

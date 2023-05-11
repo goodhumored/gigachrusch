@@ -19,7 +19,9 @@ namespace FPS.Scripts.Game.Managers
             while (true)
             {
                 var wallToReturn = candidates[rnd.Next(candidates.Count)];
-                if (wallTypes.Contains(wallToReturn.type) && wallToReturn.chanceToSpawn * 100 > rnd.Next(100))
+                if (wallTypes.Contains(wallToReturn.type)
+                    // && wallToReturn.chanceToSpawn * 100 > rnd.Next(100)
+                    )
                     return wallToReturn;
             }
         }

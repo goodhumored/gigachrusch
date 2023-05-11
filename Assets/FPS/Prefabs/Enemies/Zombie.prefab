@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelfDestructYHeight: -20
-  PathReachingRadius: 3
+  PathReachingRadius: 2
   OrientationSpeed: 5
   DeathDuration: 0
   SwapToNextWeapon: 0
@@ -432,7 +432,7 @@ MonoBehaviour:
   - {fileID: 7635230255058315795, guid: 0602b265e67d4d96083267b1cbbb76a1, type: 3}
   OnDetectVfx: []
   OnDetectSfx: {fileID: 0}
-  MovementSound: {fileID: 0}
+  MovementSound: {fileID: 8300000, guid: f404f8d3c2a4b4f48989fb1120e78fb8, type: 3}
   PitchDistortionMovementSpeed:
     Min: 1
     Max: 1.5
@@ -768,10 +768,10 @@ MonoBehaviour:
     CrosshairColor: {r: 0, g: 0, b: 0, a: 0}
   WeaponRoot: {fileID: 6858127097531021102}
   WeaponMuzzle: {fileID: 9096526437663674597}
-  ShootType: 0
-  ProjectilePrefab: {fileID: 8924682559891268397, guid: ec753d54f333bb944b8b04884ad63828,
+  ShootType: 1
+  ProjectilePrefab: {fileID: 8924682559891268397, guid: 2095e3076c097577a8fd6fc71f64be61,
     type: 3}
-  DelayBetweenShots: 0.8
+  DelayBetweenShots: 1.8
   BulletSpreadAngle: 0
   BulletsPerShot: 1
   RecoilForce: 0
@@ -779,14 +779,14 @@ MonoBehaviour:
   AimOffset: {x: 0, y: 0, z: 0}
   AutomaticReload: 1
   HasPhysicalBullets: 0
-  ClipSize: 30
+  ClipSize: 100000000
   ShellCasing: {fileID: 0}
   EjectionPort: {fileID: 0}
   ShellCasingEjectionForce: 2
   ShellPoolSize: 1
   AmmoReloadRate: 0.5
   AmmoReloadDelay: 0.5
-  MaxAmmo: 100
+  MaxAmmo: 1000000000
   AutomaticReleaseOnCharged: 0
   MaxChargeDuration: 2
   AmmoUsedOnStartCharge: 1
@@ -794,7 +794,7 @@ MonoBehaviour:
   WeaponAnimator: {fileID: 0}
   MuzzleFlashPrefab: {fileID: 0}
   UnparentMuzzleFlash: 0
-  ShootSfx: {fileID: 8300000, guid: 9fa84e12b4d3693c5b15a939570c2de3, type: 3}
+  ShootSfx: {fileID: 8300000, guid: 7e3298ab87489b2ada0b21c5fda4567c, type: 3}
   ChangeWeaponSfx: {fileID: 0}
   UseContinuousShootSound: 0
   ContinuousShootStartSfx: {fileID: 0}
@@ -1308,9 +1308,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DetectionSourcePoint: {fileID: 6571005840976436832}
-  DetectionRange: 3
-  AttackRange: 3
-  KnownTargetTimeout: 12
+  DetectionRange: 20
+  AttackRange: 2
+  KnownTargetTimeout: 25
   Animator: {fileID: 4625541439979363519}
 --- !u!1 &6326161209693540617
 GameObject:

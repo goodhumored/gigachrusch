@@ -9,7 +9,6 @@ namespace FPS.Scripts.Game.Managers
     public class RoomManagerCollider : MonoBehaviour
     {
         private BuildingManager _builderManager;
-        public Queue<Room> roomBuildQueue = new Queue<Room>();
     
         void Start()
         {
@@ -20,16 +19,8 @@ namespace FPS.Scripts.Game.Managers
         {
             if (roomCollider.gameObject.CompareTag("Room"))
             {
-                Debug.Log("Room entered collision!");
-                this.roomBuildQueue.Enqueue(roomCollider.GetComponent<Room>());
-            }
-        }
-
-        private void Update()
-        {
-            if (roomBuildQueue.Count > 0)
-            {
-                _builderManager.CheckAndBuildNeighbourRooms(roomBuildQueue.Dequeue());
+                // Debug.Log("Room entered collision!");
+                _builderManager.CheckAndBuildNeighbourRooms(roomCollider.GetComponent<Room>());
             }
         }
     }

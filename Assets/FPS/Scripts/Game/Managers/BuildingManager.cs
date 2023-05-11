@@ -66,10 +66,10 @@ namespace FPS.Scripts.Game.Managers
                 var counterSide = GetCounterSide(side);
                 var neighbourRoomPosition = roomToSet.GetNeighbourRoomPositionBySide(side);
                 var neighbourRoom = _roomManager.GetRoomByPosition(neighbourRoomPosition);
-                neighbourRoom.surface.BuildNavMesh();
                 // Debug.Log($"(After) Room at {neighbourRoomPosition.ToString()} found: {(neighbourRoom ? neighbourRoom.name : "null")}");
                 if (neighbourRoom)
                 {
+                    neighbourRoom.surface.BuildNavMesh();
                     neighbourRoom.SetNeighbourRoomBySide(roomToSet, counterSide);
                     roomToSet.SetNeighbourRoomBySide(neighbourRoom, side);
                     roomToSet.SetWallBySide(neighbourRoom.GetWallBySide(counterSide), side);
