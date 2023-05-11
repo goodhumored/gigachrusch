@@ -1,9 +1,17 @@
 using FPS.Scripts.Game.Construct;
-using FPS.Scripts.Game.Managers.NavMesh;
+using FPS.Scripts.Game.Managers.Common;
 using UnityEngine;
 
 namespace FPS.Scripts.Game.Managers
 {
+    public enum Side
+    {
+        North,
+        East,
+        West,
+        South
+    }
+    
     public class BuildingManager : MonoBehaviour
     {
         private RoomManager _roomManager;
@@ -15,63 +23,91 @@ namespace FPS.Scripts.Game.Managers
             _player = GameObject.FindWithTag("Player");
             _roomManager = GetComponent<RoomManager>();
             _wallManager = GetComponent<WallManager>();
-            _roomManager.InstantiateRoom(_roomManager.GetRandomRoom(), _player.transform.position + Vector3.down * 2f);
-            // CheckOrGenerateNeighbourRooms(room);
+            BuildRandomRoom(_player.transform.position + Vector3.down);
         }
 
-        public void CheckOrGenerateNeighbourRooms(Room originRoom)
+        public void CheckAndBuildNeighbourRooms(Room originRoom)
         {
-            if (!originRoom.GetEastRoom())
+            var sides = GetSides();
+            foreach (var side in sides)
             {
-                var wall = _wallManager.GetRandomWall(originRoom.wallEastTypes);
-                var room = _roomManager.GetRandomRoom(); // wall.type
-                var createdWall = _wallManager.InstantiateWall(wall, originRoom.GetEastWallPosition(), false);
-                var createdRoom = _roomManager.InstantiateRoom(room, originRoom.GetEastRoomPosition());
-                originRoom.wallEast = createdWall;
-                originRoom.roomEast = createdRoom;
-                createdRoom.wallWest = createdWall;
-                createdRoom.roomWest = createdRoom;
-                originRoom.GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
+                var room = originRoom.GetNeighbourRoomBySide(side);
+                if (!room)
+                {
+                    BuildRandomRoom(originRoom.GetNeighbourRoomPositionBySide(side));
+                }
+            }
+        }
+
+        private Room BuildRandomRoom(Vector3 position)
+        {
+            var sides = GetSides();
+            var roomConstraints = new RoomConstraints();
+            foreach (var side in sides)
+            {
+                var roomPosition = position + GetVectorBySide(side) * RoomConstants.RoomLength;
+                var roomByPosition = _roomManager.GetRoomByPosition(roomPosition);
+                // Debug.Log($"(Before) Room at {roomPosition.ToString()} found: {(roomByPosition ? roomByPosition.name : "null")}");
+                if (roomByPosition)
+                {
+                    var counterSide = GetCounterSide(side);
+                    var wall = _wallManager.GetRandomWall(roomByPosition.GetWallTypesBySide(counterSide));
+                    _wallManager.InstantiateWall(wall, roomByPosition.GetWallPositionBySide(counterSide), IsSideward(side));
+                    roomByPosition.SetWallBySide(wall, counterSide);
+                    roomConstraints.SetWallTypeBySide(side, wall.type);
+                }
             }
 
-            if (!originRoom.GetWestRoom())
-            {
-                var wall = _wallManager.GetRandomWall(originRoom.wallWestTypes);
-                var room = _roomManager.GetRandomRoom(); // wall.type
-                var createdWall = _wallManager.InstantiateWall(wall, originRoom.GetWestWallPosition(), false);
-                var createdRoom = _roomManager.InstantiateRoom(room, originRoom.GetWestRoomPosition());
-                originRoom.wallWest = createdWall;
-                originRoom.roomWest = createdRoom;
-                createdRoom.wallEast = createdWall;
-                createdRoom.roomEast = createdRoom;
-                originRoom.GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
-            }
+            var roomToSet = _roomManager.GetRandomRoom(roomConstraints);
+            roomToSet = _roomManager.InstantiateRoom(roomToSet, position);
 
-            if (!originRoom.GetSouthRoom())
+            foreach (var side in sides)
             {
-                var wall = _wallManager.GetRandomWall(originRoom.wallSouthTypes);
-                var room = _roomManager.GetRandomRoom(); // wall.type
-                var createdWall = _wallManager.InstantiateWall(wall, originRoom.GetSouthWallPosition(), true);
-                var createdRoom = _roomManager.InstantiateRoom(room, originRoom.GetSouthRoomPosition());
-                originRoom.wallSouth = createdWall;
-                originRoom.roomSouth = createdRoom;
-                createdRoom.wallNorth = createdWall;
-                createdRoom.roomNorth = createdRoom;
-                originRoom.GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
+                var counterSide = GetCounterSide(side);
+                var neighbourRoomPosition = roomToSet.GetNeighbourRoomPositionBySide(side);
+                var neighbourRoom = _roomManager.GetRoomByPosition(neighbourRoomPosition);
+                neighbourRoom.surface.BuildNavMesh();
+                // Debug.Log($"(After) Room at {neighbourRoomPosition.ToString()} found: {(neighbourRoom ? neighbourRoom.name : "null")}");
+                if (neighbourRoom)
+                {
+                    neighbourRoom.SetNeighbourRoomBySide(roomToSet, counterSide);
+                    roomToSet.SetNeighbourRoomBySide(neighbourRoom, side);
+                    roomToSet.SetWallBySide(neighbourRoom.GetWallBySide(counterSide), side);
+                }
             }
+            return roomToSet;
+        }
 
-            if (!originRoom.GetNorthRoom())
+        public static Vector3 GetVectorBySide(Side side)
+        {
+            switch (side)
             {
-                var wall = _wallManager.GetRandomWall(originRoom.wallNorthTypes);
-                var room = _roomManager.GetRandomRoom(); // wall.type
-                var createdWall = _wallManager.InstantiateWall(wall, originRoom.GetNorthWallPosition(), true);
-                var createdRoom = _roomManager.InstantiateRoom(room, originRoom.GetNorthRoomPosition());
-                originRoom.wallNorth = createdWall;
-                originRoom.roomNorth = createdRoom;
-                createdRoom.wallSouth = createdWall;
-                createdRoom.roomSouth = createdRoom;
-                originRoom.GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
+                case Side.North: return Vector3.forward;
+                case Side.East: return Vector3.right;
+                case Side.South: return Vector3.back;
+                default: return Vector3.left;
             }
+        }
+
+        public static Side GetCounterSide(Side side)
+        {
+            switch (side)
+            {
+                case Side.North: return Side.South;
+                case Side.East: return Side.West;
+                case Side.South: return Side.North;
+                default: return Side.East;
+            }
+        }
+
+        public static bool IsSideward(Side side)
+        {
+            return side == Side.North || side == Side.South;
+        }
+
+        public static Side[] GetSides()
+        {
+            return new Side[] { Side.East, Side.North, Side.South, Side.West };
         }
     }
 }

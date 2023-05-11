@@ -8,10 +8,11 @@ namespace FPS.Scripts.Game.Managers
 {
     public class WallManager : MonoBehaviour
     {
+        public static int WallN;
         public List<Wall> Walls;
         public Transform RoomsParent;
 
-        public Wall GetRandomWall(Wall.WallType[] wallTypes)
+        public Wall GetRandomWall(WallType[] wallTypes)
         {
             var rnd = new Random();
             var candidates = Walls.FindAll((wall) => wallTypes.Contains(wall.type));
@@ -27,6 +28,7 @@ namespace FPS.Scripts.Game.Managers
         {
             var createdWall = Instantiate(wall, coordinates, Quaternion.Euler(0, side ? 90 : 0, 0));
             createdWall.transform.SetParent(RoomsParent);
+            createdWall.name += WallN++;
             return createdWall;
         }
     }

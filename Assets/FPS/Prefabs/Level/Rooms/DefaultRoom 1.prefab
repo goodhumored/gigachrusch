@@ -797,9 +797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1438773dc0b0437bab1164f778b4fe6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomWidth: 25
-  RoomLength: 25
-  RoomHeight: 7.5
+  surface: {fileID: 5774416988034394396}
   wallNorth: {fileID: 0}
   wallSouth: {fileID: 0}
   wallWest: {fileID: 0}
