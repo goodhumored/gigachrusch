@@ -48,6 +48,7 @@ namespace FPS.Scripts.AI
             m_EnemyController.onLostTarget += OnLostTarget;
             m_EnemyController.SetPathDestinationToClosestNode();
             m_EnemyController.onDamaged += OnDamaged;
+            m_EnemyController.onDie += OnDie;
 
             // Start patrolling
             AiState = AIState.Patrol;
@@ -180,6 +181,13 @@ namespace FPS.Scripts.AI
             }
 
             Animator.SetTrigger(k_AnimOnDamagedParameter);
+        }
+
+        void OnDie()
+        {
+            GetComponent<EnemyController>().enabled = false;
+            Animator.GetComponent<Animator>().enabled = false;
+            GetComponent<EnemyMobile>().enabled = false;
         }
     }
 }

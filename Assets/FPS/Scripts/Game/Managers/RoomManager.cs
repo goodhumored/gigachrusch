@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using FPS.Scripts.Game.Construct;
 using FPS.Scripts.Game.Managers.Common;
-using FPS.Scripts.Game.Managers.NavMesh;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = System.Random;
 
 namespace FPS.Scripts.Game.Managers
@@ -45,7 +43,6 @@ namespace FPS.Scripts.Game.Managers
             var createdRoom = Instantiate(room, coordinates, new Quaternion());
             createdRoom.transform.SetParent(roomsParent);
             createdRoom.name += RoomN++;
-            createdRoom.surface.BuildNavMesh();
             AddRoomWithPosition(coordinates, createdRoom);
             return createdRoom;
         }

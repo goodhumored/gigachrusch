@@ -1,6 +1,5 @@
 using FPS.Scripts.Game.Managers;
 using FPS.Scripts.Game.Managers.Common;
-using FPS.Scripts.Game.Managers.NavMesh;
 using UnityEngine;
 
 namespace FPS.Scripts.Game.Construct
@@ -57,13 +56,6 @@ namespace FPS.Scripts.Game.Construct
                 default: return roomSouth;
             }
         }
-
-        // public Room GetOrFindNeighbourRoomBySide(Side side)
-        // {
-        //     var neighbourRoom = GetNeighbourRoomBySide(side);
-        //     if (!neighbourRoom)
-        //         
-        // }
 
         public void SetNeighbourRoomBySide(Room room, Side side)
         {

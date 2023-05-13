@@ -1,0 +1,5 @@
+newmtl Wood_diffuseOriginal
+map_Kd Wood_diffuseOriginal.png
+Kd 1 1 1
+d 1
+

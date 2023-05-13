@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using FPS.Scripts.Game.Construct;
 using FPS.Scripts.Game.Managers.Common;
 using UnityEngine;
@@ -17,13 +20,28 @@ namespace FPS.Scripts.Game.Managers
         private RoomManager _roomManager;
         private WallManager _wallManager;
         private GameObject _player;
+        private Queue<Vector3> _buildingQueue = new Queue<Vector3>();
+        private Room _startRoom;
 
         private void Start()
         {
             _player = GameObject.FindWithTag("Player");
             _roomManager = GetComponent<RoomManager>();
             _wallManager = GetComponent<WallManager>();
-            BuildRandomRoom(_player.transform.position + Vector3.down);
+            StartCoroutine(BuildRandomRoom(_player.transform.position + Vector3.down));
+        }
+
+        private void Update()
+        {
+            if (_buildingQueue.TryDequeue(out var position))
+            {
+                StartCoroutine(BuildRandomRoom(position));
+            }
+        }
+
+        void EnqueueRoom(Vector3 position)
+        {
+            if (!_buildingQueue.Contains(position)) _buildingQueue.Enqueue(position);
         }
 
         public void CheckAndBuildNeighbourRooms(Room originRoom)
@@ -34,15 +52,18 @@ namespace FPS.Scripts.Game.Managers
                 var room = originRoom.GetNeighbourRoomBySide(side);
                 if (!room)
                 {
-                    BuildRandomRoom(originRoom.GetNeighbourRoomPositionBySide(side));
+                    EnqueueRoom(originRoom.GetNeighbourRoomPositionBySide(side));
                 }
             }
         }
 
-        private Room BuildRandomRoom(Vector3 position)
+        private IEnumerator BuildRandomRoom(Vector3 position)
         {
+            if (_roomManager.GetRoomByPosition(position)) yield break;
+            Debug.Log($"Building {position} from the queue.");
             var sides = GetSides();
             var roomConstraints = new RoomConstraints();
+            yield return null;
             foreach (var side in sides)
             {
                 var roomPosition = position + GetVectorBySide(side) * RoomConstants.RoomLength;
@@ -52,14 +73,17 @@ namespace FPS.Scripts.Game.Managers
                 {
                     var counterSide = GetCounterSide(side);
                     var wall = _wallManager.GetRandomWall(roomByPosition.GetWallTypesBySide(counterSide));
-                    _wallManager.InstantiateWall(wall, roomByPosition.GetWallPositionBySide(counterSide), IsSideward(side));
+                    _wallManager.InstantiateWall(wall, roomByPosition.GetWallPositionBySide(counterSide),
+                        IsSideward(side));
                     roomByPosition.SetWallBySide(wall, counterSide);
                     roomConstraints.SetWallTypeBySide(side, wall.type);
                 }
+                yield return null;
             }
 
             var roomToSet = _roomManager.GetRandomRoom(roomConstraints);
             roomToSet = _roomManager.InstantiateRoom(roomToSet, position);
+            yield return null;
 
             foreach (var side in sides)
             {
@@ -69,13 +93,15 @@ namespace FPS.Scripts.Game.Managers
                 // Debug.Log($"(After) Room at {neighbourRoomPosition.ToString()} found: {(neighbourRoom ? neighbourRoom.name : "null")}");
                 if (neighbourRoom)
                 {
-                    neighbourRoom.surface.BuildNavMesh();
                     neighbourRoom.SetNeighbourRoomBySide(roomToSet, counterSide);
                     roomToSet.SetNeighbourRoomBySide(neighbourRoom, side);
                     roomToSet.SetWallBySide(neighbourRoom.GetWallBySide(counterSide), side);
                 }
+                yield return null;
             }
-            return roomToSet;
+
+            if (!_startRoom) _startRoom = roomToSet;
+            _startRoom.surface.BuildNavMesh();
         }
 
         public static Vector3 GetVectorBySide(Side side)

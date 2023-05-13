@@ -160,6 +160,7 @@ namespace FPS.Scripts.Game.Shared
         public bool IsReloading { get; private set; }
 
         const string k_AnimAttackParameter = "Attack";
+        const string k_AnimChargeParameter = "Charge";
 
         private Queue<Rigidbody> m_PhysicalAmmoPool;
 
@@ -281,6 +282,7 @@ namespace FPS.Scripts.Game.Shared
             {
                 if (CurrentCharge < 1f)
                 {
+                    WeaponAnimator.SetFloat(k_AnimChargeParameter, CurrentCharge);
                     float chargeLeft = 1f - CurrentCharge;
 
                     // Calculate how much charge ratio to add this frame
@@ -430,6 +432,7 @@ namespace FPS.Scripts.Game.Shared
                 HandleShoot();
 
                 CurrentCharge = 0f;
+                WeaponAnimator.SetFloat(k_AnimAttackParameter, CurrentCharge);
                 IsCharging = false;
 
                 return true;
