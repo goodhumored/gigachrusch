@@ -85,7 +85,7 @@ namespace EZDoor
 
             Ray ray = _camera.ScreenPointToRay(new Vector2(x, y));
 
-            if (Physics.Raycast(ray, out RaycastHit hit, layerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, LayerMask.GetMask("Room")))
             {
                 bool inRange = Vector3.Distance(transform.position, hit.transform.position) <= distance;
 

@@ -83,7 +83,6 @@ namespace FPS.Scripts.Game.Managers
 
             var roomToSet = _roomManager.GetRandomRoom(roomConstraints);
             roomToSet = _roomManager.InstantiateRoom(roomToSet, position);
-            yield return null;
 
             foreach (var side in sides)
             {
@@ -99,9 +98,6 @@ namespace FPS.Scripts.Game.Managers
                 }
                 yield return null;
             }
-
-            if (!_startRoom) _startRoom = roomToSet;
-            _startRoom.surface.BuildNavMesh();
         }
 
         public static Vector3 GetVectorBySide(Side side)

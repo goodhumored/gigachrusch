@@ -41,9 +41,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2225486910712267856}
-  - component: {fileID: 8323776800172828795}
   - component: {fileID: 8090847488450120274}
   - component: {fileID: 3429362878182675651}
+  - component: {fileID: 1305903422042619965}
   m_Layer: 10
   m_Name: Weapon_Crossbow
   m_TagString: Untagged
@@ -68,62 +68,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8323776800172828795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2225486910712267859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad90ba0b1477764da373f5ec01a8cb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WeaponName: Crossbow
-  WeaponIcon: {fileID: 0}
-  CrosshairDataDefault:
-    CrosshairSprite: {fileID: 21300000, guid: 2962952d6e5ae7342a298d45a3945069, type: 3}
-    CrosshairSize: 40
-    CrosshairColor: {r: 0.4292453, g: 0.8855148, b: 1, a: 0.41960785}
-  CrosshairDataTargetInSight:
-    CrosshairSprite: {fileID: 21300000, guid: 2962952d6e5ae7342a298d45a3945069, type: 3}
-    CrosshairSize: 30
-    CrosshairColor: {r: 0, g: 0.64177275, b: 1, a: 1}
-  WeaponRoot: {fileID: 1505447205160222267}
-  WeaponMuzzle: {fileID: 8334323006752503713}
-  ShootType: 0
-  ProjectilePrefab: {fileID: 8924682559891268397, guid: 335e45dfe395b40c58907004025cb538,
-    type: 3}
-  DelayBetweenShots: 1.5
-  BulletSpreadAngle: 0
-  BulletsPerShot: 1
-  RecoilForce: 5
-  AimZoomRatio: 0.7
-  AimOffset: {x: 0.1, y: 0.07, z: -0.2}
-  AutomaticReload: 0
-  HasPhysicalBullets: 0
-  ClipSize: 2
-  ShellCasing: {fileID: 0}
-  EjectionPort: {fileID: 0}
-  ShellCasingEjectionForce: 2
-  ShellPoolSize: 6
-  AmmoReloadRate: 1.1
-  AmmoReloadDelay: 1
-  MaxAmmo: 15
-  AutomaticReleaseOnCharged: 0
-  MaxChargeDuration: 1
-  AmmoUsedOnStartCharge: 0
-  AmmoUsageRateWhileCharging: 1
-  WeaponAnimator: {fileID: 0}
-  MuzzleFlashPrefab: {fileID: 0}
-  UnparentMuzzleFlash: 0
-  ShootSfx: {fileID: 8300000, guid: c51ad72a0105335a3a718cd71619b0b1, type: 3}
-  ChangeWeaponSfx: {fileID: 8300000, guid: 7b83d61917ac1224f942a0609b1221f2, type: 3}
-  UseContinuousShootSound: 0
-  ContinuousShootStartSfx: {fileID: 0}
-  ContinuousShootLoopSfx: {fileID: 0}
-  ContinuousShootEndSfx: {fileID: 0}
 --- !u!82 &8090847488450120274
 AudioSource:
   m_ObjectHideFlags: 0
@@ -241,6 +185,63 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &1305903422042619965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2225486910712267859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3f86b51fb04c7e9f8f49d3534a18ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponName: Crossbow
+  WeaponIcon: {fileID: 0}
+  CrosshairDataDefault:
+    CrosshairSprite: {fileID: 21300000, guid: 71b946d4956fcf588809c1d773ae2600, type: 3}
+    CrosshairSize: 30
+    CrosshairColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+  CrosshairDataTargetInSight:
+    CrosshairSprite: {fileID: 21300000, guid: 71b946d4956fcf588809c1d773ae2600, type: 3}
+    CrosshairSize: 40
+    CrosshairColor: {r: 1, g: 0.13679248, b: 0.13679248, a: 0.7294118}
+  WeaponRoot: {fileID: 1505447205160222267}
+  UsageType: 0
+  UseDelay: 1.5
+  AutomaticReleaseOnCharged: 0
+  MaxChargeDuration: 2
+  WeaponAnimator: {fileID: 3429362878182675651}
+  UsageSfx: {fileID: 8300000, guid: 63fb0379cc2de48fd85edc420b1b5214, type: 3}
+  ChangeWeaponSfx: {fileID: 8300000, guid: 6f3e0904bbbace745bdef08cdbcdfec0, type: 3}
+  UseContinuousUsageSound: 0
+  ContinuousUsageStartSfx: {fileID: 0}
+  ContinuousUsageLoopSfx: {fileID: 0}
+  ContinuousUsageEndSfx: {fileID: 0}
+  m_WantsToUse: 0
+  WeaponMuzzle: {fileID: 8334323006752503713}
+  ProjectilePrefab: {fileID: 8924682559891268397, guid: 335e45dfe395b40c58907004025cb538,
+    type: 3}
+  BulletSpreadAngle: 0
+  BulletsPerShot: 1
+  RecoilForce: 1
+  AimZoomRatio: 0.1
+  AimOffset: {x: 0.097, y: 0.07, z: -0.3}
+  AutomaticReload: 0
+  HasPhysicalBullets: 0
+  ClipSize: 4
+  ShellCasing: {fileID: 0}
+  EjectionPort: {fileID: 0}
+  ShellCasingEjectionForce: 2
+  ShellPoolSize: 1
+  AmmoReloadRate: 1
+  AmmoReloadDelay: 2
+  MaxAmmo: 12
+  AmmoUsedOnStartCharge: 1
+  AmmoUsageRateWhileCharging: 1
+  MuzzleFlashPrefab: {fileID: 0}
+  UnparentMuzzleFlash: 0
 --- !u!1 &8088409166493606719
 GameObject:
   m_ObjectHideFlags: 0

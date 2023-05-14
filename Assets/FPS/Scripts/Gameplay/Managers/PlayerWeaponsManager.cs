@@ -122,40 +122,42 @@ namespace FPS.Scripts.Gameplay.Managers
 
         void Update()
         {
-            // shoot handling
             WeaponController activeWeapon = GetActiveWeapon();
-
-            if (activeWeapon != null && activeWeapon.IsReloading)
-                return;
-
-            if (activeWeapon != null && m_WeaponSwitchState == WeaponSwitchState.Up)
+            if (!activeWeapon || m_WeaponSwitchState != WeaponSwitchState.Up) return;
+            
+            bool hasFired = activeWeapon.HandleUsageInputs(
+                m_InputHandler.GetFireInputDown(),
+                m_InputHandler.GetFireInputHeld(),
+                m_InputHandler.GetFireInputReleased());
+            
+            if (activeWeapon is GunController)
             {
-                if (!activeWeapon.AutomaticReload && m_InputHandler.GetReloadButtonDown() && activeWeapon.CurrentAmmoRatio < 1.0f)
-                {
-                    IsAiming = false;
-                    activeWeapon.StartReloadAnimation();
-                    return;
-                }
-                // handle aiming down sights
-                IsAiming = m_InputHandler.GetAimInputHeld();
+                var gun = (GunController)activeWeapon;
 
-                // handle shooting
-                bool hasFired = activeWeapon.HandleShootInputs(
-                    m_InputHandler.GetFireInputDown(),
-                    m_InputHandler.GetFireInputHeld(),
-                    m_InputHandler.GetFireInputReleased());
-
-                // Handle accumulating recoil
-                if (hasFired)
+                if (gun)
                 {
-                    m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
-                    m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
+                    if (gun.IsReloading)
+                        return;
+                    if (!gun.AutomaticReload && m_InputHandler.GetReloadButtonDown() &&
+                        gun.CurrentAmmoRatio < 1.0f)
+                    {
+                        IsAiming = false;
+                        gun.StartReloadAnimation();
+                        return;
+                    }
+
+                    IsAiming = m_InputHandler.GetAimInputHeld();
+
+                    if (hasFired)
+                    {
+                        m_AccumulatedRecoil += Vector3.back * gun.RecoilForce;
+                        m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
+                    }
                 }
             }
 
-            // weapon switch handling
             if (!IsAiming &&
-                (activeWeapon == null || !activeWeapon.IsCharging) &&
+                (!activeWeapon || !activeWeapon.IsCharging) &&
                 (m_WeaponSwitchState == WeaponSwitchState.Up || m_WeaponSwitchState == WeaponSwitchState.Down))
             {
                 int switchWeaponInput = m_InputHandler.GetSwitchWeaponInput();
@@ -174,8 +176,7 @@ namespace FPS.Scripts.Gameplay.Managers
                     }
                 }
             }
-
-            // Pointing at enemy handling
+            
             IsPointingAtEnemy = false;
             if (activeWeapon)
             {
@@ -287,13 +288,15 @@ namespace FPS.Scripts.Gameplay.Managers
             if (m_WeaponSwitchState == WeaponSwitchState.Up)
             {
                 WeaponController activeWeapon = GetActiveWeapon();
-                if (IsAiming && activeWeapon)
+                if (!activeWeapon || activeWeapon is not GunController) return;
+                var gun = (GunController)activeWeapon; 
+                if (IsAiming)
                 {
                     m_WeaponMainLocalPosition = Vector3.Lerp(m_WeaponMainLocalPosition,
-                        AimingWeaponPosition.localPosition + activeWeapon.AimOffset,
+                        AimingWeaponPosition.localPosition + gun.AimOffset,
                         AimingAnimationSpeed * Time.deltaTime);
                     SetFov(Mathf.Lerp(m_PlayerCharacterController.PlayerCamera.fieldOfView,
-                        activeWeapon.AimZoomRatio * DefaultFov, AimingAnimationSpeed * Time.deltaTime));
+                        gun.AimZoomRatio * DefaultFov, AimingAnimationSpeed * Time.deltaTime));
                 }
                 else
                 {

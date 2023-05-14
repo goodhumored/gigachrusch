@@ -417,7 +417,7 @@ namespace FPS.Scripts.AI
                 return false;
 
             // Shoot the weapon
-            bool didFire = GetCurrentWeapon().HandleShootInputs(false, true, false);
+            bool didFire = GetCurrentWeapon().HandleUsageInputs(false, true, false);
 
             if (didFire && onAttack != null)
             {

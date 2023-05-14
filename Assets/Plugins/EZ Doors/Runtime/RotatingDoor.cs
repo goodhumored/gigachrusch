@@ -225,7 +225,7 @@ namespace EZDoor.Rotating
             if (open != null && isMoving == false && isOpening == true)
             {
                 PlayClip(open);
-                yield return _waitForSecsOpen;
+                yield return null;
             }
 
             isMoving = true;
@@ -247,6 +247,7 @@ namespace EZDoor.Rotating
 
                 yield return _waitWhileOpen;
             }
+            OnClose.Invoke();
         }
 
         /// <summary>
@@ -285,6 +286,7 @@ namespace EZDoor.Rotating
 
                 yield return _waitWhileClose;
             }
+            OnOpen.Invoke();
         }
 
         public override void Interact()

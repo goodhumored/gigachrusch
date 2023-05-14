@@ -17,11 +17,8 @@ namespace FPS.Scripts.Game.Managers
 
         private void OnTriggerEnter(Collider roomCollider)
         {
-            if (roomCollider.gameObject.CompareTag("Room"))
-            {
-                // Debug.Log("Room entered collision!");
-                _builderManager.CheckAndBuildNeighbourRooms(roomCollider.GetComponent<Room>());
-            }
+            var room = roomCollider.GetComponentInParent<Room>();
+            _builderManager.CheckAndBuildNeighbourRooms(room);
         }
     }
 }

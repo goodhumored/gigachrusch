@@ -1,12 +1,14 @@
 using FPS.Scripts.Game.Managers;
 using FPS.Scripts.Game.Managers.Common;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace FPS.Scripts.Game.Construct
 {
     public class Room : MonoBehaviour
     {
         public NavMeshSurface surface;
+        public BoxCollider RoomCollider;
         
         public Wall wallNorth;
         public Wall wallSouth;
@@ -28,9 +30,8 @@ namespace FPS.Scripts.Game.Construct
 
         private void Awake()
         {
-            var boxCollider = GetComponent<BoxCollider>();
-            boxCollider.size = new Vector3(RoomConstants.RoomWidth, RoomConstants.RoomHeight, RoomConstants.RoomLength);
-            boxCollider.center = Vector3.up * RoomConstants.RoomHeight / 2f;
+            RoomCollider.size = new Vector3(RoomConstants.RoomWidth, RoomConstants.RoomHeight, RoomConstants.RoomLength);
+            RoomCollider.center = Vector3.up * RoomConstants.RoomHeight / 2f;
         }
 
         public Vector3 GetWallPositionBySide(Side side)

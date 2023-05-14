@@ -37,11 +37,8 @@ namespace FPS.Scripts.UI
 
         void AddWeapon(WeaponController newWeapon, int weaponIndex)
         {
-            GameObject ammoCounterInstance = Instantiate(AmmoCounterPrefab, AmmoPanel);
-            AmmoCounter newAmmoCounter = ammoCounterInstance.GetComponent<AmmoCounter>();
-            DebugUtility.HandleErrorIfNullGetComponent<AmmoCounter, WeaponHUDManager>(newAmmoCounter, this,
-                ammoCounterInstance.gameObject);
-
+            var ammoCounterInstance = Instantiate(AmmoCounterPrefab, AmmoPanel);
+            var newAmmoCounter = ammoCounterInstance.GetComponent<AmmoCounter>();
             newAmmoCounter.Initialize(newWeapon, weaponIndex);
 
             m_AmmoCounters.Add(newAmmoCounter);

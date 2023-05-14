@@ -14,6 +14,7 @@ namespace FPS.Scripts.AI
         }
 
         public Animator Animator;
+        public Rigidbody[] Rigidbodies;
 
         [Tooltip("Fraction of the enemy's attack range at which it will stop moving towards target while attacking")]
         [Range(0f, 1f)]
@@ -185,6 +186,10 @@ namespace FPS.Scripts.AI
 
         void OnDie()
         {
+            foreach (var rb in Rigidbodies)
+            {
+                rb.isKinematic = false;
+            }
             GetComponent<EnemyController>().enabled = false;
             Animator.GetComponent<Animator>().enabled = false;
             GetComponent<EnemyMobile>().enabled = false;

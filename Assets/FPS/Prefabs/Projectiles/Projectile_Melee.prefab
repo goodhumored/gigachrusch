@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3659995153115176982}
   - component: {fileID: 8924682559891268397}
   m_Layer: 0
-  m_Name: Projectile_Arms
+  m_Name: Projectile_Melee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,11 +48,11 @@ MonoBehaviour:
   Radius: 0.1
   Root: {fileID: 3659995153115176982}
   Tip: {fileID: 1135791333161367127}
-  MaxLifeTime: 1
+  MaxLifeTime: 0.2
   ImpactVfx: {fileID: 0}
   ImpactVfxLifetime: 5
   ImpactVfxSpawnOffset: 0.1
-  ImpactSfxClip: {fileID: 0}
+  ImpactSfxClip: {fileID: 8300000, guid: 6628cbc4d1bd986b39ad8f75872d6dfa, type: 3}
   HittableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -60,7 +60,7 @@ MonoBehaviour:
   GravityDownAcceleration: 0
   TrajectoryCorrectionDistance: 5
   InheritWeaponVelocity: 0
-  Damage: 3
+  Damage: 30
   AreaOfDamage: {fileID: 0}
   RadiusColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!1 &5564024855854763701

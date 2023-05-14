@@ -20,12 +20,13 @@ namespace FPS.Scripts.Gameplay
             if (playerWeaponsManager)
             {
                 WeaponController weapon = playerWeaponsManager.HasWeapon(Weapon);
-                if (weapon != null)
+                if (weapon && weapon is GunController)
                 {
-                    weapon.AddCarriablePhysicalBullets(BulletCount);
+                    var gun = (GunController)weapon;
+                    gun.AddCarriablePhysicalBullets(BulletCount);
 
                     AmmoPickupEvent evt = Events.AmmoPickupEvent;
-                    evt.Weapon = weapon;
+                    evt.Weapon = gun;
                     EventManager.Broadcast(evt);
 
                     PlayPickupFeedback();

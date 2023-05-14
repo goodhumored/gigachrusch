@@ -18,6 +18,8 @@ namespace EZDoor
         public bool randomizePitch = false;
         public bool debugOcclusion = true;
         public UnityEvent OnUse;
+        public UnityEvent OnOpen;
+        public UnityEvent OnClose;
         public ScriptableObject requiredKey;
         public KeyContainer keyContainer;
         public OcclusionPortal occlusionPortal;
