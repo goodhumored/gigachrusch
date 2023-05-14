@@ -9,6 +9,7 @@ namespace FPS.Scripts.Game.Construct
     {
         public NavMeshSurface surface;
         public BoxCollider RoomCollider;
+        public Transform RoomRoot;
         
         public Wall wallNorth;
         public Wall wallSouth;
@@ -102,6 +103,36 @@ namespace FPS.Scripts.Game.Construct
                 case Side.West: return wallWestTypes;
                 default: return wallSouthTypes;
             }
+        }
+
+        public void Hide()
+        {
+            foreach (var side in BuildingManager.GetSides())
+            {
+                var wall = GetWallBySide(side);
+                if (wall)
+                {
+                    // Debug.Log($"Hiding {wall.name}");
+                    wall.gameObject.SetActive(false);
+                }
+            }
+
+            RoomRoot.gameObject.SetActive(false);
+        }
+
+        public void Show()
+        {
+            foreach (var side in BuildingManager.GetSides())
+            {
+                var wall = GetWallBySide(side);
+                if (wall)
+                {
+                    // Debug.Log($"Showing {wall.name}");
+                    wall.gameObject.SetActive(true);
+                }
+            }
+
+            RoomRoot.gameObject.SetActive(true);
         }
     }
 }

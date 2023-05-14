@@ -5,7 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6096337814000311216}
+    m_TransformParent: {fileID: 360892743862572226}
     m_Modifications:
     - target: {fileID: 2620131183356007192, guid: d40ae884302b6684a8b3b6f3d55a71ba,
         type: 3}
@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 2620131183356007199, guid: d40ae884302b6684a8b3b6f3d55a71ba,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2620131183356007199, guid: d40ae884302b6684a8b3b6f3d55a71ba,
         type: 3}
@@ -89,7 +89,7 @@ PrefabInstance:
     - target: {fileID: 2978366576180388322, guid: d23009475e02686bbb9390372e9a9aea,
         type: 3}
       propertyPath: m_Name
-      value: RoomWithHeal
+      value: HealthRoom
       objectReference: {fileID: 0}
     - target: {fileID: 2978366576180388332, guid: d23009475e02686bbb9390372e9a9aea,
         type: 3}
@@ -153,9 +153,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d23009475e02686bbb9390372e9a9aea, type: 3}
---- !u!4 &6096337814000311216 stripped
+--- !u!4 &360892743862572226 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 2978366576180388332, guid: d23009475e02686bbb9390372e9a9aea,
+  m_CorrespondingSourceObject: {fileID: 8704864781608431262, guid: d23009475e02686bbb9390372e9a9aea,
     type: 3}
   m_PrefabInstance: {fileID: 9065678360447154780}
   m_PrefabAsset: {fileID: 0}

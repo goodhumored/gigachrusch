@@ -16,12 +16,14 @@ namespace FPS.Scripts.Game.Managers
         {
             var rnd = new Random();
             var candidates = Walls.FindAll((wall) => wallTypes.Contains(wall.type));
+            if (candidates.Count == 0)
+            {
+                return Walls[0];
+            }
             while (true)
             {
                 var wallToReturn = candidates[rnd.Next(candidates.Count)];
-                if (wallTypes.Contains(wallToReturn.type)
-                    // && wallToReturn.chanceToSpawn * 100 > rnd.Next(100)
-                    )
+                if (wallToReturn.chanceToSpawn * 100 > rnd.Next(100))
                     return wallToReturn;
             }
         }

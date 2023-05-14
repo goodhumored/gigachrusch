@@ -255,10 +255,9 @@ MonoBehaviour:
   WeaponMuzzle: {fileID: 8334323006752503713}
   ProjectilePrefab: {fileID: 8924682559891268397, guid: d3a46548136d35374a240614a942d17b,
     type: 3}
-  DelayBetweenShots: 0.1
-  BulletSpreadAngle: 2
+  BulletSpreadAngle: 0.5
   BulletsPerShot: 1
-  RecoilForce: 2
+  RecoilForce: 5
   AimZoomRatio: 0.506
   AimOffset: {x: -0.041, y: 0.07, z: 0.15}
   AutomaticReload: 0

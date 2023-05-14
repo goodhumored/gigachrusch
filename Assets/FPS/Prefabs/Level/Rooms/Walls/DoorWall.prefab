@@ -274,6 +274,12 @@ MonoBehaviour:
   OnUse:
     m_PersistentCalls:
       m_Calls: []
+  OnOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClose:
+    m_PersistentCalls:
+      m_Calls: []
   requiredKey: {fileID: 0}
   keyContainer: {fileID: 0}
   occlusionPortal: {fileID: 0}

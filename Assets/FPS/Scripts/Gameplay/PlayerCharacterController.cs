@@ -209,10 +209,7 @@ namespace FPS.Scripts.Gameplay
             }
 
             // crouching
-            if (m_InputHandler.GetCrouchInputDown())
-            {
-                SetCrouchingState(!IsCrouching, false);
-            }
+            SetCrouchingState(m_InputHandler.GetCrouchInputHeld(), false);
 
             UpdateCharacterHeight(false);
 

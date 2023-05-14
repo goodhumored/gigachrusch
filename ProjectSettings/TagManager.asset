@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Room
   - RoomsHolder
+  - Interactable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Postprocessing
   - Water
   - UI
   - 

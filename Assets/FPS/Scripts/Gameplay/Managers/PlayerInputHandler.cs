@@ -147,21 +147,11 @@ namespace FPS.Scripts.Gameplay.Managers
             return false;
         }
 
-        public bool GetCrouchInputDown()
+        public bool GetCrouchInputHeld()
         {
             if (CanProcessInput())
             {
-                return Input.GetButtonDown(GameConstants.k_ButtonNameCrouch);
-            }
-
-            return false;
-        }
-
-        public bool GetCrouchInputReleased()
-        {
-            if (CanProcessInput())
-            {
-                return Input.GetButtonUp(GameConstants.k_ButtonNameCrouch);
+                return Input.GetButton(GameConstants.k_ButtonNameCrouch);
             }
 
             return false;

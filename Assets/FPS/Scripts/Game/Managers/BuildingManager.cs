@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using FPS.Scripts.Game.Construct;
 using FPS.Scripts.Game.Managers.Common;
+using FPS.Scripts.Game.Repositories;
 using UnityEngine;
 
 namespace FPS.Scripts.Game.Managers
@@ -22,6 +23,7 @@ namespace FPS.Scripts.Game.Managers
         private GameObject _player;
         private Queue<Vector3> _buildingQueue = new Queue<Vector3>();
         private Room _startRoom;
+        private RoomRepository _roomRepository = RoomRepository.GetInstance();
 
         private void Start()
         {
@@ -59,21 +61,21 @@ namespace FPS.Scripts.Game.Managers
 
         private IEnumerator BuildRandomRoom(Vector3 position)
         {
-            if (_roomManager.GetRoomByPosition(position)) yield break;
-            Debug.Log($"Building {position} from the queue.");
+            if (_roomRepository.FindByPosition(position)) yield break;
+            // Debug.Log($"Building {position} from the queue.");
             var sides = GetSides();
             var roomConstraints = new RoomConstraints();
             yield return null;
             foreach (var side in sides)
             {
                 var roomPosition = position + GetVectorBySide(side) * RoomConstants.RoomLength;
-                var roomByPosition = _roomManager.GetRoomByPosition(roomPosition);
+                var roomByPosition = _roomRepository.FindByPosition(roomPosition);
                 // Debug.Log($"(Before) Room at {roomPosition.ToString()} found: {(roomByPosition ? roomByPosition.name : "null")}");
                 if (roomByPosition)
                 {
                     var counterSide = GetCounterSide(side);
                     var wall = _wallManager.GetRandomWall(roomByPosition.GetWallTypesBySide(counterSide));
-                    _wallManager.InstantiateWall(wall, roomByPosition.GetWallPositionBySide(counterSide),
+                    wall = _wallManager.InstantiateWall(wall, roomByPosition.GetWallPositionBySide(counterSide),
                         IsSideward(side));
                     roomByPosition.SetWallBySide(wall, counterSide);
                     roomConstraints.SetWallTypeBySide(side, wall.type);
@@ -88,7 +90,7 @@ namespace FPS.Scripts.Game.Managers
             {
                 var counterSide = GetCounterSide(side);
                 var neighbourRoomPosition = roomToSet.GetNeighbourRoomPositionBySide(side);
-                var neighbourRoom = _roomManager.GetRoomByPosition(neighbourRoomPosition);
+                var neighbourRoom = _roomRepository.FindByPosition(neighbourRoomPosition);
                 // Debug.Log($"(After) Room at {neighbourRoomPosition.ToString()} found: {(neighbourRoom ? neighbourRoom.name : "null")}");
                 if (neighbourRoom)
                 {

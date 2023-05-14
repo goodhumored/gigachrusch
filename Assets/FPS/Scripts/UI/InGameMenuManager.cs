@@ -18,11 +18,8 @@ namespace FPS.Scripts.UI
         [Tooltip("Slider component for look sensitivity")]
         public Slider LookSensitivitySlider;
 
-        [Tooltip("Toggle component for shadows")]
-        public Toggle ShadowsToggle;
-
-        [Tooltip("Toggle component for invincibility")]
-        public Toggle InvincibilityToggle;
+        [Tooltip("Brightness slider")]
+        public Slider BrightnessSlider;
 
         [Tooltip("Toggle component for framerate display")]
         public Toggle FramerateToggle;
@@ -33,6 +30,8 @@ namespace FPS.Scripts.UI
         PlayerInputHandler m_PlayerInputsHandler;
         Health m_PlayerHealth;
         FramerateCounter m_FramerateCounter;
+        // private Volume _volume;
+        // private LiftGammaGain _gamma;
 
         void Start()
         {
@@ -51,11 +50,12 @@ namespace FPS.Scripts.UI
             LookSensitivitySlider.value = m_PlayerInputsHandler.LookSensitivity;
             LookSensitivitySlider.onValueChanged.AddListener(OnMouseSensitivityChanged);
 
-            ShadowsToggle.isOn = QualitySettings.shadows != ShadowQuality.Disable;
-            ShadowsToggle.onValueChanged.AddListener(OnShadowsChanged);
-
-            InvincibilityToggle.isOn = m_PlayerHealth.Invincible;
-            InvincibilityToggle.onValueChanged.AddListener(OnInvincibilityChanged);
+            // if (_volume.profile.TryGet<LiftGammaGain>(out var gammaGain))
+            // {
+            //     _gamma = gammaGain;
+            //     BrightnessSlider.value = gammaGain.gamma.value.w;
+            //     BrightnessSlider.onValueChanged.AddListener(OnBrightnessChanged);
+            // }
 
             FramerateToggle.isOn = m_FramerateCounter.UIText.gameObject.activeSelf;
             FramerateToggle.onValueChanged.AddListener(OnFramerateCounterChanged);
@@ -132,14 +132,10 @@ namespace FPS.Scripts.UI
             m_PlayerInputsHandler.LookSensitivity = newValue;
         }
 
-        void OnShadowsChanged(bool newValue)
+        void OnBrightnessChanged(float newValue)
         {
-            QualitySettings.shadows = newValue ? ShadowQuality.All : ShadowQuality.Disable;
-        }
-
-        void OnInvincibilityChanged(bool newValue)
-        {
-            m_PlayerHealth.Invincible = newValue;
+            // var value = _gamma.gamma.value;
+            // _gamma.gamma.value.Set(value.x, value.y, value.z, newValue);
         }
 
         void OnFramerateCounterChanged(bool newValue)
