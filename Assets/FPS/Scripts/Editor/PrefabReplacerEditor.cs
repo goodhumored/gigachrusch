@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using Unity.FPS.Game;
-using UnityEngine;
+using FPS.Scripts.Game;
 using UnityEditor;
+using UnityEngine;
 
-namespace Unity.FPS.EditorExt
+namespace FPS.Scripts.Editor
 {
 
     [CustomEditor(typeof(PrefabReplacer))]
-    public class PrefabReplacerEditor : Editor
+    public class PrefabReplacerEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 using UnityEngine;
+#if UNITY_EDITOR
+#endif
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game
 {
     [ExecuteInEditMode]
     public class PrefabReplacerOnInstance : MonoBehaviour

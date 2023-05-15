@@ -1,28 +1,29 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     // Debug script, teleports the player across the map for faster testing
     public class TeleportPlayer : MonoBehaviour
     {
         public KeyCode ActivateKey = KeyCode.F12;
 
-        PlayerCharacterController m_PlayerCharacterController;
+        PlayerCharacterController PlayerCharacterController;
 
         void Awake()
         {
-            m_PlayerCharacterController = FindObjectOfType<PlayerCharacterController>();
+            PlayerCharacterController = FindObjectOfType<PlayerCharacterController>();
             DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, TeleportPlayer>(
-                m_PlayerCharacterController, this);
+                PlayerCharacterController, this);
         }
 
         void Update()
         {
             if (Input.GetKeyDown(ActivateKey))
             {
-                m_PlayerCharacterController.transform.SetPositionAndRotation(transform.position, transform.rotation);
-                Health playerHealth = m_PlayerCharacterController.GetComponent<Health>();
+                PlayerCharacterController.transform.SetPositionAndRotation(transform.position, transform.rotation);
+                Health playerHealth = PlayerCharacterController.GetComponent<Health>();
                 if (playerHealth)
                 {
                     playerHealth.Heal(999);

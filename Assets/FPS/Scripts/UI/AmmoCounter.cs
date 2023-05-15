@@ -1,10 +1,12 @@
-﻿using TMPro;
-using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Managers;
+using FPS.Scripts.Game.Shared;
+using FPS.Scripts.Gameplay.Managers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     [RequireComponent(typeof(FillBarColorChange))]
     public class AmmoCounter : MonoBehaviour
@@ -45,8 +47,8 @@ namespace Unity.FPS.UI
 
         public int WeaponCounterIndex { get; set; }
 
-        PlayerWeaponsManager m_PlayerWeaponsManager;
-        WeaponController m_Weapon;
+        PlayerWeaponsManager PlayerWeaponsManager;
+        WeaponController Weapon;
 
         void Awake()
         {
@@ -55,50 +57,60 @@ namespace Unity.FPS.UI
 
         void OnAmmoPickup(AmmoPickupEvent evt)
         {
-            if (evt.Weapon == m_Weapon)
+            if (Weapon is GunController && evt.Weapon == Weapon)
             {
-                BulletCounter.text = m_Weapon.GetCarriedPhysicalBullets().ToString();
+                var gun = (GunController)Weapon;
+                BulletCounter.text = gun.GetCarriedPhysicalBullets().ToString();
             }
         }
 
         public void Initialize(WeaponController weapon, int weaponIndex)
         {
-            m_Weapon = weapon;
+            Weapon = weapon;
             WeaponCounterIndex = weaponIndex;
             WeaponImage.sprite = weapon.WeaponIcon;
-            if (!weapon.HasPhysicalBullets)
-                BulletCounter.transform.parent.gameObject.SetActive(false);
-            else
-                BulletCounter.text = weapon.GetCarriedPhysicalBullets().ToString();
 
             Reload.gameObject.SetActive(false);
-            m_PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, AmmoCounter>(m_PlayerWeaponsManager, this);
+            PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
+            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, AmmoCounter>(PlayerWeaponsManager, this);
 
             WeaponIndexText.text = (WeaponCounterIndex + 1).ToString();
-
-            FillBarColorChange.Initialize(1f, m_Weapon.GetAmmoNeededToShoot());
+            if (weapon is GunController)
+            {
+                var gun = (GunController)weapon;
+                if (!gun.HasPhysicalBullets)
+                    BulletCounter.transform.parent.gameObject.SetActive(false);
+                else
+                    BulletCounter.text = gun.GetCarriedPhysicalBullets().ToString();
+                FillBarColorChange.Initialize(1f, gun.GetAmmoNeededToShoot());
+            }
         }
 
         void Update()
         {
-            float currenFillRatio = m_Weapon.CurrentAmmoRatio;
-            AmmoFillImage.fillAmount = Mathf.Lerp(AmmoFillImage.fillAmount, currenFillRatio,
-                Time.deltaTime * AmmoFillMovementSharpness);
+            if (Weapon is GunController)
+            {
+                var gun = (GunController)Weapon;
+                float currenFillRatio = gun.CurrentAmmoRatio;
+                AmmoFillImage.fillAmount = Mathf.Lerp(AmmoFillImage.fillAmount, currenFillRatio,
+                    Time.deltaTime * AmmoFillMovementSharpness);
 
-            BulletCounter.text = m_Weapon.GetCarriedPhysicalBullets().ToString();
+                BulletCounter.text = gun.GetCarriedPhysicalBullets().ToString();
 
-            bool isActiveWeapon = m_Weapon == m_PlayerWeaponsManager.GetActiveWeapon();
+                bool isActiveWeapon = gun == PlayerWeaponsManager.GetActiveWeapon();
 
-            CanvasGroup.alpha = Mathf.Lerp(CanvasGroup.alpha, isActiveWeapon ? 1f : UnselectedOpacity,
-                Time.deltaTime * 10);
-            transform.localScale = Vector3.Lerp(transform.localScale, isActiveWeapon ? Vector3.one : UnselectedScale,
-                Time.deltaTime * 10);
-            ControlKeysRoot.SetActive(!isActiveWeapon);
+                CanvasGroup.alpha = Mathf.Lerp(CanvasGroup.alpha, isActiveWeapon ? 1f : UnselectedOpacity,
+                    Time.deltaTime * 10);
+                transform.localScale = Vector3.Lerp(transform.localScale,
+                    isActiveWeapon ? Vector3.one : UnselectedScale,
+                    Time.deltaTime * 10);
+                ControlKeysRoot.SetActive(!isActiveWeapon);
 
-            FillBarColorChange.UpdateVisual(currenFillRatio);
+                FillBarColorChange.UpdateVisual(currenFillRatio);
 
-            Reload.gameObject.SetActive(m_Weapon.GetCarriedPhysicalBullets() > 0 && m_Weapon.GetCurrentAmmo() == 0 && m_Weapon.IsWeaponActive);
+                Reload.gameObject.SetActive(gun.GetCarriedPhysicalBullets() > 0 &&
+                                            gun.GetCurrentAmmo() == 0 && gun.IsWeaponActive);
+            }
         }
 
         void Destroy()

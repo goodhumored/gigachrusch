@@ -5,17 +5,17 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Unity.FPS.EditorExt
+namespace FPS.Scripts.Editor
 {
     // Simple example of stripping of a debug build configuration
     class ShaderBuildStripping : IPreprocessShaders
     {
-        List<ShaderKeyword> m_ExcludedKeywords;
+        List<ShaderKeyword> ExcludedKeywords;
 
         public ShaderBuildStripping()
         {
 #if MANUAL_SHADER_STRIPPING
-            m_ExcludedKeywords = new List<ShaderKeyword>
+            ExcludedKeywords = new List<ShaderKeyword>
             {
                 new ShaderKeyword("DEBUG"),
                 // ifdef
@@ -67,7 +67,7 @@ namespace Unity.FPS.EditorExt
             for (int i = 0; i < shaderCompilerData.Count; ++i)
             {
                 bool mustStrip = false;
-                foreach (var kw in m_ExcludedKeywords)
+                foreach (var kw in ExcludedKeywords)
                 {
                     if (shaderCompilerData[i].shaderKeywordSet.IsEnabled(kw))
                     {

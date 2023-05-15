@@ -1,8 +1,8 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class WorldspaceHealthBar : MonoBehaviour
     {
@@ -23,7 +23,7 @@ namespace Unity.FPS.UI
             HealthBarImage.fillAmount = Health.CurrentHealth / Health.MaxHealth;
 
             // rotate health bar to face the camera/player
-            HealthBarPivot.LookAt(Camera.main.transform.position);
+            HealthBarPivot.LookAt(Camera.main!.transform.position);
 
             // hide health bar if needed
             if (HideFullHealthBar)

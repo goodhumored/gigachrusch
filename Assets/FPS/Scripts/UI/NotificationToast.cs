@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class NotificationToast : MonoBehaviour
     {
@@ -16,14 +16,14 @@ namespace Unity.FPS.UI
         public float FadeOutDuration = 2f;
 
         public bool Initialized { get; private set; }
-        float m_InitTime;
+        float InitTime;
 
         public float TotalRunTime => VisibleDuration + FadeInDuration + FadeOutDuration;
 
         public void Initialize(string text)
         {
             TextContent.text = text;
-            m_InitTime = Time.time;
+            InitTime = Time.time;
 
             // start the fade out
             Initialized = true;
@@ -33,7 +33,7 @@ namespace Unity.FPS.UI
         {
             if (Initialized)
             {
-                float timeSinceInit = Time.time - m_InitTime;
+                float timeSinceInit = Time.time - InitTime;
                 if (timeSinceInit < FadeInDuration)
                 {
                     // fade in

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.ProBuilder;
 using UnityEngine.Rendering;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game
 {
     public static class MeshCombineUtility
     {

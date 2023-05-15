@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class FillBarColorChange : MonoBehaviour
     {
@@ -30,19 +30,19 @@ namespace Unity.FPS.UI
         [Tooltip("Sharpness for the color change")]
         public float ColorChangeSharpness = 5f;
 
-        float m_PreviousValue;
+        float PreviousValue;
 
         public void Initialize(float fullValueRatio, float emptyValueRatio)
         {
             FullValue = fullValueRatio;
             EmptyValue = emptyValueRatio;
 
-            m_PreviousValue = fullValueRatio;
+            PreviousValue = fullValueRatio;
         }
 
         public void UpdateVisual(float currentRatio)
         {
-            if (currentRatio == FullValue && currentRatio != m_PreviousValue)
+            if (currentRatio == FullValue && currentRatio != PreviousValue)
             {
                 ForegroundImage.color = FlashForegroundColorFull;
             }
@@ -58,7 +58,7 @@ namespace Unity.FPS.UI
                     Time.deltaTime * ColorChangeSharpness);
             }
 
-            m_PreviousValue = currentRatio;
+            PreviousValue = currentRatio;
         }
     }
 }

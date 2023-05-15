@@ -1,7 +1,8 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     public class ProjectileChargeParameters : MonoBehaviour
     {
@@ -11,15 +12,15 @@ namespace Unity.FPS.Gameplay
         public MinMaxFloat GravityDownAcceleration;
         public MinMaxFloat AreaOfEffectDistance;
 
-        ProjectileBase m_ProjectileBase;
+        ProjectileBase ProjectileBase;
 
         void OnEnable()
         {
-            m_ProjectileBase = GetComponent<ProjectileBase>();
-            DebugUtility.HandleErrorIfNullGetComponent<ProjectileBase, ProjectileChargeParameters>(m_ProjectileBase,
+            ProjectileBase = GetComponent<ProjectileBase>();
+            DebugUtility.HandleErrorIfNullGetComponent<ProjectileBase, ProjectileChargeParameters>(ProjectileBase,
                 this, gameObject);
 
-            m_ProjectileBase.OnShoot += OnShoot;
+            ProjectileBase.OnShoot += OnShoot;
         }
 
         void OnShoot()
@@ -28,11 +29,11 @@ namespace Unity.FPS.Gameplay
             ProjectileStandard proj = GetComponent<ProjectileStandard>();
             if (proj)
             {
-                proj.Damage = Damage.GetValueFromRatio(m_ProjectileBase.InitialCharge);
-                proj.Radius = Radius.GetValueFromRatio(m_ProjectileBase.InitialCharge);
-                proj.Speed = Speed.GetValueFromRatio(m_ProjectileBase.InitialCharge);
+                proj.Damage = Damage.GetValueFromRatio(ProjectileBase.InitialCharge);
+                proj.Radius = Radius.GetValueFromRatio(ProjectileBase.InitialCharge);
+                proj.Speed = Speed.GetValueFromRatio(ProjectileBase.InitialCharge);
                 proj.GravityDownAcceleration =
-                    GravityDownAcceleration.GetValueFromRatio(m_ProjectileBase.InitialCharge);
+                    GravityDownAcceleration.GetValueFromRatio(ProjectileBase.InitialCharge);
             }
         }
     }

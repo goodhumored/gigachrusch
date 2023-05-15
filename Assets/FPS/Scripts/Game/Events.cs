@@ -1,6 +1,8 @@
+using FPS.Scripts.Game.Managers;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game
 {
     // The Game Events used across the Game.
     // Anytime there is a need for a new event, it should be added here.
@@ -20,7 +22,6 @@ namespace Unity.FPS.Game
 
     public class ObjectiveUpdateEvent : GameEvent
     {
-        public Objective Objective;
         public string DescriptionText;
         public string CounterText;
         public bool IsComplete;

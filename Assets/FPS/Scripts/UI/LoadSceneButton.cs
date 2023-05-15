@@ -1,9 +1,9 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class LoadSceneButton : MonoBehaviour
     {
@@ -12,7 +12,7 @@ namespace Unity.FPS.UI
         void Update()
         {
             if (EventSystem.current.currentSelectedGameObject == gameObject
-                && Input.GetButtonDown(GameConstants.k_ButtonNameSubmit))
+                && Input.GetButtonDown(GameConstants.ButtonNameSubmit))
             {
                 LoadTargetScene();
             }

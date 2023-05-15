@@ -1,14 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Shared
 {
+    [RequireComponent(typeof(Hunger))]
     public class Health : MonoBehaviour
     {
-        [Tooltip("Maximum amount of health")] public float MaxHealth = 10f;
-
-        [Tooltip("Health ratio at which the critical health vignette starts appearing")]
+        private Hunger _hunger;
+        public float MaxHealth = 10f;
         public float CriticalHealthRatio = 0.3f;
+        public float regenerateSpeedPerSecond = 0.5f; 
+        public float hungryCostPerHp = 0.2f; 
 
         public UnityAction<float, GameObject> OnDamaged;
         public UnityAction<float> OnHealed;
@@ -16,27 +19,36 @@ namespace Unity.FPS.Game
 
         public float CurrentHealth { get; set; }
         public bool Invincible { get; set; }
-        public bool CanPickup() => CurrentHealth < MaxHealth;
+        public bool CanBeHealed() => CurrentHealth < MaxHealth;
 
         public float GetRatio() => CurrentHealth / MaxHealth;
         public bool IsCritical() => GetRatio() <= CriticalHealthRatio;
+        private bool _isDead;
 
-        bool m_IsDead;
-
-        void Start()
+        private void Start()
         {
+            _hunger = GetComponent<Hunger>();
             CurrentHealth = MaxHealth;
         }
 
-        public void Heal(float healAmount)
+        private void Update()
+        {
+            if (CanBeHealed())
+            {
+                var healthToRecover = regenerateSpeedPerSecond * Time.deltaTime;
+                _hunger.Reduce(healthToRecover * hungryCostPerHp);
+                Heal(healthToRecover, true);
+            }
+        }
+
+        public void Heal(float healAmount, bool isRegen = false)
         {
             float healthBefore = CurrentHealth;
             CurrentHealth += healAmount;
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, MaxHealth);
-
-            // call OnHeal action
+            
             float trueHealAmount = CurrentHealth - healthBefore;
-            if (trueHealAmount > 0f)
+            if (trueHealAmount > 0f && !isRegen)
             {
                 OnHealed?.Invoke(trueHealAmount);
             }
@@ -73,13 +85,13 @@ namespace Unity.FPS.Game
 
         void HandleDeath()
         {
-            if (m_IsDead)
+            if (_isDead)
                 return;
 
             // call OnDie action
             if (CurrentHealth <= 0f)
             {
-                m_IsDead = true;
+                _isDead = true;
                 OnDie?.Invoke();
             }
         }

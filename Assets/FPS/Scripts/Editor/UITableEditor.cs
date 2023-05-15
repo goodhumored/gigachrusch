@@ -1,13 +1,13 @@
-using Unity.FPS.UI;
+using FPS.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
 
-namespace Unity.FPS.EditorExt
+namespace FPS.Scripts.Editor
 {
     // The Editor for the UITable component to add an Update button
 
     [CustomEditor(typeof(UITable), true)]
-    public class UITableEditor : Editor
+    public class UITableEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

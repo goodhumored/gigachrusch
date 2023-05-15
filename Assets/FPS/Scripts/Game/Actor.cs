@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using FPS.Scripts.Game.Managers;
+using UnityEngine;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game
 {
     // This class contains general information describing an actor (player or enemies).
     // It is mostly used for AI detection logic and determining if an actor is friend or foe
@@ -12,27 +13,27 @@ namespace Unity.FPS.Game
         [Tooltip("Represents point where other actors will aim when they attack this actor")]
         public Transform AimPoint;
 
-        ActorsManager m_ActorsManager;
+        ActorsManager ActorsManager;
 
         void Start()
         {
-            m_ActorsManager = GameObject.FindObjectOfType<ActorsManager>();
+            ActorsManager = GameObject.FindObjectOfType<ActorsManager>();
 						
-            DebugUtility.HandleErrorIfNullFindObject<ActorsManager, Actor>(m_ActorsManager, this);
+            DebugUtility.HandleErrorIfNullFindObject<ActorsManager, Actor>(ActorsManager, this);
 
             // Register as an actor
-            if (!m_ActorsManager.Actors.Contains(this))
+            if (!ActorsManager.Actors.Contains(this))
             {
-                m_ActorsManager.Actors.Add(this);
+                ActorsManager.Actors.Add(this);
             }
         }
 
         void OnDestroy()
         {
             // Unregister as an actor
-            if (m_ActorsManager)
+            if (ActorsManager)
             {
-                m_ActorsManager.Actors.Remove(this);
+                ActorsManager.Actors.Remove(this);
             }
         }
     }

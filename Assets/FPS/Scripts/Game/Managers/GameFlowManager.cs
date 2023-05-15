@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Managers
 {
     public class GameFlowManager : MonoBehaviour
     {
@@ -30,8 +30,8 @@ namespace Unity.FPS.Game
 
         public bool GameIsEnding { get; private set; }
 
-        float m_TimeLoadEndGameScene;
-        string m_SceneToLoad;
+        float TimeLoadEndGameScene;
+        string SceneToLoad;
 
         void Awake()
         {
@@ -48,15 +48,15 @@ namespace Unity.FPS.Game
         {
             if (GameIsEnding)
             {
-                float timeRatio = 1 - (m_TimeLoadEndGameScene - Time.time) / EndSceneLoadDelay;
+                float timeRatio = 1 - (TimeLoadEndGameScene - Time.time) / EndSceneLoadDelay;
                 EndGameFadeCanvasGroup.alpha = timeRatio;
 
                 AudioUtility.SetMasterVolume(1 - timeRatio);
 
                 // See if it's time to load the end scene (after the delay)
-                if (Time.time >= m_TimeLoadEndGameScene)
+                if (Time.time >= TimeLoadEndGameScene)
                 {
-                    SceneManager.LoadScene(m_SceneToLoad);
+                    SceneManager.LoadScene(SceneToLoad);
                     GameIsEnding = false;
                 }
             }
@@ -76,8 +76,8 @@ namespace Unity.FPS.Game
             EndGameFadeCanvasGroup.gameObject.SetActive(true);
             if (win)
             {
-                m_SceneToLoad = WinSceneName;
-                m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay + DelayBeforeFadeToBlack;
+                SceneToLoad = WinSceneName;
+                TimeLoadEndGameScene = Time.time + EndSceneLoadDelay + DelayBeforeFadeToBlack;
 
                 // play a sound on win
                 var audioSource = gameObject.AddComponent<AudioSource>();
@@ -101,8 +101,8 @@ namespace Unity.FPS.Game
             }
             else
             {
-                m_SceneToLoad = LoseSceneName;
-                m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay;
+                SceneToLoad = LoseSceneName;
+                TimeLoadEndGameScene = Time.time + EndSceneLoadDelay;
             }
         }
 

@@ -1,7 +1,8 @@
-﻿using Unity.FPS.Game;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     [RequireComponent(typeof(WeaponController))]
     public class WeaponFuelCellHandler : MonoBehaviour
@@ -18,19 +19,19 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Cell local position before use")]
         public Vector3 FuelCellUnusedPosition = new Vector3(0f, -0.1f, 0f);
 
-        WeaponController m_Weapon;
-        bool[] m_FuelCellsCooled;
+        GunController Weapon;
+        bool[] FuelCellsCooled;
 
         void Start()
         {
-            m_Weapon = GetComponent<WeaponController>();
-            DebugUtility.HandleErrorIfNullGetComponent<WeaponController, WeaponFuelCellHandler>(m_Weapon, this,
+            Weapon = GetComponent<GunController>();
+            DebugUtility.HandleErrorIfNullGetComponent<WeaponController, WeaponFuelCellHandler>(Weapon, this,
                 gameObject);
 
-            m_FuelCellsCooled = new bool[FuelCells.Length];
-            for (int i = 0; i < m_FuelCellsCooled.Length; i++)
+            FuelCellsCooled = new bool[FuelCells.Length];
+            for (int i = 0; i < FuelCellsCooled.Length; i++)
             {
-                m_FuelCellsCooled[i] = true;
+                FuelCellsCooled[i] = true;
             }
         }
 
@@ -41,7 +42,7 @@ namespace Unity.FPS.Gameplay
                 for (int i = 0; i < FuelCells.Length; i++)
                 {
                     FuelCells[i].transform.localPosition = Vector3.Lerp(FuelCellUsedPosition, FuelCellUnusedPosition,
-                        m_Weapon.CurrentAmmoRatio);
+                        Weapon.CurrentAmmoRatio);
                 }
             }
             else
@@ -53,7 +54,7 @@ namespace Unity.FPS.Gameplay
                     float lim1 = i / length;
                     float lim2 = (i + 1) / length;
 
-                    float value = Mathf.InverseLerp(lim1, lim2, m_Weapon.CurrentAmmoRatio);
+                    float value = Mathf.InverseLerp(lim1, lim2, Weapon.CurrentAmmoRatio);
                     value = Mathf.Clamp01(value);
 
                     FuelCells[i].transform.localPosition =

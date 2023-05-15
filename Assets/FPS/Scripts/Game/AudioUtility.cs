@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using FPS.Scripts.Game.Managers;
+using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game
 {
     public class AudioUtility
     {

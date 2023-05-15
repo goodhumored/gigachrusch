@@ -1,5 +1,27 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6919855398987788773
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
+  m_Name: LiftGammaGain
+  m_EditorClassIdentifier: 
+  active: 1
+  lift:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: 0.0076162647}
+  gamma:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 0.99525815, z: 0.99881434, w: -0.015232294}
+  gain:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: 0.0076161465}
 --- !u!114 &-6762570231279311477
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -37,6 +59,7 @@ MonoBehaviour:
   dirtTexture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
+    dimension: 1
   dirtIntensity:
     m_OverrideState: 1
     m_Value: 0
@@ -86,6 +109,7 @@ MonoBehaviour:
   - {fileID: 1801531139289746853}
   - {fileID: 7827985127269028407}
   - {fileID: 2950893884365311496}
+  - {fileID: -6919855398987788773}
 --- !u!114 &1801531139289746853
 MonoBehaviour:
   m_ObjectHideFlags: 3

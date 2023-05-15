@@ -1,8 +1,10 @@
-﻿using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Managers;
+using FPS.Scripts.Game.Shared;
+using FPS.Scripts.Gameplay.Managers;
 using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class NotificationHUDManager : MonoBehaviour
     {
@@ -19,10 +21,6 @@ namespace Unity.FPS.UI
                 this);
             playerWeaponsManager.OnAddedWeapon += OnPickupWeapon;
 
-            Jetpack jetpack = FindObjectOfType<Jetpack>();
-            DebugUtility.HandleErrorIfNullFindObject<Jetpack, NotificationHUDManager>(jetpack, this);
-            jetpack.OnUnlockJetpack += OnUnlockJetpack;
-
             EventManager.AddListener<ObjectiveUpdateEvent>(OnObjectiveUpdateEvent);
         }
 
@@ -35,12 +33,7 @@ namespace Unity.FPS.UI
         void OnPickupWeapon(WeaponController weaponController, int index)
         {
             if (index != 0)
-                CreateNotification("Picked up weapon : " + weaponController.WeaponName);
-        }
-
-        void OnUnlockJetpack(bool unlock)
-        {
-            CreateNotification("Jetpack unlocked");
+                CreateNotification("Вы подобрали: " + weaponController.WeaponName);
         }
 
         public void CreateNotification(string text)

@@ -3,12 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Room
+  - RoomsHolder
+  - Interactable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Postprocessing
   - Water
   - UI
   - 
@@ -17,7 +20,7 @@ TagManager:
   - 
   - FirstPersonWeapon
   - PhysicalAmmo
-  - 
+  - Room
   - 
   - 
   - 

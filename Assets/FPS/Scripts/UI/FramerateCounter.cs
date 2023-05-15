@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class FramerateCounter : MonoBehaviour
     {
@@ -11,21 +11,21 @@ namespace Unity.FPS.UI
         [Tooltip("The text field displaying the framerate")]
         public TextMeshProUGUI UIText;
 
-        float m_AccumulatedDeltaTime = 0f;
-        int m_AccumulatedFrameCount = 0;
+        float AccumulatedDeltaTime = 0f;
+        int AccumulatedFrameCount = 0;
 
         void Update()
         {
-            m_AccumulatedDeltaTime += Time.deltaTime;
-            m_AccumulatedFrameCount++;
+            AccumulatedDeltaTime += Time.deltaTime;
+            AccumulatedFrameCount++;
 
-            if (m_AccumulatedDeltaTime >= PollingTime)
+            if (AccumulatedDeltaTime >= PollingTime)
             {
-                int framerate = Mathf.RoundToInt((float) m_AccumulatedFrameCount / m_AccumulatedDeltaTime);
+                int framerate = Mathf.RoundToInt((float) AccumulatedFrameCount / AccumulatedDeltaTime);
                 UIText.text = framerate.ToString();
 
-                m_AccumulatedDeltaTime = 0f;
-                m_AccumulatedFrameCount = 0;
+                AccumulatedDeltaTime = 0f;
+                AccumulatedFrameCount = 0;
             }
         }
     }

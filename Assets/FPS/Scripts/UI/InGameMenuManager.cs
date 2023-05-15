@@ -1,10 +1,12 @@
-﻿using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
+﻿using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
+using FPS.Scripts.Gameplay.Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class InGameMenuManager : MonoBehaviour
     {
@@ -17,11 +19,8 @@ namespace Unity.FPS.UI
         [Tooltip("Slider component for look sensitivity")]
         public Slider LookSensitivitySlider;
 
-        [Tooltip("Toggle component for shadows")]
-        public Toggle ShadowsToggle;
-
-        [Tooltip("Toggle component for invincibility")]
-        public Toggle InvincibilityToggle;
+        [Tooltip("Brightness slider")]
+        public Slider BrightnessSlider;
 
         [Tooltip("Toggle component for framerate display")]
         public Toggle FramerateToggle;
@@ -29,34 +28,37 @@ namespace Unity.FPS.UI
         [Tooltip("GameObject for the controls")]
         public GameObject ControlImage;
 
-        PlayerInputHandler m_PlayerInputsHandler;
-        Health m_PlayerHealth;
-        FramerateCounter m_FramerateCounter;
+        PlayerInputHandler PlayerInputsHandler;
+        Health PlayerHealth;
+        FramerateCounter FramerateCounter;
+        // private Volume _volume;
+        // private LiftGammaGain _gamma;
 
         void Start()
         {
-            m_PlayerInputsHandler = FindObjectOfType<PlayerInputHandler>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(m_PlayerInputsHandler,
+            PlayerInputsHandler = FindObjectOfType<PlayerInputHandler>();
+            DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(PlayerInputsHandler,
                 this);
 
-            m_PlayerHealth = m_PlayerInputsHandler.GetComponent<Health>();
-            DebugUtility.HandleErrorIfNullGetComponent<Health, InGameMenuManager>(m_PlayerHealth, this, gameObject);
+            PlayerHealth = PlayerInputsHandler.GetComponent<Health>();
+            DebugUtility.HandleErrorIfNullGetComponent<Health, InGameMenuManager>(PlayerHealth, this, gameObject);
 
-            m_FramerateCounter = FindObjectOfType<FramerateCounter>();
-            DebugUtility.HandleErrorIfNullFindObject<FramerateCounter, InGameMenuManager>(m_FramerateCounter, this);
+            FramerateCounter = FindObjectOfType<FramerateCounter>();
+            DebugUtility.HandleErrorIfNullFindObject<FramerateCounter, InGameMenuManager>(FramerateCounter, this);
 
             MenuRoot.SetActive(false);
 
-            LookSensitivitySlider.value = m_PlayerInputsHandler.LookSensitivity;
+            LookSensitivitySlider.value = PlayerInputsHandler.LookSensitivity;
             LookSensitivitySlider.onValueChanged.AddListener(OnMouseSensitivityChanged);
 
-            ShadowsToggle.isOn = QualitySettings.shadows != ShadowQuality.Disable;
-            ShadowsToggle.onValueChanged.AddListener(OnShadowsChanged);
+            // if (_volume.profile.TryGet<LiftGammaGain>(out var gammaGain))
+            // {
+            //     _gamma = gammaGain;
+            //     BrightnessSlider.value = gammaGain.gamma.value.w;
+            //     BrightnessSlider.onValueChanged.AddListener(OnBrightnessChanged);
+            // }
 
-            InvincibilityToggle.isOn = m_PlayerHealth.Invincible;
-            InvincibilityToggle.onValueChanged.AddListener(OnInvincibilityChanged);
-
-            FramerateToggle.isOn = m_FramerateCounter.UIText.gameObject.activeSelf;
+            FramerateToggle.isOn = FramerateCounter.UIText.gameObject.activeSelf;
             FramerateToggle.onValueChanged.AddListener(OnFramerateCounterChanged);
         }
 
@@ -75,8 +77,8 @@ namespace Unity.FPS.UI
                 Cursor.visible = true;
             }
 
-            if (Input.GetButtonDown(GameConstants.k_ButtonNamePauseMenu)
-                || (MenuRoot.activeSelf && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
+            if (Input.GetButtonDown(GameConstants.ButtonNamePauseMenu)
+                || (MenuRoot.activeSelf && Input.GetButtonDown(GameConstants.ButtonNameCancel)))
             {
                 if (ControlImage.activeSelf)
                 {
@@ -88,7 +90,7 @@ namespace Unity.FPS.UI
 
             }
 
-            if (Input.GetAxisRaw(GameConstants.k_AxisNameVertical) != 0)
+            if (Input.GetAxisRaw(GameConstants.AxisNameVertical) != 0)
             {
                 if (EventSystem.current.currentSelectedGameObject == null)
                 {
@@ -101,6 +103,11 @@ namespace Unity.FPS.UI
         public void ClosePauseMenu()
         {
             SetPauseMenuActivation(false);
+        }
+
+        public void ExitGame()
+        {
+            SceneManager.LoadScene("IntroMenu");
         }
 
         void SetPauseMenuActivation(bool active)
@@ -128,22 +135,18 @@ namespace Unity.FPS.UI
 
         void OnMouseSensitivityChanged(float newValue)
         {
-            m_PlayerInputsHandler.LookSensitivity = newValue;
+            PlayerInputsHandler.LookSensitivity = newValue;
         }
 
-        void OnShadowsChanged(bool newValue)
+        void OnBrightnessChanged(float newValue)
         {
-            QualitySettings.shadows = newValue ? ShadowQuality.All : ShadowQuality.Disable;
-        }
-
-        void OnInvincibilityChanged(bool newValue)
-        {
-            m_PlayerHealth.Invincible = newValue;
+            // var value = _gamma.gamma.value;
+            // _gamma.gamma.value.Set(value.x, value.y, value.z, newValue);
         }
 
         void OnFramerateCounterChanged(bool newValue)
         {
-            m_FramerateCounter.UIText.gameObject.SetActive(newValue);
+            FramerateCounter.UIText.gameObject.SetActive(newValue);
         }
 
         public void OnShowControlButtonClicked(bool show)

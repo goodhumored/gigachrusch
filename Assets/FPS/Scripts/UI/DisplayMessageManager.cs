@@ -1,31 +1,31 @@
 ﻿using System.Collections.Generic;
-using Unity.FPS.Game;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Managers;
 using UnityEngine;
 
-namespace Unity.FPS.UI
+namespace FPS.Scripts.UI
 {
     public class DisplayMessageManager : MonoBehaviour
     {
         public UITable DisplayMessageRect;
         public NotificationToast MessagePrefab;
 
-        List<(float timestamp, float delay, string message, NotificationToast notification)> m_PendingMessages;
+        Queue<(float timestamp, float delay, string message, NotificationToast notification)> PendingMessages = new Queue<(float timestamp, float delay, string message, NotificationToast notification)>();
 
         void Awake()
         {
             EventManager.AddListener<DisplayMessageEvent>(OnDisplayMessageEvent);
-            m_PendingMessages = new List<(float, float, string, NotificationToast)>();
         }
 
         void OnDisplayMessageEvent(DisplayMessageEvent evt)
         {
             NotificationToast notification = Instantiate(MessagePrefab, DisplayMessageRect.transform).GetComponent<NotificationToast>();
-            m_PendingMessages.Add((Time.time, evt.DelayBeforeDisplay, evt.Message, notification));
+            PendingMessages.Enqueue((Time.time, evt.DelayBeforeDisplay, evt.Message, notification));
         }
 
         void Update()
         {
-            foreach (var message in m_PendingMessages)
+            if (PendingMessages.TryDequeue(out var message))
             {
                 if (Time.time - message.timestamp > message.delay)
                 {
@@ -33,9 +33,6 @@ namespace Unity.FPS.UI
                     DisplayMessage(message.notification);
                 }
             }
-
-            // Clear deprecated messages
-            m_PendingMessages.RemoveAll(x => x.notification.Initialized);
         }
 
         void DisplayMessage(NotificationToast notification)

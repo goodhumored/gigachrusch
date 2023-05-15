@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using Unity.FPS.Game;
+﻿using System.Collections.Generic;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
+using UnityEngine;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay
 {
     public class OverheatBehavior : MonoBehaviour
     {
@@ -39,77 +40,77 @@ namespace Unity.FPS.Gameplay
         public AnimationCurve AmmoToVolumeRatioCurve;
 
 
-        WeaponController m_Weapon;
-        AudioSource m_AudioSource;
-        List<RendererIndexData> m_OverheatingRenderersData;
-        MaterialPropertyBlock m_OverheatMaterialPropertyBlock;
-        float m_LastAmmoRatio;
-        ParticleSystem.EmissionModule m_SteamVfxEmissionModule;
+        GunController Weapon;
+        AudioSource AudioSource;
+        List<RendererIndexData> OverheatingRenderersData;
+        MaterialPropertyBlock OverheatMaterialPropertyBlock;
+        float LastAmmoRatio;
+        ParticleSystem.EmissionModule SteamVfxEmissionModule;
 
         void Awake()
         {
             var emissionModule = SteamVfx.emission;
             emissionModule.rateOverTimeMultiplier = 0f;
 
-            m_OverheatingRenderersData = new List<RendererIndexData>();
+            OverheatingRenderersData = new List<RendererIndexData>();
             foreach (var renderer in GetComponentsInChildren<Renderer>(true))
             {
                 for (int i = 0; i < renderer.sharedMaterials.Length; i++)
                 {
                     if (renderer.sharedMaterials[i] == OverheatingMaterial)
-                        m_OverheatingRenderersData.Add(new RendererIndexData(renderer, i));
+                        OverheatingRenderersData.Add(new RendererIndexData(renderer, i));
                 }
             }
 
-            m_OverheatMaterialPropertyBlock = new MaterialPropertyBlock();
-            m_SteamVfxEmissionModule = SteamVfx.emission;
+            OverheatMaterialPropertyBlock = new MaterialPropertyBlock();
+            SteamVfxEmissionModule = SteamVfx.emission;
 
-            m_Weapon = GetComponent<WeaponController>();
-            DebugUtility.HandleErrorIfNullGetComponent<WeaponController, OverheatBehavior>(m_Weapon, this, gameObject);
+            Weapon = GetComponent<GunController>();
+            DebugUtility.HandleErrorIfNullGetComponent<WeaponController, OverheatBehavior>(Weapon, this, gameObject);
 
-            m_AudioSource = gameObject.AddComponent<AudioSource>();
-            m_AudioSource.clip = CoolingCellsSound;
-            m_AudioSource.outputAudioMixerGroup = AudioUtility.GetAudioGroup(AudioUtility.AudioGroups.WeaponOverheat);
+            AudioSource = gameObject.AddComponent<AudioSource>();
+            AudioSource.clip = CoolingCellsSound;
+            AudioSource.outputAudioMixerGroup = AudioUtility.GetAudioGroup(AudioUtility.AudioGroups.WeaponOverheat);
         }
 
         void Update()
         {
             // visual smoke shooting out of the gun
-            float currentAmmoRatio = m_Weapon.CurrentAmmoRatio;
-            if (currentAmmoRatio != m_LastAmmoRatio)
+            float currentAmmoRatio = Weapon.CurrentAmmoRatio;
+            if (currentAmmoRatio != LastAmmoRatio)
             {
-                m_OverheatMaterialPropertyBlock.SetColor("_EmissionColor",
+                OverheatMaterialPropertyBlock.SetColor("_EmissionColor",
                     OverheatGradient.Evaluate(1f - currentAmmoRatio));
 
-                foreach (var data in m_OverheatingRenderersData)
+                foreach (var data in OverheatingRenderersData)
                 {
-                    data.Renderer.SetPropertyBlock(m_OverheatMaterialPropertyBlock, data.MaterialIndex);
+                    data.Renderer.SetPropertyBlock(OverheatMaterialPropertyBlock, data.MaterialIndex);
                 }
 
-                m_SteamVfxEmissionModule.rateOverTimeMultiplier = SteamVfxEmissionRateMax * (1f - currentAmmoRatio);
+                SteamVfxEmissionModule.rateOverTimeMultiplier = SteamVfxEmissionRateMax * (1f - currentAmmoRatio);
             }
 
             // cooling sound
             if (CoolingCellsSound)
             {
-                if (!m_AudioSource.isPlaying
+                if (!AudioSource.isPlaying
                     && currentAmmoRatio != 1
-                    && m_Weapon.IsWeaponActive
-                    && m_Weapon.IsCooling)
+                    && Weapon.IsWeaponActive
+                    && Weapon.IsCooling)
                 {
-                    m_AudioSource.Play();
+                    AudioSource.Play();
                 }
-                else if (m_AudioSource.isPlaying
-                         && (currentAmmoRatio == 1 || !m_Weapon.IsWeaponActive || !m_Weapon.IsCooling))
+                else if (AudioSource.isPlaying
+                         && (currentAmmoRatio == 1 || !Weapon.IsWeaponActive || !Weapon.IsCooling))
                 {
-                    m_AudioSource.Stop();
+                    AudioSource.Stop();
                     return;
                 }
 
-                m_AudioSource.volume = AmmoToVolumeRatioCurve.Evaluate(1 - currentAmmoRatio);
+                AudioSource.volume = AmmoToVolumeRatioCurve.Evaluate(1 - currentAmmoRatio);
             }
 
-            m_LastAmmoRatio = currentAmmoRatio;
+            LastAmmoRatio = currentAmmoRatio;
         }
     }
 }

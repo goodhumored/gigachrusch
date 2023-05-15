@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game.Shared
 {
     public abstract class ProjectileBase : MonoBehaviour
     {

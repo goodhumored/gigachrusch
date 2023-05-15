@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Unity.FPS.Game
+namespace FPS.Scripts.Game
 {
     public class IgnoreHitDetection : MonoBehaviour
     {

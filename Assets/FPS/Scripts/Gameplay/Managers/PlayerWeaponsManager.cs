@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using Unity.FPS.Game;
+using FPS.Scripts.Game;
+using FPS.Scripts.Game.Shared;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Unity.FPS.Gameplay
+namespace FPS.Scripts.Gameplay.Managers
 {
     [RequireComponent(typeof(PlayerInputHandler))]
     public class PlayerWeaponsManager : MonoBehaviour
@@ -80,31 +81,31 @@ namespace Unity.FPS.Gameplay
         public UnityAction<WeaponController, int> OnAddedWeapon;
         public UnityAction<WeaponController, int> OnRemovedWeapon;
 
-        WeaponController[] m_WeaponSlots = new WeaponController[9]; // 9 available weapon slots
-        PlayerInputHandler m_InputHandler;
-        PlayerCharacterController m_PlayerCharacterController;
-        float m_WeaponBobFactor;
-        Vector3 m_LastCharacterPosition;
-        Vector3 m_WeaponMainLocalPosition;
-        Vector3 m_WeaponBobLocalPosition;
-        Vector3 m_WeaponRecoilLocalPosition;
-        Vector3 m_AccumulatedRecoil;
-        float m_TimeStartedWeaponSwitch;
-        WeaponSwitchState m_WeaponSwitchState;
-        int m_WeaponSwitchNewWeaponIndex;
+        WeaponController[] _weaponSlots = new WeaponController[9]; // 9 available weapon slots
+        private PlayerInputHandler _inputHandler;
+        private PlayerCharacterController _playerCharacterController;
+        private float _weaponBobFactor;
+        private Vector3 _lastCharacterPosition;
+        private Vector3 _weaponMainLocalPosition;
+        private Vector3 _weaponBobLocalPosition;
+        private Vector3 _weaponRecoilLocalPosition;
+        private Vector3 _accumulatedRecoil;
+        private float _timeStartedWeaponSwitch;
+        private WeaponSwitchState _weaponSwitchState;
+        private int _weaponSwitchNewWeaponIndex;
 
         void Start()
         {
             ActiveWeaponIndex = -1;
-            m_WeaponSwitchState = WeaponSwitchState.Down;
+            _weaponSwitchState = WeaponSwitchState.Down;
 
-            m_InputHandler = GetComponent<PlayerInputHandler>();
-            DebugUtility.HandleErrorIfNullGetComponent<PlayerInputHandler, PlayerWeaponsManager>(m_InputHandler, this,
+            _inputHandler = GetComponent<PlayerInputHandler>();
+            DebugUtility.HandleErrorIfNullGetComponent<PlayerInputHandler, PlayerWeaponsManager>(_inputHandler, this,
                 gameObject);
 
-            m_PlayerCharacterController = GetComponent<PlayerCharacterController>();
+            _playerCharacterController = GetComponent<PlayerCharacterController>();
             DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerWeaponsManager>(
-                m_PlayerCharacterController, this, gameObject);
+                _playerCharacterController, this, gameObject);
 
             SetFov(DefaultFov);
 
@@ -121,43 +122,45 @@ namespace Unity.FPS.Gameplay
 
         void Update()
         {
-            // shoot handling
             WeaponController activeWeapon = GetActiveWeapon();
-
-            if (activeWeapon != null && activeWeapon.IsReloading)
-                return;
-
-            if (activeWeapon != null && m_WeaponSwitchState == WeaponSwitchState.Up)
+            if (!activeWeapon || _weaponSwitchState != WeaponSwitchState.Up) return;
+            
+            bool hasFired = activeWeapon.HandleUsageInputs(
+                _inputHandler.GetFireInputDown(),
+                _inputHandler.GetFireInputHeld(),
+                _inputHandler.GetFireInputReleased());
+            
+            if (activeWeapon is GunController)
             {
-                if (!activeWeapon.AutomaticReload && m_InputHandler.GetReloadButtonDown() && activeWeapon.CurrentAmmoRatio < 1.0f)
-                {
-                    IsAiming = false;
-                    activeWeapon.StartReloadAnimation();
-                    return;
-                }
-                // handle aiming down sights
-                IsAiming = m_InputHandler.GetAimInputHeld();
+                var gun = (GunController)activeWeapon;
 
-                // handle shooting
-                bool hasFired = activeWeapon.HandleShootInputs(
-                    m_InputHandler.GetFireInputDown(),
-                    m_InputHandler.GetFireInputHeld(),
-                    m_InputHandler.GetFireInputReleased());
-
-                // Handle accumulating recoil
-                if (hasFired)
+                if (gun)
                 {
-                    m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
-                    m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
+                    if (gun.IsReloading)
+                        return;
+                    if (!gun.AutomaticReload && _inputHandler.GetReloadButtonDown() &&
+                        gun.CurrentAmmoRatio < 1.0f)
+                    {
+                        IsAiming = false;
+                        gun.StartReloadAnimation();
+                        return;
+                    }
+
+                    IsAiming = _inputHandler.GetAimInputHeld();
+
+                    if (hasFired)
+                    {
+                        _accumulatedRecoil += Vector3.back * gun.RecoilForce;
+                        _accumulatedRecoil = Vector3.ClampMagnitude(_accumulatedRecoil, MaxRecoilDistance);
+                    }
                 }
             }
 
-            // weapon switch handling
             if (!IsAiming &&
-                (activeWeapon == null || !activeWeapon.IsCharging) &&
-                (m_WeaponSwitchState == WeaponSwitchState.Up || m_WeaponSwitchState == WeaponSwitchState.Down))
+                (!activeWeapon || !activeWeapon.IsCharging) &&
+                (_weaponSwitchState == WeaponSwitchState.Up || _weaponSwitchState == WeaponSwitchState.Down))
             {
-                int switchWeaponInput = m_InputHandler.GetSwitchWeaponInput();
+                int switchWeaponInput = _inputHandler.GetSwitchWeaponInput();
                 if (switchWeaponInput != 0)
                 {
                     bool switchUp = switchWeaponInput > 0;
@@ -165,7 +168,7 @@ namespace Unity.FPS.Gameplay
                 }
                 else
                 {
-                    switchWeaponInput = m_InputHandler.GetSelectWeaponInput();
+                    switchWeaponInput = _inputHandler.GetSelectWeaponInput();
                     if (switchWeaponInput != 0)
                     {
                         if (GetWeaponAtSlotIndex(switchWeaponInput - 1) != null)
@@ -173,8 +176,7 @@ namespace Unity.FPS.Gameplay
                     }
                 }
             }
-
-            // Pointing at enemy handling
+            
             IsPointingAtEnemy = false;
             if (activeWeapon)
             {
@@ -200,13 +202,13 @@ namespace Unity.FPS.Gameplay
 
             // Set final weapon socket position based on all the combined animation influences
             WeaponParentSocket.localPosition =
-                m_WeaponMainLocalPosition + m_WeaponBobLocalPosition + m_WeaponRecoilLocalPosition;
+                _weaponMainLocalPosition + _weaponBobLocalPosition + _weaponRecoilLocalPosition;
         }
 
         // Sets the FOV of the main camera and the weapon camera simultaneously
         public void SetFov(float fov)
         {
-            m_PlayerCharacterController.PlayerCamera.fieldOfView = fov;
+            _playerCharacterController.PlayerCamera.fieldOfView = fov;
             WeaponCamera.fieldOfView = fov * WeaponFovMultiplier;
         }
 
@@ -214,8 +216,8 @@ namespace Unity.FPS.Gameplay
         public void SwitchWeapon(bool ascendingOrder)
         {
             int newWeaponIndex = -1;
-            int closestSlotDistance = m_WeaponSlots.Length;
-            for (int i = 0; i < m_WeaponSlots.Length; i++)
+            int closestSlotDistance = _weaponSlots.Length;
+            for (int i = 0; i < _weaponSlots.Length; i++)
             {
                 // If the weapon at this slot is valid, calculate its "distance" from the active slot index (either in ascending or descending order)
                 // and select it if it's the closest distance yet
@@ -241,17 +243,17 @@ namespace Unity.FPS.Gameplay
             if (force || (newWeaponIndex != ActiveWeaponIndex && newWeaponIndex >= 0))
             {
                 // Store data related to weapon switching animation
-                m_WeaponSwitchNewWeaponIndex = newWeaponIndex;
-                m_TimeStartedWeaponSwitch = Time.time;
+                _weaponSwitchNewWeaponIndex = newWeaponIndex;
+                _timeStartedWeaponSwitch = Time.time;
 
                 // Handle case of switching to a valid weapon for the first time (simply put it up without putting anything down first)
                 if (GetActiveWeapon() == null)
                 {
-                    m_WeaponMainLocalPosition = DownWeaponPosition.localPosition;
-                    m_WeaponSwitchState = WeaponSwitchState.PutUpNew;
-                    ActiveWeaponIndex = m_WeaponSwitchNewWeaponIndex;
+                    _weaponMainLocalPosition = DownWeaponPosition.localPosition;
+                    _weaponSwitchState = WeaponSwitchState.PutUpNew;
+                    ActiveWeaponIndex = _weaponSwitchNewWeaponIndex;
 
-                    WeaponController newWeapon = GetWeaponAtSlotIndex(m_WeaponSwitchNewWeaponIndex);
+                    WeaponController newWeapon = GetWeaponAtSlotIndex(_weaponSwitchNewWeaponIndex);
                     if (OnSwitchedToWeapon != null)
                     {
                         OnSwitchedToWeapon.Invoke(newWeapon);
@@ -260,7 +262,7 @@ namespace Unity.FPS.Gameplay
                 // otherwise, remember we are putting down our current weapon for switching to the next one
                 else
                 {
-                    m_WeaponSwitchState = WeaponSwitchState.PutDownPrevious;
+                    _weaponSwitchState = WeaponSwitchState.PutDownPrevious;
                 }
             }
         }
@@ -268,9 +270,9 @@ namespace Unity.FPS.Gameplay
         public WeaponController HasWeapon(WeaponController weaponPrefab)
         {
             // Checks if we already have a weapon coming from the specified prefab
-            for (var index = 0; index < m_WeaponSlots.Length; index++)
+            for (var index = 0; index < _weaponSlots.Length; index++)
             {
-                var w = m_WeaponSlots[index];
+                var w = _weaponSlots[index];
                 if (w != null && w.SourcePrefab == weaponPrefab.gameObject)
                 {
                     return w;
@@ -283,22 +285,24 @@ namespace Unity.FPS.Gameplay
         // Updates weapon position and camera FoV for the aiming transition
         void UpdateWeaponAiming()
         {
-            if (m_WeaponSwitchState == WeaponSwitchState.Up)
+            if (_weaponSwitchState == WeaponSwitchState.Up)
             {
                 WeaponController activeWeapon = GetActiveWeapon();
-                if (IsAiming && activeWeapon)
+                if (!activeWeapon || activeWeapon is not GunController) return;
+                var gun = (GunController)activeWeapon; 
+                if (IsAiming)
                 {
-                    m_WeaponMainLocalPosition = Vector3.Lerp(m_WeaponMainLocalPosition,
-                        AimingWeaponPosition.localPosition + activeWeapon.AimOffset,
+                    _weaponMainLocalPosition = Vector3.Lerp(_weaponMainLocalPosition,
+                        AimingWeaponPosition.localPosition + gun.AimOffset,
                         AimingAnimationSpeed * Time.deltaTime);
-                    SetFov(Mathf.Lerp(m_PlayerCharacterController.PlayerCamera.fieldOfView,
-                        activeWeapon.AimZoomRatio * DefaultFov, AimingAnimationSpeed * Time.deltaTime));
+                    SetFov(Mathf.Lerp(_playerCharacterController.PlayerCamera.fieldOfView,
+                        gun.AimZoomRatio * DefaultFov, AimingAnimationSpeed * Time.deltaTime));
                 }
                 else
                 {
-                    m_WeaponMainLocalPosition = Vector3.Lerp(m_WeaponMainLocalPosition,
+                    _weaponMainLocalPosition = Vector3.Lerp(_weaponMainLocalPosition,
                         DefaultWeaponPosition.localPosition, AimingAnimationSpeed * Time.deltaTime);
-                    SetFov(Mathf.Lerp(m_PlayerCharacterController.PlayerCamera.fieldOfView, DefaultFov,
+                    SetFov(Mathf.Lerp(_playerCharacterController.PlayerCamera.fieldOfView, DefaultFov,
                         AimingAnimationSpeed * Time.deltaTime));
                 }
             }
@@ -310,33 +314,33 @@ namespace Unity.FPS.Gameplay
             if (Time.deltaTime > 0f)
             {
                 Vector3 playerCharacterVelocity =
-                    (m_PlayerCharacterController.transform.position - m_LastCharacterPosition) / Time.deltaTime;
+                    (_playerCharacterController.transform.position - _lastCharacterPosition) / Time.deltaTime;
 
                 // calculate a smoothed weapon bob amount based on how close to our max grounded movement velocity we are
                 float characterMovementFactor = 0f;
-                if (m_PlayerCharacterController.IsGrounded)
+                if (_playerCharacterController.IsGrounded)
                 {
                     characterMovementFactor =
                         Mathf.Clamp01(playerCharacterVelocity.magnitude /
-                                      (m_PlayerCharacterController.MaxSpeedOnGround *
-                                       m_PlayerCharacterController.SprintSpeedModifier));
+                                      (_playerCharacterController.MaxSpeedOnGround *
+                                       _playerCharacterController.SprintSpeedModifier));
                 }
 
-                m_WeaponBobFactor =
-                    Mathf.Lerp(m_WeaponBobFactor, characterMovementFactor, BobSharpness * Time.deltaTime);
+                _weaponBobFactor =
+                    Mathf.Lerp(_weaponBobFactor, characterMovementFactor, BobSharpness * Time.deltaTime);
 
                 // Calculate vertical and horizontal weapon bob values based on a sine function
                 float bobAmount = IsAiming ? AimingBobAmount : DefaultBobAmount;
                 float frequency = BobFrequency;
-                float hBobValue = Mathf.Sin(Time.time * frequency) * bobAmount * m_WeaponBobFactor;
+                float hBobValue = Mathf.Sin(Time.time * frequency) * bobAmount * _weaponBobFactor;
                 float vBobValue = ((Mathf.Sin(Time.time * frequency * 2f) * 0.5f) + 0.5f) * bobAmount *
-                                  m_WeaponBobFactor;
+                                  _weaponBobFactor;
 
                 // Apply weapon bob
-                m_WeaponBobLocalPosition.x = hBobValue;
-                m_WeaponBobLocalPosition.y = Mathf.Abs(vBobValue);
+                _weaponBobLocalPosition.x = hBobValue;
+                _weaponBobLocalPosition.y = Mathf.Abs(vBobValue);
 
-                m_LastCharacterPosition = m_PlayerCharacterController.transform.position;
+                _lastCharacterPosition = _playerCharacterController.transform.position;
             }
         }
 
@@ -344,17 +348,17 @@ namespace Unity.FPS.Gameplay
         void UpdateWeaponRecoil()
         {
             // if the accumulated recoil is further away from the current position, make the current position move towards the recoil target
-            if (m_WeaponRecoilLocalPosition.z >= m_AccumulatedRecoil.z * 0.99f)
+            if (_weaponRecoilLocalPosition.z >= _accumulatedRecoil.z * 0.99f)
             {
-                m_WeaponRecoilLocalPosition = Vector3.Lerp(m_WeaponRecoilLocalPosition, m_AccumulatedRecoil,
+                _weaponRecoilLocalPosition = Vector3.Lerp(_weaponRecoilLocalPosition, _accumulatedRecoil,
                     RecoilSharpness * Time.deltaTime);
             }
             // otherwise, move recoil position to make it recover towards its resting pose
             else
             {
-                m_WeaponRecoilLocalPosition = Vector3.Lerp(m_WeaponRecoilLocalPosition, Vector3.zero,
+                _weaponRecoilLocalPosition = Vector3.Lerp(_weaponRecoilLocalPosition, Vector3.zero,
                     RecoilRestitutionSharpness * Time.deltaTime);
-                m_AccumulatedRecoil = m_WeaponRecoilLocalPosition;
+                _accumulatedRecoil = _weaponRecoilLocalPosition;
             }
         }
 
@@ -369,13 +373,13 @@ namespace Unity.FPS.Gameplay
             }
             else
             {
-                switchingTimeFactor = Mathf.Clamp01((Time.time - m_TimeStartedWeaponSwitch) / WeaponSwitchDelay);
+                switchingTimeFactor = Mathf.Clamp01((Time.time - _timeStartedWeaponSwitch) / WeaponSwitchDelay);
             }
 
             // Handle transiting to new switch state
             if (switchingTimeFactor >= 1f)
             {
-                if (m_WeaponSwitchState == WeaponSwitchState.PutDownPrevious)
+                if (_weaponSwitchState == WeaponSwitchState.PutDownPrevious)
                 {
                     // Deactivate old weapon
                     WeaponController oldWeapon = GetWeaponAtSlotIndex(ActiveWeaponIndex);
@@ -384,7 +388,7 @@ namespace Unity.FPS.Gameplay
                         oldWeapon.ShowWeapon(false);
                     }
 
-                    ActiveWeaponIndex = m_WeaponSwitchNewWeaponIndex;
+                    ActiveWeaponIndex = _weaponSwitchNewWeaponIndex;
                     switchingTimeFactor = 0f;
 
                     // Activate new weapon
@@ -396,30 +400,30 @@ namespace Unity.FPS.Gameplay
 
                     if (newWeapon)
                     {
-                        m_TimeStartedWeaponSwitch = Time.time;
-                        m_WeaponSwitchState = WeaponSwitchState.PutUpNew;
+                        _timeStartedWeaponSwitch = Time.time;
+                        _weaponSwitchState = WeaponSwitchState.PutUpNew;
                     }
                     else
                     {
                         // if new weapon is null, don't follow through with putting weapon back up
-                        m_WeaponSwitchState = WeaponSwitchState.Down;
+                        _weaponSwitchState = WeaponSwitchState.Down;
                     }
                 }
-                else if (m_WeaponSwitchState == WeaponSwitchState.PutUpNew)
+                else if (_weaponSwitchState == WeaponSwitchState.PutUpNew)
                 {
-                    m_WeaponSwitchState = WeaponSwitchState.Up;
+                    _weaponSwitchState = WeaponSwitchState.Up;
                 }
             }
 
             // Handle moving the weapon socket position for the animated weapon switching
-            if (m_WeaponSwitchState == WeaponSwitchState.PutDownPrevious)
+            if (_weaponSwitchState == WeaponSwitchState.PutDownPrevious)
             {
-                m_WeaponMainLocalPosition = Vector3.Lerp(DefaultWeaponPosition.localPosition,
+                _weaponMainLocalPosition = Vector3.Lerp(DefaultWeaponPosition.localPosition,
                     DownWeaponPosition.localPosition, switchingTimeFactor);
             }
-            else if (m_WeaponSwitchState == WeaponSwitchState.PutUpNew)
+            else if (_weaponSwitchState == WeaponSwitchState.PutUpNew)
             {
-                m_WeaponMainLocalPosition = Vector3.Lerp(DownWeaponPosition.localPosition,
+                _weaponMainLocalPosition = Vector3.Lerp(DownWeaponPosition.localPosition,
                     DefaultWeaponPosition.localPosition, switchingTimeFactor);
             }
         }
@@ -434,10 +438,10 @@ namespace Unity.FPS.Gameplay
             }
 
             // search our weapon slots for the first free one, assign the weapon to it, and return true if we found one. Return false otherwise
-            for (int i = 0; i < m_WeaponSlots.Length; i++)
+            for (int i = 0; i < _weaponSlots.Length; i++)
             {
                 // only add the weapon if the slot is free
-                if (m_WeaponSlots[i] == null)
+                if (_weaponSlots[i] == null)
                 {
                     // spawn the weapon prefab as child of the weapon socket
                     WeaponController weaponInstance = Instantiate(weaponPrefab, WeaponParentSocket);
@@ -458,7 +462,7 @@ namespace Unity.FPS.Gameplay
                         t.gameObject.layer = layerIndex;
                     }
 
-                    m_WeaponSlots[i] = weaponInstance;
+                    _weaponSlots[i] = weaponInstance;
 
                     if (OnAddedWeapon != null)
                     {
@@ -481,12 +485,12 @@ namespace Unity.FPS.Gameplay
         public bool RemoveWeapon(WeaponController weaponInstance)
         {
             // Look through our slots for that weapon
-            for (int i = 0; i < m_WeaponSlots.Length; i++)
+            for (int i = 0; i < _weaponSlots.Length; i++)
             {
                 // when weapon found, remove it
-                if (m_WeaponSlots[i] == weaponInstance)
+                if (_weaponSlots[i] == weaponInstance)
                 {
-                    m_WeaponSlots[i] = null;
+                    _weaponSlots[i] = null;
 
                     if (OnRemovedWeapon != null)
                     {
@@ -517,9 +521,9 @@ namespace Unity.FPS.Gameplay
         {
             // find the active weapon in our weapon slots based on our active weapon index
             if (index >= 0 &&
-                index < m_WeaponSlots.Length)
+                index < _weaponSlots.Length)
             {
-                return m_WeaponSlots[index];
+                return _weaponSlots[index];
             }
 
             // if we didn't find a valid active weapon in our weapon slots, return null
@@ -543,7 +547,7 @@ namespace Unity.FPS.Gameplay
 
             if (distanceBetweenSlots < 0)
             {
-                distanceBetweenSlots = m_WeaponSlots.Length + distanceBetweenSlots;
+                distanceBetweenSlots = _weaponSlots.Length + distanceBetweenSlots;
             }
 
             return distanceBetweenSlots;
