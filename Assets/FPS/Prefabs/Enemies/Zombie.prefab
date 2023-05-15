@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 797398738606809810}
   - component: {fileID: 1614318205656627459}
   - component: {fileID: 7603264690465808577}
+  - component: {fileID: 5110685823343726323}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Untagged
@@ -416,7 +417,7 @@ MonoBehaviour:
   DeathVfxSpawnPoint: {fileID: 4262111446641110482}
   LootPrefab: {fileID: 2529580269645609534, guid: 9973c412032becb4ca116ca08be62edf,
     type: 3}
-  DropRate: 0.5
+  DropRate: 0.16
   PathReachingRangeColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   AttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
   DetectionRangeColor: {r: 0, g: 0, b: 1, a: 1}
@@ -468,6 +469,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 100
   CriticalHealthRatio: 0.3
+  regenerateSpeedPerSecond: 0.5
+  hungryCostPerHp: 0.2
 --- !u!114 &3464315327790461765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,6 +655,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &5110685823343726323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015434656898269652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a8e0b9f466d4fa3bb0589376cf65c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHunger: 10
+  reduceSpeedPerSec: 0.1
+  criticalHungerRatio: 0.3
+  currentHunger: 0
 --- !u!1 &2353543346541703439
 GameObject:
   m_ObjectHideFlags: 0
@@ -1562,7 +1581,7 @@ MonoBehaviour:
   ContinuousUsageEndSfx: {fileID: 0}
   WantsToUse: 0
   Range: 2
-  meleeDamage: 10
+  meleeDamage: 25
   hitSfx: {fileID: 8300000, guid: 7e3298ab87489b2ada0b21c5fda4567c, type: 3}
 --- !u!1 &3669805629252767558
 GameObject:

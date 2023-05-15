@@ -33,12 +33,7 @@ namespace FPS.Scripts.UI
         void OnPickupWeapon(WeaponController weaponController, int index)
         {
             if (index != 0)
-                CreateNotification("Picked up weapon : " + weaponController.WeaponName);
-        }
-
-        void OnUnlockJetpack(bool unlock)
-        {
-            CreateNotification("Jetpack unlocked");
+                CreateNotification("Вы подобрали: " + weaponController.WeaponName);
         }
 
         public void CreateNotification(string text)

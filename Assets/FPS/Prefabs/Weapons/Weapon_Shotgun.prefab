@@ -720,7 +720,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886648989735552752}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03, y: 0.187, z: 0.052}
+  m_LocalPosition: {x: 0.079, y: 0.206, z: 0.265}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1059,8 +1059,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3f86b51fb04c7e9f8f49d3534a18ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponName: Shotgun
-  WeaponIcon: {fileID: 0}
+  WeaponName: "\u0414\u0440\u043E\u0431\u043E\u0432\u0438\u043A"
+  WeaponIcon: {fileID: 21300000, guid: 0c31b478531acbb89a6c1f7dbb5f3d06, type: 3}
   CrosshairDataDefault:
     CrosshairSprite: {fileID: 21300000, guid: 2962952d6e5ae7342a298d45a3945069, type: 3}
     CrosshairSize: 30
@@ -1081,7 +1081,7 @@ MonoBehaviour:
   ContinuousUsageStartSfx: {fileID: 0}
   ContinuousUsageLoopSfx: {fileID: 0}
   ContinuousUsageEndSfx: {fileID: 0}
-  m_WantsToUse: 0
+  WantsToUse: 0
   WeaponMuzzle: {fileID: 8334323006752503713}
   ProjectilePrefab: {fileID: 8924682559891268397, guid: 9247c23cdda27fc4b9c08a540ecbb8b5,
     type: 3}
@@ -1089,7 +1089,7 @@ MonoBehaviour:
   BulletsPerShot: 10
   RecoilForce: 5
   AimZoomRatio: 0.701
-  AimOffset: {x: 0, y: 0.09, z: -0.2}
+  AimOffset: {x: 0, y: 0.02, z: -0.1}
   AutomaticReload: 0
   HasPhysicalBullets: 1
   ClipSize: 60
@@ -1100,7 +1100,7 @@ MonoBehaviour:
   ShellPoolSize: 1
   AmmoReloadRate: 1
   AmmoReloadDelay: 2
-  MaxAmmo: 180
+  MaxAmmo: 240
   AmmoUsedOnStartCharge: 1
   AmmoUsageRateWhileCharging: 1
   MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 8931274bd2e4548399a3ebdebe911c15,
@@ -2128,8 +2128,8 @@ Transform:
   m_GameObject: {fileID: 7403783106477216524}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0.11, z: 0.15}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6450830033057583827}
   - {fileID: 5968798904140543984}
@@ -2268,7 +2268,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8088409166493606719}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.178, z: 1.013}
+  m_LocalPosition: {x: 0, y: 0.248, z: 1.441}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

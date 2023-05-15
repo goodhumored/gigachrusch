@@ -3,6 +3,7 @@ using FPS.Scripts.Game.Shared;
 using FPS.Scripts.Gameplay.Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace FPS.Scripts.UI
@@ -102,6 +103,11 @@ namespace FPS.Scripts.UI
         public void ClosePauseMenu()
         {
             SetPauseMenuActivation(false);
+        }
+
+        public void ExitGame()
+        {
+            SceneManager.LoadScene("IntroMenu");
         }
 
         void SetPauseMenuActivation(bool active)

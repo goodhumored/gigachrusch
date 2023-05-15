@@ -229,8 +229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3f86b51fb04c7e9f8f49d3534a18ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponName: Rifle
-  WeaponIcon: {fileID: 0}
+  WeaponName: "\u0412\u0438\u043D\u0442\u043E\u0432\u043A\u0430"
+  WeaponIcon: {fileID: 21300000, guid: f3d4e1c58ed4b8501bcd6cdd7cd4779c, type: 3}
   CrosshairDataDefault:
     CrosshairSprite: {fileID: 21300000, guid: 71b946d4956fcf588809c1d773ae2600, type: 3}
     CrosshairSize: 30
@@ -251,7 +251,7 @@ MonoBehaviour:
   ContinuousUsageStartSfx: {fileID: 0}
   ContinuousUsageLoopSfx: {fileID: 0}
   ContinuousUsageEndSfx: {fileID: 0}
-  m_WantsToUse: 0
+  WantsToUse: 0
   WeaponMuzzle: {fileID: 8334323006752503713}
   ProjectilePrefab: {fileID: 8924682559891268397, guid: d3a46548136d35374a240614a942d17b,
     type: 3}
@@ -270,7 +270,7 @@ MonoBehaviour:
   ShellPoolSize: 30
   AmmoReloadRate: 1
   AmmoReloadDelay: 2
-  MaxAmmo: 60
+  MaxAmmo: 120
   AmmoUsedOnStartCharge: 1
   AmmoUsageRateWhileCharging: 1
   MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 8931274bd2e4548399a3ebdebe911c15,
