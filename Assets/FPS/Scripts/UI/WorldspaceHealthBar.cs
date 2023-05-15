@@ -23,7 +23,7 @@ namespace FPS.Scripts.UI
             HealthBarImage.fillAmount = Health.CurrentHealth / Health.MaxHealth;
 
             // rotate health bar to face the camera/player
-            HealthBarPivot.LookAt(Camera.main.transform.position);
+            HealthBarPivot.LookAt(Camera.main!.transform.position);
 
             // hide health bar if needed
             if (HideFullHealthBar)

@@ -33,16 +33,16 @@ namespace FPS.Scripts.AI
 
         protected float TimeLastSeenTarget = Mathf.NegativeInfinity;
 
-        ActorsManager m_ActorsManager;
+        ActorsManager ActorsManager;
 
-        const string k_AnimAttackParameter = "Attack";
-        const string k_AnimDieParameter = "Die";
-        const string k_AnimOnDamagedParameter = "OnDamaged";
+        const string AnimAttackParameter = "Attack";
+        const string AnimDieParameter = "Die";
+        const string AnimOnDamagedParameter = "OnDamaged";
 
         protected virtual void Start()
         {
-            m_ActorsManager = FindObjectOfType<ActorsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<ActorsManager, DetectionModule>(m_ActorsManager, this);
+            ActorsManager = FindObjectOfType<ActorsManager>();
+            DebugUtility.HandleErrorIfNullFindObject<ActorsManager, DetectionModule>(ActorsManager, this);
         }
 
         public virtual void HandleTargetDetection(Actor actor, Collider[] selfColliders)
@@ -57,7 +57,7 @@ namespace FPS.Scripts.AI
             float sqrDetectionRange = DetectionRange * DetectionRange;
             IsSeeingTarget = false;
             float closestSqrDistance = Mathf.Infinity;
-            foreach (Actor otherActor in m_ActorsManager.Actors)
+            foreach (Actor otherActor in ActorsManager.Actors)
             {
                 if (otherActor.Affiliation != actor.Affiliation)
                 {
@@ -128,7 +128,7 @@ namespace FPS.Scripts.AI
 
             if (Animator)
             {
-                Animator.SetTrigger(k_AnimOnDamagedParameter);
+                Animator.SetTrigger(AnimOnDamagedParameter);
             }
         }
 
@@ -136,7 +136,7 @@ namespace FPS.Scripts.AI
         {
             if (Animator)
             {
-                Animator.SetTrigger(k_AnimAttackParameter);
+                Animator.SetTrigger(AnimAttackParameter);
             }
         }
 
@@ -144,7 +144,7 @@ namespace FPS.Scripts.AI
         {
             if (Animator)
             {
-                Animator.SetTrigger(k_AnimDieParameter);
+                Animator.SetTrigger(AnimDieParameter);
             }
         }
     }

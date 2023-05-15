@@ -26,7 +26,7 @@ namespace FPS.Scripts.Game.Shared
                     meleeDamage *= 1 + CurrentCharge;
                     damageable.InflictDamage(meleeDamage, false, gameObject);
                 }
-                m_UsageAudioSource.PlayOneShot(hitSfx);
+                UsageAudioSource.PlayOneShot(hitSfx);
             }
             base.HandleUsage();
         }

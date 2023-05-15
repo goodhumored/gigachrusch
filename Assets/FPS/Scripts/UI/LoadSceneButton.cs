@@ -12,7 +12,7 @@ namespace FPS.Scripts.UI
         void Update()
         {
             if (EventSystem.current.currentSelectedGameObject == gameObject
-                && Input.GetButtonDown(GameConstants.k_ButtonNameSubmit))
+                && Input.GetButtonDown(GameConstants.ButtonNameSubmit))
             {
                 LoadTargetScene();
             }

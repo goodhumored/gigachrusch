@@ -27,95 +27,95 @@ namespace UnityEngine.AI
     public class NavMeshSurface : MonoBehaviour
     {
         [SerializeField]
-        int m_AgentTypeID;
+        int AgentTypeID;
         /// <summary> Gets or sets the identifier of the agent type that will use this NavMesh Surface. </summary>
-        public int agentTypeID { get { return m_AgentTypeID; } set { m_AgentTypeID = value; } }
+        public int agentTypeID { get { return AgentTypeID; } set { AgentTypeID = value; } }
 
         [SerializeField]
-        CollectObjects m_CollectObjects = CollectObjects.All;
+        CollectObjects CollectObjects = CollectObjects.All;
         /// <summary> Gets or sets the method for retrieving the objects that will be used for baking. </summary>
-        public CollectObjects collectObjects { get { return m_CollectObjects; } set { m_CollectObjects = value; } }
+        public CollectObjects collectObjects { get { return CollectObjects; } set { CollectObjects = value; } }
 
         [SerializeField]
-        Vector3 m_Size = new Vector3(10.0f, 10.0f, 10.0f);
+        Vector3 Size = new Vector3(10.0f, 10.0f, 10.0f);
         /// <summary> Gets or sets the size of the volume that delimits the NavMesh created by this component. </summary>
         /// <remarks> It is used only when <c>collectObjects</c> is set to <c>Volume</c>. The size applies in the local space of the GameObject. </remarks>
-        public Vector3 size { get { return m_Size; } set { m_Size = value; } }
+        public Vector3 size { get { return Size; } set { Size = value; } }
 
         [SerializeField]
-        Vector3 m_Center = new Vector3(0, 2.0f, 0);
+        Vector3 Center = new Vector3(0, 2.0f, 0);
         /// <summary> Gets or sets the center position of the volume that delimits the NavMesh created by this component. </summary>
         /// <remarks> It is used only when <c>collectObjects</c> is set to <c>Volume</c>. The position applies in the local space of the GameObject. </remarks>
-        public Vector3 center { get { return m_Center; } set { m_Center = value; } }
+        public Vector3 center { get { return Center; } set { Center = value; } }
 
         [SerializeField]
-        LayerMask m_LayerMask = ~0;
+        LayerMask LayerMask = ~0;
         /// <summary> Gets or sets a bitmask representing which layers to consider when selecting the objects that will be used for baking the NavMesh. </summary>
-        public LayerMask layerMask { get { return m_LayerMask; } set { m_LayerMask = value; } }
+        public LayerMask layerMask { get { return LayerMask; } set { LayerMask = value; } }
 
         [SerializeField]
-        NavMeshCollectGeometry m_UseGeometry = NavMeshCollectGeometry.RenderMeshes;
+        NavMeshCollectGeometry UseGeometry = NavMeshCollectGeometry.RenderMeshes;
         /// <summary> Gets or sets which type of component in the GameObjects provides the geometry used for baking the NavMesh. </summary>
-        public NavMeshCollectGeometry useGeometry { get { return m_UseGeometry; } set { m_UseGeometry = value; } }
+        public NavMeshCollectGeometry useGeometry { get { return UseGeometry; } set { UseGeometry = value; } }
 
         [SerializeField]
-        int m_DefaultArea;
+        int DefaultArea;
         /// <summary> Gets or sets the area type assigned to any object that does not have one specified. </summary>
         /// <remarks> To customize the area type of an object add a <see cref="NavMeshModifier"/> component and set <see cref="NavMeshModifier.overrideArea"/> to <c>true</c>. The area type information is used when baking the NavMesh. </remarks>
         /// <seealso href="https://docs.unity3d.com/Manual/nav-AreasAndCosts.html"/>
-        public int defaultArea { get { return m_DefaultArea; } set { m_DefaultArea = value; } }
+        public int defaultArea { get { return DefaultArea; } set { DefaultArea = value; } }
 
         [SerializeField]
-        bool m_IgnoreNavMeshAgent = true;
+        bool IgnoreNavMeshAgent = true;
         /// <summary> Gets or sets whether the process of building the NavMesh ignores the GameObjects containing a <see cref="NavMeshAgent"/> component. </summary>
         /// <remarks> There is generally no need for the NavMesh to take into consideration the objects that can move.</remarks>
-        public bool ignoreNavMeshAgent { get { return m_IgnoreNavMeshAgent; } set { m_IgnoreNavMeshAgent = value; } }
+        public bool ignoreNavMeshAgent { get { return IgnoreNavMeshAgent; } set { IgnoreNavMeshAgent = value; } }
 
         [SerializeField]
-        bool m_IgnoreNavMeshObstacle = true;
+        bool IgnoreNavMeshObstacle = true;
         /// <summary> Gets or sets whether the process of building the NavMesh ignores the GameObjects containing a <see cref="NavMeshObstacle"/> component. </summary>
         /// <remarks> There is generally no need for the NavMesh to take into consideration the objects that can move.</remarks>
-        public bool ignoreNavMeshObstacle { get { return m_IgnoreNavMeshObstacle; } set { m_IgnoreNavMeshObstacle = value; } }
+        public bool ignoreNavMeshObstacle { get { return IgnoreNavMeshObstacle; } set { IgnoreNavMeshObstacle = value; } }
 
         [SerializeField]
-        bool m_OverrideTileSize;
+        bool OverrideTileSize;
         /// <summary> Gets or sets whether the NavMesh building process uses the <see cref="tileSize"/> value. </summary>
-        public bool overrideTileSize { get { return m_OverrideTileSize; } set { m_OverrideTileSize = value; } }
+        public bool overrideTileSize { get { return OverrideTileSize; } set { OverrideTileSize = value; } }
 
         [SerializeField]
-        int m_TileSize = 256;
+        int TileSize = 256;
         /// <summary> Gets or sets the width of the square grid of voxels that the NavMesh building process uses for sampling the scene geometry. </summary>
         /// <remarks> This value represents a number of voxels. Together with <see cref="voxelSize"/> it determines the real size of the individual sections that comprise the NavMesh. </remarks>
-        public int tileSize { get { return m_TileSize; } set { m_TileSize = value; } }
+        public int tileSize { get { return TileSize; } set { TileSize = value; } }
 
         [SerializeField]
-        bool m_OverrideVoxelSize;
+        bool OverrideVoxelSize;
         /// <summary> Gets or sets whether the NavMesh building process uses the <see cref="voxelSize"/> value. </summary>
-        public bool overrideVoxelSize { get { return m_OverrideVoxelSize; } set { m_OverrideVoxelSize = value; } }
+        public bool overrideVoxelSize { get { return OverrideVoxelSize; } set { OverrideVoxelSize = value; } }
 
         [SerializeField]
-        float m_VoxelSize;
+        float VoxelSize;
         /// <summary> Gets or sets the width of the square voxels that the NavMesh building process uses for sampling the scene geometry. </summary>
         /// <remarks> This value is in world units. Together with <see cref="tileSize"/> it determines the real size of the individual sections that comprise the NavMesh. </remarks>
-        public float voxelSize { get { return m_VoxelSize; } set { m_VoxelSize = value; } }
+        public float voxelSize { get { return VoxelSize; } set { VoxelSize = value; } }
 
         [SerializeField]
-        bool m_BuildHeightMesh;
+        bool BuildHeightMesh;
         /// <summary> (Not supported) Gets or sets whether the NavMesh building process produces more detailed elevation information. </summary>
         /// <seealso href="https://docs.unity3d.com/Manual/nav-HeightMesh.html"/>
         [Obsolete("The buildHeightMesh option has never been implemented as originally intended.")]
-        public bool buildHeightMesh { get { return m_BuildHeightMesh; } set { m_BuildHeightMesh = value; } }
+        public bool buildHeightMesh { get { return BuildHeightMesh; } set { BuildHeightMesh = value; } }
 
-        [UnityEngine.Serialization.FormerlySerializedAs("m_BakedNavMeshData")]
+        [UnityEngine.Serialization.FormerlySerializedAs("BakedNavMeshData")]
         [SerializeField]
-        NavMeshData m_NavMeshData;
+        NavMeshData NavMeshData;
         /// <summary> Gets or sets the reference to the NavMesh data instantiated by this surface. </summary>
-        public NavMeshData navMeshData { get { return m_NavMeshData; } set { m_NavMeshData = value; } }
+        public NavMeshData navMeshData { get { return NavMeshData; } set { NavMeshData = value; } }
 
         // Do not serialize - runtime only state.
-        NavMeshDataInstance m_NavMeshDataInstance;
-        Vector3 m_LastPosition = Vector3.zero;
-        Quaternion m_LastRotation = Quaternion.identity;
+        NavMeshDataInstance NavMeshDataInstance;
+        Vector3 LastPosition = Vector3.zero;
+        Quaternion LastRotation = Quaternion.identity;
 
         static readonly List<NavMeshSurface> s_NavMeshSurfaces = new List<NavMeshSurface>();
 
@@ -151,36 +151,36 @@ namespace UnityEngine.AI
                 return;
             }
 #endif
-            if (m_NavMeshDataInstance.valid)
+            if (NavMeshDataInstance.valid)
                 return;
 
-            if (m_NavMeshData != null)
+            if (NavMeshData != null)
             {
-                m_NavMeshDataInstance = NavMesh.AddNavMeshData(m_NavMeshData, transform.position, transform.rotation);
-                m_NavMeshDataInstance.owner = this;
+                NavMeshDataInstance = NavMesh.AddNavMeshData(NavMeshData, transform.position, transform.rotation);
+                NavMeshDataInstance.owner = this;
             }
 
-            m_LastPosition = transform.position;
-            m_LastRotation = transform.rotation;
+            LastPosition = transform.position;
+            LastRotation = transform.rotation;
         }
 
         /// <summary> Removes the instance of this NavMesh data from the navigation system. </summary>
         /// <remarks> This operation does not destroy the <see cref="navMeshData"/>. </remarks>
         public void RemoveData()
         {
-            m_NavMeshDataInstance.Remove();
-            m_NavMeshDataInstance = new NavMeshDataInstance();
+            NavMeshDataInstance.Remove();
+            NavMeshDataInstance = new NavMeshDataInstance();
         }
 
         /// <summary> Retrieves a copy of the current settings chosen for building this NavMesh surface. </summary>
         /// <returns> The settings configured in this NavMeshSurface. </returns>
         public NavMeshBuildSettings GetBuildSettings()
         {
-            var buildSettings = NavMesh.GetSettingsByID(m_AgentTypeID);
+            var buildSettings = NavMesh.GetSettingsByID(AgentTypeID);
             if (buildSettings.agentTypeID == -1)
             {
                 Debug.LogWarning("No build settings for agent type ID " + agentTypeID, this);
-                buildSettings.agentTypeID = m_AgentTypeID;
+                buildSettings.agentTypeID = AgentTypeID;
             }
 
             if (overrideTileSize)
@@ -203,8 +203,8 @@ namespace UnityEngine.AI
 
             // Use unscaled bounds - this differs in behaviour from e.g. collider components.
             // But is similar to reflection probe - and since navmesh data has no scaling support - it is the right choice here.
-            var sourcesBounds = new Bounds(m_Center, Abs(m_Size));
-            if (m_CollectObjects == CollectObjects.All || m_CollectObjects == CollectObjects.Children)
+            var sourcesBounds = new Bounds(Center, Abs(Size));
+            if (CollectObjects == CollectObjects.All || CollectObjects == CollectObjects.Children)
             {
                 sourcesBounds = CalculateWorldBounds(sources);
             }
@@ -216,7 +216,7 @@ namespace UnityEngine.AI
             {
                 data.name = gameObject.name;
                 RemoveData();
-                m_NavMeshData = data;
+                NavMeshData = data;
                 if (isActiveAndEnabled)
                     AddData();
             }
@@ -232,8 +232,8 @@ namespace UnityEngine.AI
 
             // Use unscaled bounds - this differs in behaviour from e.g. collider components.
             // But is similar to reflection probe - and since navmesh data has no scaling support - it is the right choice here.
-            var sourcesBounds = new Bounds(m_Center, Abs(m_Size));
-            if (m_CollectObjects == CollectObjects.All || m_CollectObjects == CollectObjects.Children)
+            var sourcesBounds = new Bounds(Center, Abs(Size));
+            if (CollectObjects == CollectObjects.All || CollectObjects == CollectObjects.Children)
                 sourcesBounds = CalculateWorldBounds(sources);
 
             return NavMeshBuilder.UpdateNavMeshDataAsync(data, GetBuildSettings(), sources, sourcesBounds);
@@ -281,7 +281,7 @@ namespace UnityEngine.AI
 #endif
             // Modifiers
             List<NavMeshModifierVolume> modifiers;
-            if (m_CollectObjects == CollectObjects.Children)
+            if (CollectObjects == CollectObjects.Children)
             {
                 modifiers = new List<NavMeshModifierVolume>(GetComponentsInChildren<NavMeshModifierVolume>());
                 modifiers.RemoveAll(x => !x.isActiveAndEnabled);
@@ -293,9 +293,9 @@ namespace UnityEngine.AI
 
             foreach (var m in modifiers)
             {
-                if ((m_LayerMask & (1 << m.gameObject.layer)) == 0)
+                if ((LayerMask & (1 << m.gameObject.layer)) == 0)
                     continue;
-                if (!m.AffectsAgentType(m_AgentTypeID))
+                if (!m.AffectsAgentType(AgentTypeID))
                     continue;
 #if UNITY_EDITOR
                 if (!myStage.Contains(m.gameObject))
@@ -320,7 +320,7 @@ namespace UnityEngine.AI
             var markups = new List<NavMeshBuildMarkup>();
 
             List<NavMeshModifier> modifiers;
-            if (m_CollectObjects == CollectObjects.Children)
+            if (CollectObjects == CollectObjects.Children)
             {
                 modifiers = new List<NavMeshModifier>(GetComponentsInChildren<NavMeshModifier>());
                 modifiers.RemoveAll(x => !x.isActiveAndEnabled);
@@ -332,9 +332,9 @@ namespace UnityEngine.AI
 
             foreach (var m in modifiers)
             {
-                if ((m_LayerMask & (1 << m.gameObject.layer)) == 0)
+                if ((LayerMask & (1 << m.gameObject.layer)) == 0)
                     continue;
-                if (!m.AffectsAgentType(m_AgentTypeID))
+                if (!m.AffectsAgentType(AgentTypeID))
                     continue;
                 var markup = new NavMeshBuildMarkup();
                 markup.root = m.transform;
@@ -347,48 +347,48 @@ namespace UnityEngine.AI
 #if UNITY_EDITOR
             if (!EditorApplication.isPlaying)
             {
-                if (m_CollectObjects == CollectObjects.All)
+                if (CollectObjects == CollectObjects.All)
                 {
                     UnityEditor.AI.NavMeshBuilder.CollectSourcesInStage(
-                        null, m_LayerMask, m_UseGeometry, m_DefaultArea, markups, gameObject.scene, sources);
+                        null, LayerMask, UseGeometry, DefaultArea, markups, gameObject.scene, sources);
                 }
-                else if (m_CollectObjects == CollectObjects.Children)
+                else if (CollectObjects == CollectObjects.Children)
                 {
                     UnityEditor.AI.NavMeshBuilder.CollectSourcesInStage(
-                        transform, m_LayerMask, m_UseGeometry, m_DefaultArea, markups, gameObject.scene, sources);
+                        transform, LayerMask, UseGeometry, DefaultArea, markups, gameObject.scene, sources);
                 }
-                else if (m_CollectObjects == CollectObjects.Volume)
+                else if (CollectObjects == CollectObjects.Volume)
                 {
                     Matrix4x4 localToWorld = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-                    var worldBounds = GetWorldBounds(localToWorld, new Bounds(m_Center, m_Size));
+                    var worldBounds = GetWorldBounds(localToWorld, new Bounds(Center, Size));
 
                     UnityEditor.AI.NavMeshBuilder.CollectSourcesInStage(
-                        worldBounds, m_LayerMask, m_UseGeometry, m_DefaultArea, markups, gameObject.scene, sources);
+                        worldBounds, LayerMask, UseGeometry, DefaultArea, markups, gameObject.scene, sources);
                 }
             }
             else
 #endif
             {
-                if (m_CollectObjects == CollectObjects.All)
+                if (CollectObjects == CollectObjects.All)
                 {
-                    NavMeshBuilder.CollectSources(null, m_LayerMask, m_UseGeometry, m_DefaultArea, markups, sources);
+                    NavMeshBuilder.CollectSources(null, LayerMask, UseGeometry, DefaultArea, markups, sources);
                 }
-                else if (m_CollectObjects == CollectObjects.Children)
+                else if (CollectObjects == CollectObjects.Children)
                 {
-                    NavMeshBuilder.CollectSources(transform, m_LayerMask, m_UseGeometry, m_DefaultArea, markups, sources);
+                    NavMeshBuilder.CollectSources(transform, LayerMask, UseGeometry, DefaultArea, markups, sources);
                 }
-                else if (m_CollectObjects == CollectObjects.Volume)
+                else if (CollectObjects == CollectObjects.Volume)
                 {
                     Matrix4x4 localToWorld = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-                    var worldBounds = GetWorldBounds(localToWorld, new Bounds(m_Center, m_Size));
-                    NavMeshBuilder.CollectSources(worldBounds, m_LayerMask, m_UseGeometry, m_DefaultArea, markups, sources);
+                    var worldBounds = GetWorldBounds(localToWorld, new Bounds(Center, Size));
+                    NavMeshBuilder.CollectSources(worldBounds, LayerMask, UseGeometry, DefaultArea, markups, sources);
                 }
             }
 
-            if (m_IgnoreNavMeshAgent)
+            if (IgnoreNavMeshAgent)
                 sources.RemoveAll((x) => (x.component != null && x.component.gameObject.GetComponent<NavMeshAgent>() != null));
 
-            if (m_IgnoreNavMeshObstacle)
+            if (IgnoreNavMeshObstacle)
                 sources.RemoveAll((x) => (x.component != null && x.component.gameObject.GetComponent<NavMeshObstacle>() != null));
 
             AppendModifierVolumes(ref sources);
@@ -454,9 +454,9 @@ namespace UnityEngine.AI
 
         bool HasTransformChanged()
         {
-            if (m_LastPosition != transform.position)
+            if (LastPosition != transform.position)
                 return true;
-            if (m_LastRotation != transform.rotation)
+            if (LastRotation != transform.rotation)
                 return true;
             return false;
         }
@@ -474,7 +474,7 @@ namespace UnityEngine.AI
         bool UnshareNavMeshAsset()
         {
             // Nothing to unshare
-            if (m_NavMeshData == null)
+            if (NavMeshData == null)
                 return false;
 
             // Prefab parent owns the asset reference
@@ -492,7 +492,7 @@ namespace UnityEngine.AI
             for (var i = 0; i < s_NavMeshSurfaces.Count; ++i)
             {
                 var surface = s_NavMeshSurfaces[i];
-                if (surface != this && surface.m_NavMeshData == m_NavMeshData)
+                if (surface != this && surface.NavMeshData == NavMeshData)
                     return true;
             }
 
@@ -505,31 +505,31 @@ namespace UnityEngine.AI
             if (UnshareNavMeshAsset())
             {
                 Debug.LogWarning("Duplicating NavMeshSurface does not duplicate the referenced navmesh data", this);
-                m_NavMeshData = null;
+                NavMeshData = null;
             }
 
-            var settings = NavMesh.GetSettingsByID(m_AgentTypeID);
+            var settings = NavMesh.GetSettingsByID(AgentTypeID);
             if (settings.agentTypeID != -1)
             {
                 // When unchecking the override control, revert to automatic value.
                 const float kMinVoxelSize = 0.01f;
-                if (!m_OverrideVoxelSize)
-                    m_VoxelSize = settings.agentRadius / 3.0f;
-                if (m_VoxelSize < kMinVoxelSize)
-                    m_VoxelSize = kMinVoxelSize;
+                if (!OverrideVoxelSize)
+                    VoxelSize = settings.agentRadius / 3.0f;
+                if (VoxelSize < kMinVoxelSize)
+                    VoxelSize = kMinVoxelSize;
 
                 // When unchecking the override control, revert to default value.
                 const int kMinTileSize = 16;
                 const int kMaxTileSize = 1024;
                 const int kDefaultTileSize = 256;
 
-                if (!m_OverrideTileSize)
-                    m_TileSize = kDefaultTileSize;
+                if (!OverrideTileSize)
+                    TileSize = kDefaultTileSize;
                 // Make sure tilesize is in sane range.
-                if (m_TileSize < kMinTileSize)
-                    m_TileSize = kMinTileSize;
-                if (m_TileSize > kMaxTileSize)
-                    m_TileSize = kMaxTileSize;
+                if (TileSize < kMinTileSize)
+                    TileSize = kMinTileSize;
+                if (TileSize > kMaxTileSize)
+                    TileSize = kMaxTileSize;
             }
         }
 #endif

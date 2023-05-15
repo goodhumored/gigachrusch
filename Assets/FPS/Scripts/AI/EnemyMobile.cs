@@ -30,35 +30,35 @@ namespace FPS.Scripts.AI
         public MinMaxFloat PitchDistortionMovementSpeed;
 
         public AIState AiState { get; private set; }
-        EnemyController m_EnemyController;
-        AudioSource m_AudioSource;
+        EnemyController EnemyController;
+        AudioSource AudioSource;
 
-        const string k_AnimMoveSpeedParameter = "MoveSpeed";
-        const string k_AnimAttackParameter = "Attack";
-        const string k_AnimAlertedParameter = "Alerted";
-        const string k_AnimOnDamagedParameter = "OnDamaged";
+        const string AnimMoveSpeedParameter = "MoveSpeed";
+        const string AnimAttackParameter = "Attack";
+        const string AnimAlertedParameter = "Alerted";
+        const string AnimOnDamagedParameter = "OnDamaged";
 
         void Start()
         {
-            m_EnemyController = GetComponent<EnemyController>();
-            DebugUtility.HandleErrorIfNullGetComponent<EnemyController, EnemyMobile>(m_EnemyController, this,
+            EnemyController = GetComponent<EnemyController>();
+            DebugUtility.HandleErrorIfNullGetComponent<EnemyController, EnemyMobile>(EnemyController, this,
                 gameObject);
 
-            m_EnemyController.onAttack += OnAttack;
-            m_EnemyController.onDetectedTarget += OnDetectedTarget;
-            m_EnemyController.onLostTarget += OnLostTarget;
-            m_EnemyController.SetPathDestinationToClosestNode();
-            m_EnemyController.onDamaged += OnDamaged;
-            m_EnemyController.onDie += OnDie;
+            EnemyController.onAttack += OnAttack;
+            EnemyController.onDetectedTarget += OnDetectedTarget;
+            EnemyController.onLostTarget += OnLostTarget;
+            EnemyController.SetPathDestinationToClosestNode();
+            EnemyController.onDamaged += OnDamaged;
+            EnemyController.onDie += OnDie;
 
             // Start patrolling
             AiState = AIState.Patrol;
 
             // adding a audio source to play the movement sound on it
-            m_AudioSource = GetComponent<AudioSource>();
-            DebugUtility.HandleErrorIfNullGetComponent<AudioSource, EnemyMobile>(m_AudioSource, this, gameObject);
-            m_AudioSource.clip = MovementSound;
-            m_AudioSource.Play();
+            AudioSource = GetComponent<AudioSource>();
+            DebugUtility.HandleErrorIfNullGetComponent<AudioSource, EnemyMobile>(AudioSource, this, gameObject);
+            AudioSource.clip = MovementSound;
+            AudioSource.Play();
         }
 
         void Update()
@@ -66,14 +66,14 @@ namespace FPS.Scripts.AI
             UpdateAiStateTransitions();
             UpdateCurrentAiState();
 
-            float moveSpeed = m_EnemyController.NavMeshAgent.velocity.magnitude;
+            float moveSpeed = EnemyController.NavMeshAgent.velocity.magnitude;
 
             // Update animator speed parameter
-            Animator.SetFloat(k_AnimMoveSpeedParameter, moveSpeed);
+            Animator.SetFloat(AnimMoveSpeedParameter, moveSpeed);
 
             // changing the pitch of the movement sound depending on the movement speed
-            m_AudioSource.pitch = Mathf.Lerp(PitchDistortionMovementSpeed.Min, PitchDistortionMovementSpeed.Max,
-                moveSpeed / m_EnemyController.NavMeshAgent.speed);
+            AudioSource.pitch = Mathf.Lerp(PitchDistortionMovementSpeed.Min, PitchDistortionMovementSpeed.Max,
+                moveSpeed / EnemyController.NavMeshAgent.speed);
         }
 
         void UpdateAiStateTransitions()
@@ -83,16 +83,16 @@ namespace FPS.Scripts.AI
             {
                 case AIState.Follow:
                     // Transition to attack when there is a line of sight to the target
-                    if (m_EnemyController.IsSeeingTarget && m_EnemyController.IsTargetInAttackRange)
+                    if (EnemyController.IsSeeingTarget && EnemyController.IsTargetInAttackRange)
                     {
                         AiState = AIState.Attack;
-                        m_EnemyController.SetNavDestination(transform.position);
+                        EnemyController.SetNavDestination(transform.position);
                     }
 
                     break;
                 case AIState.Attack:
                     // Transition to follow when no longer a target in attack range
-                    if (!m_EnemyController.IsTargetInAttackRange)
+                    if (!EnemyController.IsTargetInAttackRange)
                     {
                         AiState = AIState.Follow;
                     }
@@ -107,35 +107,35 @@ namespace FPS.Scripts.AI
             switch (AiState)
             {
                 case AIState.Patrol:
-                    m_EnemyController.UpdatePathDestination();
-                    m_EnemyController.SetNavDestination(m_EnemyController.GetDestinationOnPath());
+                    EnemyController.UpdatePathDestination();
+                    EnemyController.SetNavDestination(EnemyController.GetDestinationOnPath());
                     break;
                 case AIState.Follow:
-                    m_EnemyController.SetNavDestination(m_EnemyController.KnownDetectedTarget.transform.position);
-                    m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
-                    m_EnemyController.OrientWeaponsTowards(m_EnemyController.KnownDetectedTarget.transform.position);
+                    EnemyController.SetNavDestination(EnemyController.KnownDetectedTarget.transform.position);
+                    EnemyController.OrientTowards(EnemyController.KnownDetectedTarget.transform.position);
+                    EnemyController.OrientWeaponsTowards(EnemyController.KnownDetectedTarget.transform.position);
                     break;
                 case AIState.Attack:
-                    if (Vector3.Distance(m_EnemyController.KnownDetectedTarget.transform.position,
-                            m_EnemyController.DetectionModule.DetectionSourcePoint.position)
-                        >= (AttackStopDistanceRatio * m_EnemyController.DetectionModule.AttackRange))
+                    if (Vector3.Distance(EnemyController.KnownDetectedTarget.transform.position,
+                            EnemyController.DetectionModule.DetectionSourcePoint.position)
+                        >= (AttackStopDistanceRatio * EnemyController.DetectionModule.AttackRange))
                     {
-                        m_EnemyController.SetNavDestination(m_EnemyController.KnownDetectedTarget.transform.position);
+                        EnemyController.SetNavDestination(EnemyController.KnownDetectedTarget.transform.position);
                     }
                     else
                     {
-                        m_EnemyController.SetNavDestination(transform.position);
+                        EnemyController.SetNavDestination(transform.position);
                     }
 
-                    m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
-                    m_EnemyController.TryAtack(m_EnemyController.KnownDetectedTarget.transform.position);
+                    EnemyController.OrientTowards(EnemyController.KnownDetectedTarget.transform.position);
+                    EnemyController.TryAtack(EnemyController.KnownDetectedTarget.transform.position);
                     break;
             }
         }
 
         void OnAttack()
         {
-            Animator.SetTrigger(k_AnimAttackParameter);
+            Animator.SetTrigger(AnimAttackParameter);
         }
 
         void OnDetectedTarget()
@@ -155,7 +155,7 @@ namespace FPS.Scripts.AI
                 AudioUtility.CreateSFX(OnDetectSfx, transform.position, AudioUtility.AudioGroups.EnemyDetection, 1f);
             }
 
-            Animator.SetBool(k_AnimAlertedParameter, true);
+            Animator.SetBool(AnimAlertedParameter, true);
         }
 
         void OnLostTarget()
@@ -170,7 +170,7 @@ namespace FPS.Scripts.AI
                 OnDetectVfx[i].Stop();
             }
 
-            Animator.SetBool(k_AnimAlertedParameter, false);
+            Animator.SetBool(AnimAlertedParameter, false);
         }
 
         void OnDamaged()
@@ -181,7 +181,7 @@ namespace FPS.Scripts.AI
                 RandomHitSparks[n].Play();
             }
 
-            Animator.SetTrigger(k_AnimOnDamagedParameter);
+            Animator.SetTrigger(AnimOnDamagedParameter);
         }
 
         void OnDie()

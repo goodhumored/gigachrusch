@@ -19,32 +19,32 @@ namespace FPS.Scripts.UI
         [Tooltip("Image to display the screenshot in")]
         public RawImage PreviewImage;
 
-        CanvasGroup m_MenuCanvas = null;
-        Texture2D m_Texture;
+        CanvasGroup MenuCanvas = null;
+        Texture2D Texture;
 
-        bool m_TakeScreenshot;
-        bool m_ScreenshotTaken;
-        bool m_IsFeatureDisable;
+        bool _isTakingScreenshot;
+        bool ScreenshotTaken;
+        bool IsFeatureDisable;
 
-        string GetPath() => k_ScreenshotPath + FileName + ".png";
+        string GetPath() => ScreenshotPath + FileName + ".png";
 
-        const string k_ScreenshotPath = "Assets/";
+        const string ScreenshotPath = "Assets/";
 
         void Awake()
         {
 #if !UNITY_EDITOR
         // this feature is available only in the editor
         ScreenshotPanel.SetActive(false);
-        m_IsFeatureDisable = true;
+        IsFeatureDisable = true;
 #else
-            m_IsFeatureDisable = false;
+            IsFeatureDisable = false;
 
             var gameMenuManager = GetComponent<InGameMenuManager>();
             DebugUtility.HandleErrorIfNullGetComponent<InGameMenuManager, TakeScreenshot>(gameMenuManager, this,
                 gameObject);
 
-            m_MenuCanvas = gameMenuManager.MenuRoot.GetComponent<CanvasGroup>();
-            DebugUtility.HandleErrorIfNullGetComponent<CanvasGroup, TakeScreenshot>(m_MenuCanvas, this,
+            MenuCanvas = gameMenuManager.MenuRoot.GetComponent<CanvasGroup>();
+            DebugUtility.HandleErrorIfNullGetComponent<CanvasGroup, TakeScreenshot>(MenuCanvas, this,
                 gameMenuManager.MenuRoot.gameObject);
 
             LoadScreenshot();
@@ -55,33 +55,33 @@ namespace FPS.Scripts.UI
         {
             PreviewImage.enabled = PreviewImage.texture != null;
 
-            if (m_IsFeatureDisable)
+            if (IsFeatureDisable)
                 return;
 
-            if (m_TakeScreenshot)
+            if (_isTakingScreenshot)
             {
-                m_MenuCanvas.alpha = 0;
+                MenuCanvas.alpha = 0;
                 ScreenCapture.CaptureScreenshot(GetPath());
-                m_TakeScreenshot = false;
-                m_ScreenshotTaken = true;
+                _isTakingScreenshot = false;
+                ScreenshotTaken = true;
                 return;
             }
 
-            if (m_ScreenshotTaken)
+            if (ScreenshotTaken)
             {
                 LoadScreenshot();
 #if UNITY_EDITOR
                 AssetDatabase.Refresh();
 #endif
 
-                m_MenuCanvas.alpha = 1;
-                m_ScreenshotTaken = false;
+                MenuCanvas.alpha = 1;
+                ScreenshotTaken = false;
             }
         }
 
         public void OnTakeScreenshotButtonPressed()
         {
-            m_TakeScreenshot = true;
+            _isTakingScreenshot = true;
         }
 
         void LoadScreenshot()
@@ -90,10 +90,10 @@ namespace FPS.Scripts.UI
             {
                 var bytes = File.ReadAllBytes(GetPath());
 
-                m_Texture = new Texture2D(2, 2);
-                m_Texture.LoadImage(bytes);
-                m_Texture.Apply();
-                PreviewImage.texture = m_Texture;
+                Texture = new Texture2D(2, 2);
+                Texture.LoadImage(bytes);
+                Texture.Apply();
+                PreviewImage.texture = Texture;
             }
         }
     }

@@ -42,10 +42,10 @@ namespace FPS.Scripts.UI
         [Tooltip("Max alpha of the heal flash")]
         public float HealFlashMaxAlpha = 1f;
 
-        bool m_FlashActive;
-        float m_LastTimeFlashStarted = Mathf.NegativeInfinity;
-        Health m_PlayerHealth;
-        GameFlowManager m_GameFlowManager;
+        bool FlashActive;
+        float LastTimeFlashStarted = Mathf.NegativeInfinity;
+        Health PlayerHealth;
+        GameFlowManager GameFlowManager;
 
         void Start()
         {
@@ -54,27 +54,27 @@ namespace FPS.Scripts.UI
             DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, FeedbackFlashHUD>(
                 playerCharacterController, this);
 
-            m_PlayerHealth = playerCharacterController.GetComponent<Health>();
-            DebugUtility.HandleErrorIfNullGetComponent<Health, FeedbackFlashHUD>(m_PlayerHealth, this,
+            PlayerHealth = playerCharacterController.GetComponent<Health>();
+            DebugUtility.HandleErrorIfNullGetComponent<Health, FeedbackFlashHUD>(PlayerHealth, this,
                 playerCharacterController.gameObject);
 
-            m_GameFlowManager = FindObjectOfType<GameFlowManager>();
-            DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, FeedbackFlashHUD>(m_GameFlowManager, this);
+            GameFlowManager = FindObjectOfType<GameFlowManager>();
+            DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, FeedbackFlashHUD>(GameFlowManager, this);
 
-            m_PlayerHealth.OnDamaged += OnTakeDamage;
-            m_PlayerHealth.OnHealed += OnHealed;
+            PlayerHealth.OnDamaged += OnTakeDamage;
+            PlayerHealth.OnHealed += OnHealed;
         }
 
         void Update()
         {
-            if (m_PlayerHealth.IsCritical())
+            if (PlayerHealth.IsCritical())
             {
                 VignetteCanvasGroup.gameObject.SetActive(true);
                 float vignetteAlpha =
-                    (1 - (m_PlayerHealth.CurrentHealth / m_PlayerHealth.MaxHealth /
-                          m_PlayerHealth.CriticalHealthRatio)) * CriticaHealthVignetteMaxAlpha;
+                    (1 - (PlayerHealth.CurrentHealth / PlayerHealth.MaxHealth /
+                          PlayerHealth.CriticalHealthRatio)) * CriticaHealthVignetteMaxAlpha;
 
-                if (m_GameFlowManager.GameIsEnding)
+                if (GameFlowManager.GameIsEnding)
                     VignetteCanvasGroup.alpha = vignetteAlpha;
                 else
                     VignetteCanvasGroup.alpha =
@@ -86,9 +86,9 @@ namespace FPS.Scripts.UI
             }
 
 
-            if (m_FlashActive)
+            if (FlashActive)
             {
-                float normalizedTimeSinceDamage = (Time.time - m_LastTimeFlashStarted) / DamageFlashDuration;
+                float normalizedTimeSinceDamage = (Time.time - LastTimeFlashStarted) / DamageFlashDuration;
 
                 if (normalizedTimeSinceDamage < 1f)
                 {
@@ -98,15 +98,15 @@ namespace FPS.Scripts.UI
                 else
                 {
                     FlashCanvasGroup.gameObject.SetActive(false);
-                    m_FlashActive = false;
+                    FlashActive = false;
                 }
             }
         }
 
         void ResetFlash()
         {
-            m_LastTimeFlashStarted = Time.time;
-            m_FlashActive = true;
+            LastTimeFlashStarted = Time.time;
+            FlashActive = true;
             FlashCanvasGroup.alpha = 0f;
             FlashCanvasGroup.gameObject.SetActive(true);
         }

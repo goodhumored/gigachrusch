@@ -20,9 +20,9 @@ namespace FPS.Scripts.UI
         {
             if (EventSystem.current.currentSelectedGameObject == null)
             {
-                if (Input.GetButtonDown(GameConstants.k_ButtonNameSubmit)
-                    || Input.GetAxisRaw(GameConstants.k_AxisNameHorizontal) != 0
-                    || Input.GetAxisRaw(GameConstants.k_AxisNameVertical) != 0)
+                if (Input.GetButtonDown(GameConstants.ButtonNameSubmit)
+                    || Input.GetAxisRaw(GameConstants.AxisNameHorizontal) != 0
+                    || Input.GetAxisRaw(GameConstants.AxisNameVertical) != 0)
                 {
                     EventSystem.current.SetSelectedGameObject(DefaultSelection.gameObject);
                 }

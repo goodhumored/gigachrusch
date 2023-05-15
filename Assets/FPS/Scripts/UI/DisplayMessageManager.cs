@@ -10,7 +10,7 @@ namespace FPS.Scripts.UI
         public UITable DisplayMessageRect;
         public NotificationToast MessagePrefab;
 
-        Queue<(float timestamp, float delay, string message, NotificationToast notification)> m_PendingMessages = new Queue<(float timestamp, float delay, string message, NotificationToast notification)>();
+        Queue<(float timestamp, float delay, string message, NotificationToast notification)> PendingMessages = new Queue<(float timestamp, float delay, string message, NotificationToast notification)>();
 
         void Awake()
         {
@@ -20,12 +20,12 @@ namespace FPS.Scripts.UI
         void OnDisplayMessageEvent(DisplayMessageEvent evt)
         {
             NotificationToast notification = Instantiate(MessagePrefab, DisplayMessageRect.transform).GetComponent<NotificationToast>();
-            m_PendingMessages.Enqueue((Time.time, evt.DelayBeforeDisplay, evt.Message, notification));
+            PendingMessages.Enqueue((Time.time, evt.DelayBeforeDisplay, evt.Message, notification));
         }
 
         void Update()
         {
-            if (m_PendingMessages.TryDequeue(out var message))
+            if (PendingMessages.TryDequeue(out var message))
             {
                 if (Time.time - message.timestamp > message.delay)
                 {

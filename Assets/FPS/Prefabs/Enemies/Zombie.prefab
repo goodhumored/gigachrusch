@@ -1554,15 +1554,16 @@ MonoBehaviour:
   AutomaticReleaseOnCharged: 0
   MaxChargeDuration: 2
   WeaponAnimator: {fileID: 0}
-  UsageSfx: {fileID: 0}
+  UsageSfx: {fileID: 8300000, guid: 9fa84e12b4d3693c5b15a939570c2de3, type: 3}
   ChangeWeaponSfx: {fileID: 0}
   UseContinuousUsageSound: 0
   ContinuousUsageStartSfx: {fileID: 0}
   ContinuousUsageLoopSfx: {fileID: 0}
   ContinuousUsageEndSfx: {fileID: 0}
-  m_WantsToUse: 0
+  WantsToUse: 0
   Range: 2
   meleeDamage: 10
+  hitSfx: {fileID: 8300000, guid: 7e3298ab87489b2ada0b21c5fda4567c, type: 3}
 --- !u!1 &3669805629252767558
 GameObject:
   m_ObjectHideFlags: 0

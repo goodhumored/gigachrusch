@@ -72,12 +72,12 @@ namespace FPS.Scripts.Game.Shared
         public AudioClip ContinuousUsageStartSfx;
         public AudioClip ContinuousUsageLoopSfx;
         public AudioClip ContinuousUsageEndSfx;
-        protected AudioSource m_ContinuousUsageAudioSource = null;
+        protected AudioSource ContinuousUsageAudioSource = null;
 
         public UnityAction OnUse;
         public event Action OnUseProcessed;
         
-        protected float m_LastTimeUsed = Mathf.NegativeInfinity;
+        protected float LastTimeUsed = Mathf.NegativeInfinity;
         public float LastChargeTriggerTimestamp { get; protected set; }
 
         public GameObject Owner { get; set; }
@@ -88,27 +88,27 @@ namespace FPS.Scripts.Game.Shared
         public float CurrentCharge { get; protected set; }
         public Vector3 MuzzleWorldVelocity { get; protected set; }
         
-        public bool m_WantsToUse;
+        public bool WantsToUse;
 
-        protected AudioSource m_UsageAudioSource;
+        protected AudioSource UsageAudioSource;
 
-        const string k_AnimAttackParameter = "Attack";
-        const string k_AnimChargeParameter = "Charge";
+        const string AnimAttackParameter = "Attack";
+        const string AnimChargeParameter = "Charge";
 
         private void Awake()
         {
-            m_UsageAudioSource = GetComponent<AudioSource>();
-            DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(m_UsageAudioSource, this,
+            UsageAudioSource = GetComponent<AudioSource>();
+            DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(UsageAudioSource, this,
                 gameObject);
 
             if (UseContinuousUsageSound)
             {
-                m_ContinuousUsageAudioSource = gameObject.AddComponent<AudioSource>();
-                m_ContinuousUsageAudioSource.playOnAwake = false;
-                m_ContinuousUsageAudioSource.clip = ContinuousUsageLoopSfx;
-                m_ContinuousUsageAudioSource.outputAudioMixerGroup =
+                ContinuousUsageAudioSource = gameObject.AddComponent<AudioSource>();
+                ContinuousUsageAudioSource.playOnAwake = false;
+                ContinuousUsageAudioSource.clip = ContinuousUsageLoopSfx;
+                ContinuousUsageAudioSource.outputAudioMixerGroup =
                     AudioUtility.GetAudioGroup(AudioUtility.AudioGroups.WeaponShoot);
-                m_ContinuousUsageAudioSource.loop = true;
+                ContinuousUsageAudioSource.loop = true;
             }
         }
 
@@ -126,7 +126,7 @@ namespace FPS.Scripts.Game.Shared
             {
                 if (CurrentCharge < 1f)
                 {
-                    WeaponAnimator.SetFloat(k_AnimChargeParameter, CurrentCharge);
+                    WeaponAnimator.SetFloat(AnimChargeParameter, CurrentCharge);
                     float chargeLeft = 1f - CurrentCharge;
 
                     // Calculate how much charge ratio to add this frame
@@ -149,16 +149,16 @@ namespace FPS.Scripts.Game.Shared
         {
             if (UseContinuousUsageSound)
             {
-                if (!m_ContinuousUsageAudioSource.isPlaying)
+                if (!ContinuousUsageAudioSource.isPlaying)
                 {
-                    m_UsageAudioSource.PlayOneShot(UsageSfx);
-                    m_UsageAudioSource.PlayOneShot(ContinuousUsageStartSfx);
-                    m_ContinuousUsageAudioSource.Play();
+                    UsageAudioSource.PlayOneShot(UsageSfx);
+                    UsageAudioSource.PlayOneShot(ContinuousUsageStartSfx);
+                    ContinuousUsageAudioSource.Play();
                 }
-                else if (m_ContinuousUsageAudioSource.isPlaying)
+                else if (ContinuousUsageAudioSource.isPlaying)
                 {
-                    m_UsageAudioSource.PlayOneShot(ContinuousUsageEndSfx);
-                    m_ContinuousUsageAudioSource.Stop();
+                    UsageAudioSource.PlayOneShot(ContinuousUsageEndSfx);
+                    ContinuousUsageAudioSource.Stop();
                 }
             }
         }
@@ -169,7 +169,7 @@ namespace FPS.Scripts.Game.Shared
 
             if (show && ChangeWeaponSfx)
             {
-                m_UsageAudioSource.PlayOneShot(ChangeWeaponSfx);
+                UsageAudioSource.PlayOneShot(ChangeWeaponSfx);
             }
 
             IsWeaponActive = show;
@@ -177,7 +177,7 @@ namespace FPS.Scripts.Game.Shared
 
         public bool HandleUsageInputs(bool inputDown, bool inputHeld, bool inputUp)
         {
-            m_WantsToUse = inputDown || inputHeld;
+            WantsToUse = inputDown || inputHeld;
             switch (UsageType)
             {
                 case WeaponUsageType.Manual:
@@ -217,7 +217,7 @@ namespace FPS.Scripts.Game.Shared
 
         protected virtual bool TryToUse()
         {
-            if (m_LastTimeUsed + UseDelay < Time.time)
+            if (LastTimeUsed + UseDelay < Time.time)
             {
                 HandleUsage();
                 return true;
@@ -229,7 +229,7 @@ namespace FPS.Scripts.Game.Shared
         protected virtual bool TryBeginCharge()
         {
             if (!IsCharging
-                && m_LastTimeUsed + UseDelay < Time.time)
+                && LastTimeUsed + UseDelay < Time.time)
             {
                 LastChargeTriggerTimestamp = Time.time;
                 IsCharging = true;
@@ -245,7 +245,7 @@ namespace FPS.Scripts.Game.Shared
                 HandleUsage();
 
                 CurrentCharge = 0f;
-                WeaponAnimator.SetFloat(k_AnimChargeParameter, 0f);
+                WeaponAnimator.SetFloat(AnimChargeParameter, 0f);
                 IsCharging = false;
 
                 return true;
@@ -256,16 +256,16 @@ namespace FPS.Scripts.Game.Shared
 
         protected virtual void HandleUsage()
         {
-            m_LastTimeUsed = Time.time;
+            LastTimeUsed = Time.time;
 
             if (UsageSfx && !UseContinuousUsageSound)
             {
-                m_UsageAudioSource.PlayOneShot(UsageSfx);
+                UsageAudioSource.PlayOneShot(UsageSfx);
             }
             
             if (WeaponAnimator && CurrentCharge < 0.1)
             {
-                WeaponAnimator.SetTrigger(k_AnimAttackParameter);
+                WeaponAnimator.SetTrigger(AnimAttackParameter);
             }
 
             OnUse?.Invoke();

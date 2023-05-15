@@ -11,7 +11,7 @@ namespace FPS.Scripts.Gameplay
         protected override void OnPicked(PlayerCharacterController player)
         {
             Health playerHealth = player.GetComponent<Health>();
-            if (playerHealth && playerHealth.CanPickup())
+            if (playerHealth && playerHealth.CanBeHealed())
             {
                 playerHealth.Heal(HealAmount);
                 PlayPickupFeedback();

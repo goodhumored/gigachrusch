@@ -14,25 +14,25 @@ namespace FPS.Scripts.UI
         [Tooltip("Prefab for displaying weapon ammo")]
         public GameObject AmmoCounterPrefab;
 
-        PlayerWeaponsManager m_PlayerWeaponsManager;
-        List<AmmoCounter> m_AmmoCounters = new List<AmmoCounter>();
+        PlayerWeaponsManager PlayerWeaponsManager;
+        List<AmmoCounter> AmmoCounters = new List<AmmoCounter>();
 
         void Start()
         {
-            m_PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, WeaponHUDManager>(m_PlayerWeaponsManager,
+            PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
+            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, WeaponHUDManager>(PlayerWeaponsManager,
                 this);
 
-            WeaponController activeWeapon = m_PlayerWeaponsManager.GetActiveWeapon();
+            WeaponController activeWeapon = PlayerWeaponsManager.GetActiveWeapon();
             if (activeWeapon)
             {
-                AddWeapon(activeWeapon, m_PlayerWeaponsManager.ActiveWeaponIndex);
+                AddWeapon(activeWeapon, PlayerWeaponsManager.ActiveWeaponIndex);
                 ChangeWeapon(activeWeapon);
             }
 
-            m_PlayerWeaponsManager.OnAddedWeapon += AddWeapon;
-            m_PlayerWeaponsManager.OnRemovedWeapon += RemoveWeapon;
-            m_PlayerWeaponsManager.OnSwitchedToWeapon += ChangeWeapon;
+            PlayerWeaponsManager.OnAddedWeapon += AddWeapon;
+            PlayerWeaponsManager.OnRemovedWeapon += RemoveWeapon;
+            PlayerWeaponsManager.OnSwitchedToWeapon += ChangeWeapon;
         }
 
         void AddWeapon(WeaponController newWeapon, int weaponIndex)
@@ -41,24 +41,24 @@ namespace FPS.Scripts.UI
             var newAmmoCounter = ammoCounterInstance.GetComponent<AmmoCounter>();
             newAmmoCounter.Initialize(newWeapon, weaponIndex);
 
-            m_AmmoCounters.Add(newAmmoCounter);
+            AmmoCounters.Add(newAmmoCounter);
         }
 
         void RemoveWeapon(WeaponController newWeapon, int weaponIndex)
         {
             int foundCounterIndex = -1;
-            for (int i = 0; i < m_AmmoCounters.Count; i++)
+            for (int i = 0; i < AmmoCounters.Count; i++)
             {
-                if (m_AmmoCounters[i].WeaponCounterIndex == weaponIndex)
+                if (AmmoCounters[i].WeaponCounterIndex == weaponIndex)
                 {
                     foundCounterIndex = i;
-                    Destroy(m_AmmoCounters[i].gameObject);
+                    Destroy(AmmoCounters[i].gameObject);
                 }
             }
 
             if (foundCounterIndex >= 0)
             {
-                m_AmmoCounters.RemoveAt(foundCounterIndex);
+                AmmoCounters.RemoveAt(foundCounterIndex);
             }
         }
 

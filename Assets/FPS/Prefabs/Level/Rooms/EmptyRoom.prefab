@@ -370,23 +370,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf117220f9169f2d8ea3e86d570726c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
+  AgentTypeID: 0
+  CollectObjects: 0
+  Size: {x: 10, y: 10, z: 10}
+  Center: {x: 0, y: 2, z: 0}
+  LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
-  m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 33f80775c00672d99ad535a7711e2332, type: 2}
+  UseGeometry: 0
+  DefaultArea: 0
+  IgnoreNavMeshAgent: 1
+  IgnoreNavMeshObstacle: 1
+  OverrideTileSize: 0
+  TileSize: 256
+  OverrideVoxelSize: 0
+  VoxelSize: 0.16666667
+  BuildHeightMesh: 0
+  NavMeshData: {fileID: 23800000, guid: 9bd6393d207c80b5782c042abd5eb891, type: 2}
 --- !u!1 &7136005541240131472 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4134190f8a970c12188ddba2e25da0f5,

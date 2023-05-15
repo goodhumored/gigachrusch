@@ -11,7 +11,7 @@ namespace FPS.Scripts.UI
 
         void Update()
         {
-            if (ObjectToToggle.activeSelf && Input.GetButtonDown(GameConstants.k_ButtonNameCancel))
+            if (ObjectToToggle.activeSelf && Input.GetButtonDown(GameConstants.ButtonNameCancel))
             {
                 SetGameObjectActive(false);
             }

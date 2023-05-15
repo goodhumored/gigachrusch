@@ -12,34 +12,34 @@ namespace FPS.Scripts.UI
         //[Tooltip("Delay before displaying the message")]
         //public float delayBeforeShowing;
         //
-        //float m_InitTime = float.NegativeInfinity;
-        //bool m_WasDisplayed;
-        //DisplayMessageManager m_DisplayMessageManager;
+        //float InitTime = float.NegativeInfinity;
+        //bool WasDisplayed;
+        //DisplayMessageManager DisplayMessageManager;
         //
         //void Start()
         //{
-        //    m_InitTime = Time.time;
-        //    m_DisplayMessageManager = FindObjectOfType<DisplayMessageManager>();
-        //    DebugUtility.HandleErrorIfNullFindObject<DisplayMessageManager, DisplayMessage>(m_DisplayMessageManager,
+        //    InitTime = Time.time;
+        //    DisplayMessageManager = FindObjectOfType<DisplayMessageManager>();
+        //    DebugUtility.HandleErrorIfNullFindObject<DisplayMessageManager, DisplayMessage>(DisplayMessageManager,
         //        this);
         //}
         //
         // Update is called once per frame
         //void Update()
         //{
-        //    if (m_WasDisplayed)
+        //    if (WasDisplayed)
         //        return;
         //
-        //    if (Time.time - m_InitTime > delayBeforeShowing)
+        //    if (Time.time - InitTime > delayBeforeShowing)
         //    {
-        //        var messageInstance = Instantiate(messagePrefab, m_DisplayMessageManager.DisplayMessageRect);
+        //        var messageInstance = Instantiate(messagePrefab, DisplayMessageManager.DisplayMessageRect);
         //        var notification = messageInstance.GetComponent<NotificationToast>();
         //        if (notification)
         //        {
         //            notification.Initialize(message);
         //        }
         //
-        //        m_WasDisplayed = true;
+        //        WasDisplayed = true;
         //    }
         //}
     }

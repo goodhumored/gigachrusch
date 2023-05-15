@@ -68,10 +68,10 @@ namespace FPS.Scripts.Game.Shared
         public UnityAction OnUsage;
         public event Action OnUsageProcessed;
 
-        int m_CarriedPhysicalBullets;
-        float m_CurrentAmmo;
+        int CarriedPhysicalBullets;
+        float CurrentAmmo;
         
-        Vector3 m_LastMuzzlePosition;
+        Vector3 LastMuzzlePosition;
         
         public float CurrentAmmoRatio { get; private set; }
 
@@ -79,54 +79,54 @@ namespace FPS.Scripts.Game.Shared
             (UsageType != WeaponUsageType.Charge ? 1f : Mathf.Max(1f, AmmoUsedOnStartCharge)) /
             (MaxAmmo * BulletsPerShot);
 
-        public int GetCarriedPhysicalBullets() => m_CarriedPhysicalBullets;
-        public int GetCurrentAmmo() => Mathf.FloorToInt(m_CurrentAmmo);
+        public int GetCarriedPhysicalBullets() => CarriedPhysicalBullets;
+        public int GetCurrentAmmo() => Mathf.FloorToInt(CurrentAmmo);
 
         public bool IsReloading { get; private set; }
 
-        const string k_AnimAttackParameter = "Attack";
-        const string k_AnimChargeParameter = "Charge";
+        const string AnimAttackParameter = "Attack";
+        const string AnimChargeParameter = "Charge";
 
-        private Queue<Rigidbody> m_PhysicalAmmoPool;
+        private Queue<Rigidbody> PhysicalAmmoPool;
 
         private void Awake()
         {
-            m_CurrentAmmo = MaxAmmo;
-            m_CarriedPhysicalBullets = HasPhysicalBullets ? ClipSize : 0;
-            m_LastMuzzlePosition = WeaponMuzzle.position;
+            CurrentAmmo = MaxAmmo;
+            CarriedPhysicalBullets = HasPhysicalBullets ? ClipSize : 0;
+            LastMuzzlePosition = WeaponMuzzle.position;
 
-            m_UsageAudioSource = GetComponent<AudioSource>();
-            DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(m_UsageAudioSource, this,
+            UsageAudioSource = GetComponent<AudioSource>();
+            DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(UsageAudioSource, this,
                 gameObject);
 
             if (UseContinuousUsageSound)
             {
-                m_ContinuousUsageAudioSource = gameObject.AddComponent<AudioSource>();
-                m_ContinuousUsageAudioSource.playOnAwake = false;
-                m_ContinuousUsageAudioSource.clip = ContinuousUsageLoopSfx;
-                m_ContinuousUsageAudioSource.outputAudioMixerGroup =
+                ContinuousUsageAudioSource = gameObject.AddComponent<AudioSource>();
+                ContinuousUsageAudioSource.playOnAwake = false;
+                ContinuousUsageAudioSource.clip = ContinuousUsageLoopSfx;
+                ContinuousUsageAudioSource.outputAudioMixerGroup =
                     AudioUtility.GetAudioGroup(AudioUtility.AudioGroups.WeaponShoot);
-                m_ContinuousUsageAudioSource.loop = true;
+                ContinuousUsageAudioSource.loop = true;
             }
 
             if (HasPhysicalBullets)
             {
-                m_PhysicalAmmoPool = new Queue<Rigidbody>(ShellPoolSize);
+                PhysicalAmmoPool = new Queue<Rigidbody>(ShellPoolSize);
 
                 for (int i = 0; i < ShellPoolSize; i++)
                 {
                     GameObject shell = Instantiate(ShellCasing, transform);
                     shell.SetActive(false);
-                    m_PhysicalAmmoPool.Enqueue(shell.GetComponent<Rigidbody>());
+                    PhysicalAmmoPool.Enqueue(shell.GetComponent<Rigidbody>());
                 }
             }
         }
 
-        public void AddCarriablePhysicalBullets(int count) => m_CarriedPhysicalBullets = Mathf.Max(m_CarriedPhysicalBullets + count, MaxAmmo);
+        public void AddCarriablePhysicalBullets(int count) => CarriedPhysicalBullets = Mathf.Max(CarriedPhysicalBullets + count, MaxAmmo);
 
         void ShotShell()
         {
-            Rigidbody nextShell = m_PhysicalAmmoPool.Dequeue();
+            Rigidbody nextShell = PhysicalAmmoPool.Dequeue();
 
             nextShell.transform.position = EjectionPort.transform.position;
             nextShell.transform.rotation = EjectionPort.transform.rotation;
@@ -135,7 +135,7 @@ namespace FPS.Scripts.Game.Shared
             nextShell.collisionDetectionMode = CollisionDetectionMode.Continuous;
             nextShell.AddForce(nextShell.transform.up * ShellCasingEjectionForce, ForceMode.Impulse);
 
-            m_PhysicalAmmoPool.Enqueue(nextShell);
+            PhysicalAmmoPool.Enqueue(nextShell);
         }
 
         void PlaySFX(AudioClip sfx) => AudioUtility.CreateSFX(sfx, transform.position, AudioUtility.AudioGroups.WeaponShoot, 0.0f);
@@ -143,9 +143,9 @@ namespace FPS.Scripts.Game.Shared
 
         void Reload()
         {
-            if (m_CarriedPhysicalBullets > 0)
+            if (CarriedPhysicalBullets > 0)
             {
-                m_CurrentAmmo = Mathf.Min(m_CarriedPhysicalBullets, ClipSize);
+                CurrentAmmo = Mathf.Min(CarriedPhysicalBullets, ClipSize);
             }
 
             IsReloading = false;
@@ -153,7 +153,7 @@ namespace FPS.Scripts.Game.Shared
 
         public void StartReloadAnimation()
         {
-            if (m_CurrentAmmo < m_CarriedPhysicalBullets)
+            if (CurrentAmmo < CarriedPhysicalBullets)
             {
                 GetComponent<Animator>().SetTrigger("Reload");
                 IsReloading = true;
@@ -169,20 +169,20 @@ namespace FPS.Scripts.Game.Shared
 
             if (Time.deltaTime > 0)
             {
-                MuzzleWorldVelocity = (WeaponMuzzle.position - m_LastMuzzlePosition) / Time.deltaTime;
-                m_LastMuzzlePosition = WeaponMuzzle.position;
+                MuzzleWorldVelocity = (WeaponMuzzle.position - LastMuzzlePosition) / Time.deltaTime;
+                LastMuzzlePosition = WeaponMuzzle.position;
             }
         }
 
         void UpdateAmmo()
         {
-            if (AutomaticReload && m_LastTimeUsed + AmmoReloadDelay < Time.time && m_CurrentAmmo < MaxAmmo && !IsCharging)
+            if (AutomaticReload && LastTimeUsed + AmmoReloadDelay < Time.time && CurrentAmmo < MaxAmmo && !IsCharging)
             {
                 // reloads weapon over time
-                m_CurrentAmmo += AmmoReloadRate * Time.deltaTime;
+                CurrentAmmo += AmmoReloadRate * Time.deltaTime;
 
                 // limits ammo to max value
-                m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo, 0, MaxAmmo);
+                CurrentAmmo = Mathf.Clamp(CurrentAmmo, 0, MaxAmmo);
 
                 IsCooling = true;
             }
@@ -197,7 +197,7 @@ namespace FPS.Scripts.Game.Shared
             }
             else
             {
-                CurrentAmmoRatio = m_CurrentAmmo / MaxAmmo;
+                CurrentAmmoRatio = CurrentAmmo / MaxAmmo;
             }
         }
 
@@ -207,7 +207,7 @@ namespace FPS.Scripts.Game.Shared
             {
                 if (CurrentCharge < 1f)
                 {
-                    WeaponAnimator.SetFloat(k_AnimChargeParameter, CurrentCharge);
+                    WeaponAnimator.SetFloat(AnimChargeParameter, CurrentCharge);
                     float chargeLeft = 1f - CurrentCharge;
 
                     // Calculate how much charge ratio to add this frame
@@ -225,7 +225,7 @@ namespace FPS.Scripts.Game.Shared
 
                     // See if we can actually add this charge
                     float ammoThisChargeWouldRequire = chargeAdded * AmmoUsageRateWhileCharging;
-                    if (ammoThisChargeWouldRequire <= m_CurrentAmmo)
+                    if (ammoThisChargeWouldRequire <= CurrentAmmo)
                     {
                         // Use ammo based on charge added
                         UseAmmo(ammoThisChargeWouldRequire);
@@ -241,38 +241,38 @@ namespace FPS.Scripts.Game.Shared
         {
             if (UseContinuousUsageSound)
             {
-                if (m_WantsToUse && m_CurrentAmmo >= 1f)
+                if (WantsToUse && CurrentAmmo >= 1f)
                 {
-                    if (!m_ContinuousUsageAudioSource.isPlaying)
+                    if (!ContinuousUsageAudioSource.isPlaying)
                     {
-                        m_UsageAudioSource.PlayOneShot(UsageSfx);
-                        m_UsageAudioSource.PlayOneShot(ContinuousUsageStartSfx);
-                        m_ContinuousUsageAudioSource.Play();
+                        UsageAudioSource.PlayOneShot(UsageSfx);
+                        UsageAudioSource.PlayOneShot(ContinuousUsageStartSfx);
+                        ContinuousUsageAudioSource.Play();
                     }
                 }
-                else if (m_ContinuousUsageAudioSource.isPlaying)
+                else if (ContinuousUsageAudioSource.isPlaying)
                 {
-                    m_UsageAudioSource.PlayOneShot(ContinuousUsageEndSfx);
-                    m_ContinuousUsageAudioSource.Stop();
+                    UsageAudioSource.PlayOneShot(ContinuousUsageEndSfx);
+                    ContinuousUsageAudioSource.Stop();
                 }
             }
         }
 
         public void UseAmmo(float amount)
         {
-            m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo - amount, 0f, MaxAmmo);
-            m_CarriedPhysicalBullets -= Mathf.RoundToInt(amount);
-            m_CarriedPhysicalBullets = Mathf.Clamp(m_CarriedPhysicalBullets, 0, MaxAmmo);
-            m_LastTimeUsed = Time.time;
+            CurrentAmmo = Mathf.Clamp(CurrentAmmo - amount, 0f, MaxAmmo);
+            CarriedPhysicalBullets -= Mathf.RoundToInt(amount);
+            CarriedPhysicalBullets = Mathf.Clamp(CarriedPhysicalBullets, 0, MaxAmmo);
+            LastTimeUsed = Time.time;
         }
 
         protected override bool TryToUse()
         {
-            if (m_CurrentAmmo >= 1f
-                && m_LastTimeUsed + UseDelay < Time.time)
+            if (CurrentAmmo >= 1f
+                && LastTimeUsed + UseDelay < Time.time)
             {
                 HandleUsage();
-                m_CurrentAmmo -= 1f;
+                CurrentAmmo -= 1f;
 
                 return true;
             }
@@ -283,9 +283,9 @@ namespace FPS.Scripts.Game.Shared
         protected override bool TryBeginCharge()
         {
             if (!IsCharging
-                && m_CurrentAmmo >= AmmoUsedOnStartCharge
-                && Mathf.FloorToInt((m_CurrentAmmo - AmmoUsedOnStartCharge) * BulletsPerShot) > 0
-                && m_LastTimeUsed + UseDelay < Time.time)
+                && CurrentAmmo >= AmmoUsedOnStartCharge
+                && Mathf.FloorToInt((CurrentAmmo - AmmoUsedOnStartCharge) * BulletsPerShot) > 0
+                && LastTimeUsed + UseDelay < Time.time)
             {
                 UseAmmo(AmmoUsedOnStartCharge);
 

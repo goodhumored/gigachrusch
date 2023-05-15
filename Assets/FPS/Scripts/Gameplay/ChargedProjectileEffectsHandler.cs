@@ -15,19 +15,19 @@ namespace FPS.Scripts.Gameplay
         [Tooltip("Color of the charged object based on charge")]
         public MinMaxColor Color;
 
-        MeshRenderer[] m_AffectedRenderers;
-        ProjectileBase m_ProjectileBase;
+        MeshRenderer[] AffectedRenderers;
+        ProjectileBase ProjectileBase;
 
         void OnEnable()
         {
-            m_ProjectileBase = GetComponent<ProjectileBase>();
+            ProjectileBase = GetComponent<ProjectileBase>();
             DebugUtility.HandleErrorIfNullGetComponent<ProjectileBase, ChargedProjectileEffectsHandler>(
-                m_ProjectileBase, this, gameObject);
+                ProjectileBase, this, gameObject);
 
-            m_ProjectileBase.OnShoot += OnShoot;
+            ProjectileBase.OnShoot += OnShoot;
 
-            m_AffectedRenderers = ChargingObject.GetComponentsInChildren<MeshRenderer>();
-            foreach (var ren in m_AffectedRenderers)
+            AffectedRenderers = ChargingObject.GetComponentsInChildren<MeshRenderer>();
+            foreach (var ren in AffectedRenderers)
             {
                 ren.sharedMaterial = Instantiate(ren.sharedMaterial);
             }
@@ -35,11 +35,11 @@ namespace FPS.Scripts.Gameplay
 
         void OnShoot()
         {
-            ChargingObject.transform.localScale = Scale.GetValueFromRatio(m_ProjectileBase.InitialCharge);
+            ChargingObject.transform.localScale = Scale.GetValueFromRatio(ProjectileBase.InitialCharge);
 
-            foreach (var ren in m_AffectedRenderers)
+            foreach (var ren in AffectedRenderers)
             {
-                ren.sharedMaterial.SetColor("_Color", Color.GetValueFromRatio(m_ProjectileBase.InitialCharge));
+                ren.sharedMaterial.SetColor("_Color", Color.GetValueFromRatio(ProjectileBase.InitialCharge));
             }
         }
     }

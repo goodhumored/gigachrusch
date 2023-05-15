@@ -27,27 +27,27 @@ namespace FPS.Scripts.UI
         [Tooltip("GameObject for the controls")]
         public GameObject ControlImage;
 
-        PlayerInputHandler m_PlayerInputsHandler;
-        Health m_PlayerHealth;
-        FramerateCounter m_FramerateCounter;
+        PlayerInputHandler PlayerInputsHandler;
+        Health PlayerHealth;
+        FramerateCounter FramerateCounter;
         // private Volume _volume;
         // private LiftGammaGain _gamma;
 
         void Start()
         {
-            m_PlayerInputsHandler = FindObjectOfType<PlayerInputHandler>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(m_PlayerInputsHandler,
+            PlayerInputsHandler = FindObjectOfType<PlayerInputHandler>();
+            DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(PlayerInputsHandler,
                 this);
 
-            m_PlayerHealth = m_PlayerInputsHandler.GetComponent<Health>();
-            DebugUtility.HandleErrorIfNullGetComponent<Health, InGameMenuManager>(m_PlayerHealth, this, gameObject);
+            PlayerHealth = PlayerInputsHandler.GetComponent<Health>();
+            DebugUtility.HandleErrorIfNullGetComponent<Health, InGameMenuManager>(PlayerHealth, this, gameObject);
 
-            m_FramerateCounter = FindObjectOfType<FramerateCounter>();
-            DebugUtility.HandleErrorIfNullFindObject<FramerateCounter, InGameMenuManager>(m_FramerateCounter, this);
+            FramerateCounter = FindObjectOfType<FramerateCounter>();
+            DebugUtility.HandleErrorIfNullFindObject<FramerateCounter, InGameMenuManager>(FramerateCounter, this);
 
             MenuRoot.SetActive(false);
 
-            LookSensitivitySlider.value = m_PlayerInputsHandler.LookSensitivity;
+            LookSensitivitySlider.value = PlayerInputsHandler.LookSensitivity;
             LookSensitivitySlider.onValueChanged.AddListener(OnMouseSensitivityChanged);
 
             // if (_volume.profile.TryGet<LiftGammaGain>(out var gammaGain))
@@ -57,7 +57,7 @@ namespace FPS.Scripts.UI
             //     BrightnessSlider.onValueChanged.AddListener(OnBrightnessChanged);
             // }
 
-            FramerateToggle.isOn = m_FramerateCounter.UIText.gameObject.activeSelf;
+            FramerateToggle.isOn = FramerateCounter.UIText.gameObject.activeSelf;
             FramerateToggle.onValueChanged.AddListener(OnFramerateCounterChanged);
         }
 
@@ -76,8 +76,8 @@ namespace FPS.Scripts.UI
                 Cursor.visible = true;
             }
 
-            if (Input.GetButtonDown(GameConstants.k_ButtonNamePauseMenu)
-                || (MenuRoot.activeSelf && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
+            if (Input.GetButtonDown(GameConstants.ButtonNamePauseMenu)
+                || (MenuRoot.activeSelf && Input.GetButtonDown(GameConstants.ButtonNameCancel)))
             {
                 if (ControlImage.activeSelf)
                 {
@@ -89,7 +89,7 @@ namespace FPS.Scripts.UI
 
             }
 
-            if (Input.GetAxisRaw(GameConstants.k_AxisNameVertical) != 0)
+            if (Input.GetAxisRaw(GameConstants.AxisNameVertical) != 0)
             {
                 if (EventSystem.current.currentSelectedGameObject == null)
                 {
@@ -129,7 +129,7 @@ namespace FPS.Scripts.UI
 
         void OnMouseSensitivityChanged(float newValue)
         {
-            m_PlayerInputsHandler.LookSensitivity = newValue;
+            PlayerInputsHandler.LookSensitivity = newValue;
         }
 
         void OnBrightnessChanged(float newValue)
@@ -140,7 +140,7 @@ namespace FPS.Scripts.UI
 
         void OnFramerateCounterChanged(bool newValue)
         {
-            m_FramerateCounter.UIText.gameObject.SetActive(newValue);
+            FramerateCounter.UIText.gameObject.SetActive(newValue);
         }
 
         public void OnShowControlButtonClicked(bool show)

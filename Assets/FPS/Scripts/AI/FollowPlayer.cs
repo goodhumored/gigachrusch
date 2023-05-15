@@ -5,26 +5,26 @@ namespace FPS.Scripts.AI
 {
     public class FollowPlayer : MonoBehaviour
     {
-        Transform m_PlayerTransform;
-        Vector3 m_OriginalOffset;
+        Transform PlayerTransform;
+        Vector3 OriginalOffset;
 
         void Start()
         {
             ActorsManager actorsManager = FindObjectOfType<ActorsManager>();
             if (actorsManager != null)
-                m_PlayerTransform = actorsManager.Player.transform;
+                PlayerTransform = actorsManager.Player.transform;
             else
             {
                 enabled = false;
                 return;
             }
 
-            m_OriginalOffset = transform.position - m_PlayerTransform.position;
+            OriginalOffset = transform.position - PlayerTransform.position;
         }
 
         void LateUpdate()
         {
-            transform.position = m_PlayerTransform.position + m_OriginalOffset;
+            transform.position = PlayerTransform.position + OriginalOffset;
         }
     }
 }

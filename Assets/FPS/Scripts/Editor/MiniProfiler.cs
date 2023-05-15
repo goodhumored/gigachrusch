@@ -24,20 +24,20 @@ namespace FPS.Scripts.Editor
             public Color Color;
         }
 
-        Vector2 m_ScrollPos;
-        bool m_MustRepaint = false;
-        bool m_MustLaunchHeatmapNextFrame = false;
-        bool m_HeatmapIsCalculating = false;
-        float m_CellTransparency = 0.9f;
-        float m_CellThreshold = 0f;
-        string m_LevelAnalysisString = "";
-        List<string> m_SuggestionStrings = new List<string>();
+        Vector2 ScrollPos;
+        bool MustRepaint = false;
+        bool MustLaunchHeatmapNextFrame = false;
+        bool HeatmapIsCalculating = false;
+        float CellTransparency = 0.9f;
+        float CellThreshold = 0f;
+        string LevelAnalysisString = "";
+        List<string> SuggestionStrings = new List<string>();
 
         static List<CellData> s_CellDatas = new List<CellData>();
 
-        const float k_CellSize = 10;
-        const string k_NewLine = "\n";
-        const string k_HeaderSeparator = "==============================";
+        const float CellSize = 10;
+        const string NewLine = "\n";
+        const string HeaderSeparator = "==============================";
 
         // Add menu item named "My Window" to the Window menu
         [MenuItem("Tools/MiniProfiler")]
@@ -60,7 +60,7 @@ namespace FPS.Scripts.Editor
 
         void OnGUI()
         {
-            m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos, false, false);
+            ScrollPos = EditorGUILayout.BeginScrollView(ScrollPos, false, false);
 
             GUILayout.Space(20);
             EditorGUILayout.LabelField("Performance Tips");
@@ -80,15 +80,15 @@ namespace FPS.Scripts.Editor
                     AnalyzeLevel();
                 }
 
-                if (m_LevelAnalysisString != null && m_LevelAnalysisString != "")
+                if (LevelAnalysisString != null && LevelAnalysisString != "")
                 {
-                    EditorGUILayout.HelpBox(m_LevelAnalysisString, MessageType.None);
+                    EditorGUILayout.HelpBox(LevelAnalysisString, MessageType.None);
                 }
 
-                if (m_SuggestionStrings.Count > 0)
+                if (SuggestionStrings.Count > 0)
                 {
                     EditorGUILayout.LabelField("Suggestions");
-                    foreach (var s in m_SuggestionStrings)
+                    foreach (var s in SuggestionStrings)
                     {
                         EditorGUILayout.HelpBox(s, MessageType.Warning);
                     }
@@ -97,7 +97,7 @@ namespace FPS.Scripts.Editor
                 if (GUILayout.Button("Clear Analysis"))
                 {
                     ClearAnalysis();
-                    m_MustRepaint = true;
+                    MustRepaint = true;
                 }
             }
 
@@ -111,54 +111,54 @@ namespace FPS.Scripts.Editor
             }
             else
             {
-                if (m_MustLaunchHeatmapNextFrame)
+                if (MustLaunchHeatmapNextFrame)
                 {
                     DoPolycountMap();
-                    m_CellTransparency = 0.9f;
-                    m_CellThreshold = 0f;
-                    m_MustLaunchHeatmapNextFrame = false;
-                    m_MustRepaint = true;
+                    CellTransparency = 0.9f;
+                    CellThreshold = 0f;
+                    MustLaunchHeatmapNextFrame = false;
+                    MustRepaint = true;
                 }
 
                 if (GUILayout.Button("Build Heatmap"))
                 {
-                    m_MustLaunchHeatmapNextFrame = true;
-                    m_HeatmapIsCalculating = true;
+                    MustLaunchHeatmapNextFrame = true;
+                    HeatmapIsCalculating = true;
                 }
 
                 if (s_CellDatas.Count > 0)
                 {
-                    float prevAlpha = m_CellTransparency;
-                    m_CellTransparency = EditorGUILayout.Slider("Cell Transparency", m_CellTransparency, 0f, 1f);
-                    if (m_CellTransparency != prevAlpha)
+                    float prevAlpha = CellTransparency;
+                    CellTransparency = EditorGUILayout.Slider("Cell Transparency", CellTransparency, 0f, 1f);
+                    if (CellTransparency != prevAlpha)
                     {
-                        m_MustRepaint = true;
+                        MustRepaint = true;
                     }
 
-                    float prevTreshold = m_CellThreshold;
-                    m_CellThreshold = EditorGUILayout.Slider("Cell Display Threshold", m_CellThreshold, 0f, 1f);
-                    if (m_CellThreshold != prevTreshold)
+                    float prevTreshold = CellThreshold;
+                    CellThreshold = EditorGUILayout.Slider("Cell Display Threshold", CellThreshold, 0f, 1f);
+                    if (CellThreshold != prevTreshold)
                     {
-                        m_MustRepaint = true;
+                        MustRepaint = true;
                     }
                 }
 
                 if (GUILayout.Button("Clear Heatmap"))
                 {
-                    m_MustRepaint = true;
+                    MustRepaint = true;
                     s_CellDatas.Clear();
                 }
             }
 
             EditorGUILayout.EndScrollView();
 
-            if (m_MustRepaint)
+            if (MustRepaint)
             {
                 EditorWindow.GetWindow<SceneView>().Repaint();
-                m_MustRepaint = false;
+                MustRepaint = false;
             }
 
-            if (m_HeatmapIsCalculating)
+            if (HeatmapIsCalculating)
                 EditorUtility.DisplayProgressBar("Polygon Count Heatmap", "Calculations in progress", 0.99f);
         }
 
@@ -167,10 +167,10 @@ namespace FPS.Scripts.Editor
             // Draw heatmap
             foreach (CellData c in s_CellDatas)
             {
-                if (c.Ratio >= m_CellThreshold && c.Count > 0)
+                if (c.Ratio >= CellThreshold && c.Count > 0)
                 {
                     Color col = c.Color;
-                    col.a = 1f - m_CellTransparency;
+                    col.a = 1f - CellTransparency;
                     Handles.color = col;
                     Handles.CubeHandleCap(0, c.Bounds.center, Quaternion.identity, c.Bounds.extents.x * 2f,
                         EventType.Repaint);
@@ -180,8 +180,8 @@ namespace FPS.Scripts.Editor
 
         void ClearAnalysis()
         {
-            m_LevelAnalysisString = "";
-            m_SuggestionStrings.Clear();
+            LevelAnalysisString = "";
+            SuggestionStrings.Clear();
         }
 
         void DisplayTips()
@@ -244,8 +244,7 @@ namespace FPS.Scripts.Editor
                 {
                     if (!(mf.GetComponentInParent<PlayerCharacterController>() ||
                           mf.GetComponentInParent<EnemyController>() ||
-                          mf.GetComponentInParent<Pickup>() ||
-                          mf.GetComponentInParent<Objective>()))
+                          mf.GetComponentInParent<Pickup>()))
                     {
                         nonCombinedMeshCount++;
                     }
@@ -270,22 +269,22 @@ namespace FPS.Scripts.Editor
             int enemyCount = GameObject.FindObjectsOfType<EnemyController>().Length;
 
             // Level analysis 
-            m_LevelAnalysisString += "- Meshes count: " + meshCount;
-            m_LevelAnalysisString += k_NewLine;
-            m_LevelAnalysisString += "- Animated models (SkinnedMeshes) count: " + skinnedMeshesCount;
-            m_LevelAnalysisString += k_NewLine;
-            m_LevelAnalysisString += "- Polygon count: " + polyCount;
-            m_LevelAnalysisString += k_NewLine;
-            m_LevelAnalysisString += "- Physics objects (rigidbodies) count: " + rigidbodiesCount;
-            m_LevelAnalysisString += k_NewLine;
-            m_LevelAnalysisString += "- Lights count: " + lightsCount;
-            m_LevelAnalysisString += k_NewLine;
-            m_LevelAnalysisString += "- Enemy count: " + enemyCount;
+            LevelAnalysisString += "- Meshes count: " + meshCount;
+            LevelAnalysisString += NewLine;
+            LevelAnalysisString += "- Animated models (SkinnedMeshes) count: " + skinnedMeshesCount;
+            LevelAnalysisString += NewLine;
+            LevelAnalysisString += "- Polygon count: " + polyCount;
+            LevelAnalysisString += NewLine;
+            LevelAnalysisString += "- Physics objects (rigidbodies) count: " + rigidbodiesCount;
+            LevelAnalysisString += NewLine;
+            LevelAnalysisString += "- Lights count: " + lightsCount;
+            LevelAnalysisString += NewLine;
+            LevelAnalysisString += "- Enemy count: " + enemyCount;
 
             // Suggestions
             if (nonCombinedMeshCount > 50)
             {
-                m_SuggestionStrings.Add(nonCombinedMeshCount +
+                SuggestionStrings.Add(nonCombinedMeshCount +
                                         " meshes in the scene are not setup to be combined on game start. Make sure that all the meshes " +
                                         "that will never move, change, or be removed during play are under the \"Level\" gameObject in the scene, so they can be combined for greater performance. \n \n" +
                                         "Note that it is always normal to have a few meshes that will not be combined, such as pickups, player meshes, enemy meshes, etc....");
@@ -339,9 +338,9 @@ namespace FPS.Scripts.Editor
             }
 
             Vector3 boundsBottomCorner = levelBounds.center - levelBounds.extents;
-            Vector3Int gridResolution = new Vector3Int(Mathf.CeilToInt((levelBounds.extents.x * 2f) / k_CellSize),
-                Mathf.CeilToInt((levelBounds.extents.y * 2f) / k_CellSize),
-                Mathf.CeilToInt((levelBounds.extents.z * 2f) / k_CellSize));
+            Vector3Int gridResolution = new Vector3Int(Mathf.CeilToInt((levelBounds.extents.x * 2f) / CellSize),
+                Mathf.CeilToInt((levelBounds.extents.y * 2f) / CellSize),
+                Mathf.CeilToInt((levelBounds.extents.z * 2f) / CellSize));
 
             int highestCount = 0;
             for (int x = 0; x < gridResolution.x; x++)
@@ -352,9 +351,9 @@ namespace FPS.Scripts.Editor
                     {
                         CellData cellData = new CellData();
 
-                        Vector3 cellCenter = boundsBottomCorner + (new Vector3(x, y, z) * k_CellSize) +
-                                             (Vector3.one * k_CellSize * 0.5f);
-                        cellData.Bounds = new Bounds(cellCenter, Vector3.one * k_CellSize);
+                        Vector3 cellCenter = boundsBottomCorner + (new Vector3(x, y, z) * CellSize) +
+                                             (Vector3.one * CellSize * 0.5f);
+                        cellData.Bounds = new Bounds(cellCenter, Vector3.one * CellSize);
                         for (int i = 0; i < meshBoundsAndCount.Count; i++)
                         {
                             if (cellData.Bounds.Intersects(meshBoundsAndCount[i].Bounds))
@@ -380,7 +379,7 @@ namespace FPS.Scripts.Editor
                 s_CellDatas[i].Color = col;
             }
 
-            m_HeatmapIsCalculating = false;
+            HeatmapIsCalculating = false;
             EditorUtility.ClearProgressBar();
         }
     }

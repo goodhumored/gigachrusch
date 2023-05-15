@@ -6,16 +6,16 @@ namespace FPS.Scripts.Game
     {
         public float LifeTime = 1f;
 
-        float m_SpawnTime;
+        float SpawnTime;
 
         void Awake()
         {
-            m_SpawnTime = Time.time;
+            SpawnTime = Time.time;
         }
 
         void Update()
         {
-            if (Time.time > m_SpawnTime + LifeTime)
+            if (Time.time > SpawnTime + LifeTime)
             {
                 Destroy(gameObject);
             }

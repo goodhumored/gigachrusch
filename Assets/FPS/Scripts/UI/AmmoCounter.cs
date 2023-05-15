@@ -47,8 +47,8 @@ namespace FPS.Scripts.UI
 
         public int WeaponCounterIndex { get; set; }
 
-        PlayerWeaponsManager m_PlayerWeaponsManager;
-        WeaponController m_Weapon;
+        PlayerWeaponsManager PlayerWeaponsManager;
+        WeaponController Weapon;
 
         void Awake()
         {
@@ -57,22 +57,22 @@ namespace FPS.Scripts.UI
 
         void OnAmmoPickup(AmmoPickupEvent evt)
         {
-            if (m_Weapon is GunController && evt.Weapon == m_Weapon)
+            if (Weapon is GunController && evt.Weapon == Weapon)
             {
-                var gun = (GunController)m_Weapon;
+                var gun = (GunController)Weapon;
                 BulletCounter.text = gun.GetCarriedPhysicalBullets().ToString();
             }
         }
 
         public void Initialize(WeaponController weapon, int weaponIndex)
         {
-            m_Weapon = weapon;
+            Weapon = weapon;
             WeaponCounterIndex = weaponIndex;
             WeaponImage.sprite = weapon.WeaponIcon;
 
             Reload.gameObject.SetActive(false);
-            m_PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, AmmoCounter>(m_PlayerWeaponsManager, this);
+            PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
+            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, AmmoCounter>(PlayerWeaponsManager, this);
 
             WeaponIndexText.text = (WeaponCounterIndex + 1).ToString();
             if (weapon is GunController)
@@ -88,16 +88,16 @@ namespace FPS.Scripts.UI
 
         void Update()
         {
-            if (m_Weapon is GunController)
+            if (Weapon is GunController)
             {
-                var gun = (GunController)m_Weapon;
+                var gun = (GunController)Weapon;
                 float currenFillRatio = gun.CurrentAmmoRatio;
                 AmmoFillImage.fillAmount = Mathf.Lerp(AmmoFillImage.fillAmount, currenFillRatio,
                     Time.deltaTime * AmmoFillMovementSharpness);
 
                 BulletCounter.text = gun.GetCarriedPhysicalBullets().ToString();
 
-                bool isActiveWeapon = gun == m_PlayerWeaponsManager.GetActiveWeapon();
+                bool isActiveWeapon = gun == PlayerWeaponsManager.GetActiveWeapon();
 
                 CanvasGroup.alpha = Mathf.Lerp(CanvasGroup.alpha, isActiveWeapon ? 1f : UnselectedOpacity,
                     Time.deltaTime * 10);
